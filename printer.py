@@ -9,9 +9,9 @@ def print_table(iterations: list[Iteration]):
     for iteration in iterations:
         row = [
             iteration.index, 
-            iteration.rand_value, 
+            iteration.random_value, 
             iteration.interval_between_apps, 
-            iteration.app_time
+            iteration.application_time
         ] + ['' if t == 0 else str(t) for t in iteration.server_times]
         
         table.add_row(row)
@@ -41,11 +41,11 @@ def print_sq(queue: Queue):
         print(f"{first_results} + ... + {last_results} = {queue.average_value}")
 
 sq = simulate_queue(
-    service_time=10, 
-    max_time=100, 
-    alpha=10,
-    num_threads=10,
-    num_iterations=10000
+    service_time=1, 
+    max_time=1, 
+    alpha=1,
+    num_threads=2,
+    num_iterations=1
 )
 
 print_sq(sq)

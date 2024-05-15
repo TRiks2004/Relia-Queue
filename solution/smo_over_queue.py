@@ -3,12 +3,13 @@ import random
 from dataclasses import dataclass
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
+
 @dataclass
 class Iteration:
     index: int
-    rand_value: float
+    random_value: float
     interval_between_apps: float
-    app_time: float
+    application_time: float
     server_times: list[float]
 
 @dataclass
@@ -21,11 +22,36 @@ class Queue:
     results: list[Answer]
     average_value: float 
 
+
+class NumIterationsNegative(Exception):
+    pass 
+
+class NumIterationsIsZero(Exception):
+    pass 
+
+class NumThreadsNegative(Exception):
+    pass
+
+class NumThreadsIsZero(Exception):
+    pass
+
+class AlphaIsZero(Exception):
+    pass
+
+class AlphaNegative(Exception):
+    pass
+
+class ServiceTimeNegative(Exception):
+    pass
+
+class MaxTimeNegative(Exception):
+    pass
+
 def round_value(value, decimals=4):
     return round(value, decimals)
 
-def interval_between_apps(alpha, rand_value):
-    return round_value(-1 / alpha * math.log(rand_value))
+def interval_between_apps(alpha, random_value):
+    return round_value(-1 / alpha * math.log(random_value))
 
 def max_row(lst):
     return max(lst)
@@ -59,11 +85,11 @@ def sum_expected_values(lst):
 def process_iteration(service_time, max_time, alpha, num_threads):
     iterations: list[Iteration] = []
     current_time = 0
-    rand_value = 0
+    random_value = 0
     interval = 0
     servers = []
     server_row_count = 0
-    app_count = 0
+    application_count = 0
 
     while current_time <= max_time:
         servers.append([0] * num_threads)
@@ -85,22 +111,45 @@ def process_iteration(service_time, max_time, alpha, num_threads):
 
         iterations.append(
             Iteration(
-                index=app_count,
-                rand_value=rand_value,
+                index=application_count,
+                random_value=random_value,
                 interval_between_apps=interval,
-                app_time=current_time,
+                application_time=current_time,
                 server_times=servers[-1]
             )
         )
 
-        rand_value = generate_random_number()
-        interval = interval_between_apps(alpha, rand_value)
+        random_value = generate_random_number()
+        interval = interval_between_apps(alpha, random_value)
         current_time = round_value(current_time + interval)
-        app_count += 1
+        application_count += 1
 
-    return Answer(iterations[:], app_count - 1)
+    return Answer(iterations[:], application_count - 1)
 
 def simulate_queue(service_time, max_time, alpha, num_threads=1, num_iterations=1):
+    if num_iterations < 0:
+        raise NumIterationsNegative
+    elif num_iterations == 0:
+        raise NumIterationsIsZero
+    
+    if num_threads < 0:
+        raise NumThreadsNegative
+    elif num_threads == 0:
+        raise NumThreadsIsZero
+    
+    if alpha == 0:
+        raise AlphaIsZero
+    elif alpha < 0:
+        raise AlphaNegative
+    
+    if service_time < 0:
+        raise ServiceTimeNegative
+
+    if max_time < 0:
+        raise MaxTimeNegative
+    
+    print("Симуляция началась")
+    
     answers: list[Answer] = []
 
     with ProcessPoolExecutor() as executor:
