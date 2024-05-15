@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "smo_over_queue"
-version = "0.1.0"
+version = "0.1.1"
 description = ""
 authors = ["triks <trik0001000@gmail.com>"]
 readme = "README.md"
