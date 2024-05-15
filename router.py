@@ -14,7 +14,7 @@ templates = Jinja2Templates(directory=config_fast_api.templates_dir)
 
 
 def plus_html(view_name: str) -> str:
-    return f"{view_name}.html"
+    return f"{view_name}.j2"
 
 class ViewList(BaseSettings):
 
@@ -27,7 +27,7 @@ view_list = ViewList()
 @main_point.get('/', response_class=HTMLResponse)
 def index(request: Request):
     return templates.TemplateResponse(
-        request=request, name='layout.html', context={'id': 1}
+        request=request, name=view_list.layout, context={'id': 1}
     )
 
 
