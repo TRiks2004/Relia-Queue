@@ -41,11 +41,11 @@ def print_sq(queue: Queue):
         print(f"{first_results} + ... + {last_results} = {queue.average_value}")
 
 sq = simulate_queue(
-    service_time=0.5, 
-    max_time=10, 
-    alpha=5,
-    num_threads=3,
-    num_iterations=7
+    service_time=10, 
+    max_time=100, 
+    alpha=10,
+    num_threads=10,
+    num_iterations=10000
 )
 
 print_sq(sq)
