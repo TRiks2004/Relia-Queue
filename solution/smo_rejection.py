@@ -19,12 +19,27 @@ class SimulationResult:
     average_refusal: float
     all_events: list
 
+def validate_simulation_parameters(rate, service_time, time, num_channels, num_runs):
+    """Проверяет корректность входных параметров для симуляции."""
+    if rate <= 0:
+        raise ValueError("Интенсивность потока (rate) должна быть положительным числом.")
+    if service_time <= 0:
+        raise ValueError("Время обслуживания (service_time) должно быть положительным числом.")
+    if time <= 0:
+        raise ValueError("Продолжительность симуляции (time) должна быть положительным числом.")
+    if num_channels <= 0:
+        raise ValueError("Количество каналов (num_channels) должно быть положительным числом.")
+    if num_runs <= 0:
+        raise ValueError("Количество запусков симуляции (num_runs) должно быть положительным числом.")
+
+
 def poisson_process(rate: int, time: int) ->list[Event]:
     """
     Функция, реализующая пуассоновский поток событий с заданной 
     rate - интенсивностью,
     time - продолжительностью
     """
+    validate_simulation_parameters(rate, service_time, time, num_channels, num_runs)
     events = []  # Список для хранения событий
     t = 0  # Начальное время
     while True:
@@ -68,16 +83,7 @@ def run_simulation(rate: int, service_time: float, time: int, num_channels: int,
     """
 
     # Проверка корректности входных данных
-    if rate <= 0:
-        raise ValueError("Интенсивность потока (rate) должна быть положительным числом.")
-    if service_time <= 0:
-        raise ValueError("Время обслуживания (service_time) должно быть положительным числом.")
-    if time <= 0:
-        raise ValueError("Продолжительность симуляции (time) должна быть положительным числом.")
-    if num_channels <= 0:
-        raise ValueError("Количество каналов (num_channels) должно быть положительным числом.")
-    if num_runs <= 0:
-        raise ValueError("Количество запусков симуляции (num_runs) должно быть положительным числом.")
+    validate_simulation_parameters(rate, service_time, time, num_channels, num_runs)
 
     all_results = []  # Список для хранения результатов симуляции
     for _ in range(num_runs):
