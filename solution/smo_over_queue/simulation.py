@@ -26,8 +26,6 @@ def simulate_queue(service_time, max_time, alpha, num_threads=1, num_iterations=
     if max_time < 0:
         raise MaxTimeNegative
     
-    print("Симуляция началась")
-    
     answers: list[Answer] = []
 
     with ProcessPoolExecutor() as executor:
