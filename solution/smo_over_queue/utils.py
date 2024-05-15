@@ -3,11 +3,9 @@ import random
 
 from models import Answer
 
-from typing import Generic, TypeVar
-
+from typing import TypeVar
 
 T = TypeVar('T')
-
 
 def round_value(value: float | int, decimals: int = 4) -> float:
     """
