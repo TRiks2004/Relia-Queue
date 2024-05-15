@@ -1,8 +1,8 @@
 from concurrent.futures import ProcessPoolExecutor, as_completed
-from models import Queue, Answer
-from exceptions import *
-from utils import round_value, sum_expected_values
-from processing import process_iteration
+from .models import Queue, Answer
+from .exceptions import *
+from .utils import round_value, sum_expected_values
+from .processing import process_iteration
 
 def simulate_queue(service_time: float, max_time: float, alpha: float, num_threads: int = 1, num_iterations: int = 1) -> Queue:
     """
@@ -72,17 +72,3 @@ def simulate_queue(service_time: float, max_time: float, alpha: float, num_threa
     
     # Возвращение объекта Queue с результатами и средним значением обработанных заявок
     return Queue(answers, round_value(sum_expected_values(answers) / len(answers)))
-
-# Пример использования
-queue = simulate_queue(
-    service_time=0.5, 
-    max_time=10, 
-    alpha=5,
-    num_threads=3,
-    num_iterations=1000  # Увеличено для демонстрации
-)
-
-# Вывод результата
-for answer in queue.results[:5]:  # Ограничиваем вывод первыми 5 ответами
-    print(f'Iterations: {len(answer.iterations)}, Expected value: {answer.expected_value}')
-print(f'Average value: {queue.average_value}')

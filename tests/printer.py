@@ -1,4 +1,12 @@
-from solution.smo_over_queue import Answer, Iteration, Queue, simulate_queue
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+
+from smo_over_queue import Answer, Iteration, Queue
+from smo_over_queue import simulate_queue
+
 from prettytable import PrettyTable
 
 def print_table(iterations: list[Iteration]):
@@ -41,11 +49,11 @@ def print_sq(queue: Queue):
         print(f"{first_results} + ... + {last_results} = {queue.average_value}")
 
 sq = simulate_queue(
-    service_time=1, 
-    max_time=1, 
-    alpha=1,
-    num_threads=2,
-    num_iterations=1
+    service_time=0.5, 
+    max_time=4, 
+    alpha=5,
+    num_threads=3,
+    num_iterations=10
 )
 
 print_sq(sq)

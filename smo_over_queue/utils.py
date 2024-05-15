@@ -1,7 +1,7 @@
 import math
 import random
 
-from models import Answer
+from smo_over_queue.models import Answer
 
 from typing import TypeVar
 

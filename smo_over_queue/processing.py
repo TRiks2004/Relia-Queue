@@ -1,5 +1,5 @@
-from models import Iteration, Answer
-from utils import round_value, interval_between_apps, max_columns, generate_random_number
+from smo_over_queue.models import Iteration, Answer
+from smo_over_queue.utils import round_value, interval_between_apps, max_columns, generate_random_number
 
 def process_iteration(service_time: float, max_time: float, alpha: float, num_threads: int) -> Answer:
     """
