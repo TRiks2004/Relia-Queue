@@ -8,17 +8,17 @@ def simulate_queue(service_time: float, max_time: float, alpha: float, num_threa
     """
     Симулирует работу очереди с указанными параметрами методом Монте-Карло.
 
-    Параметры:
+    ### Параметры:
     * `service_time (float)` - Время обслуживания одной заявки.  
     * `max_time (float)` - Максимальное время симуляции.  
     * `alpha (float)` - Параметр для расчета интервала между заявками.  
     * `num_threads (int)` - Количество потоков (серверов) для обработки заявок. По умолчанию 1.  
     * `num_iterations (int)` - Количество итераций симуляции. По умолчанию 1.  
 
-    Возвращаемое значение:
+    ### Возвращаемое значение:
     Queue: Объект Queue, содержащий результаты симуляции и среднее количество обработанных заявок.
 
-    Исключения:
+    ### Исключения:
     * `NumIterationsNegative` -  Если num_iterations < 0.
     * `NumIterationsIsZero` -  Если num_iterations == 0.
     * `NumThreadsNegative` -  Если num_threads < 0.
