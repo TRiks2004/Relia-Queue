@@ -19,7 +19,7 @@ class SimulationResult:
     average_refusal: float
     all_events: list
 
-def validate_simulation_parameters(rate, service_time, time, num_channels, num_runs):
+def validate_simulation_parameters(rate: int, service_time: float, time: int, num_channels: int, num_runs: int):
     """Проверяет корректность входных параметров для симуляции."""
     if rate <= 0:
         raise ValueError("Интенсивность потока (rate) должна быть положительным числом.")
