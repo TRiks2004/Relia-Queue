@@ -6,7 +6,7 @@ def process_iteration(service_time, max_time, alpha, num_threads):
     current_time = 0
     random_value = 0
     interval = 0
-    servers = []
+    servers: list[list[float]] = []
     server_row_count = 0
     application_count = 0
 
