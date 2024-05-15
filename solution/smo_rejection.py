@@ -66,6 +66,19 @@ def run_simulation(rate: int, service_time: float, time: int, num_channels: int,
     time - продолжительность симуляции, num_channels - количество каналов,
     num_runs - количество запусков симуляции
     """
+
+    # Проверка корректности входных данных
+    if rate <= 0:
+        raise ValueError("Интенсивность потока (rate) должна быть положительным числом.")
+    if service_time <= 0:
+        raise ValueError("Время обслуживания (service_time) должно быть положительным числом.")
+    if time <= 0:
+        raise ValueError("Продолжительность симуляции (time) должна быть положительным числом.")
+    if num_channels <= 0:
+        raise ValueError("Количество каналов (num_channels) должно быть положительным числом.")
+    if num_runs <= 0:
+        raise ValueError("Количество запусков симуляции (num_runs) должно быть положительным числом.")
+
     all_results = []  # Список для хранения результатов симуляции
     for _ in range(num_runs):
         total_served = 0  # Счетчик общего числа обслуженных заявок
@@ -79,6 +92,7 @@ def run_simulation(rate: int, service_time: float, time: int, num_channels: int,
         average_refusal = total_refusal  # Вычисление среднего числа отказов
         all_results.append(SimulationResult(average_served, average_refusal, events))  # Добавление результатов в список
     return all_results  # Возвращение всех результатов симуляции
+
 
 # Параметры симуляции
 rate = 5  # Интенсивность пуассоновского потока
