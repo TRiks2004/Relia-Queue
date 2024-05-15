@@ -1,31 +1,32 @@
 import math
 import random
-
 from dataclasses import dataclass
 
 @dataclass
-class Iter:
-    item: int
-    random_count: float
-    time_between_applications: float
-    applications_time: float
-    server: list[float]
+class Iteration:
+    index: int
+    rand_value: float
+    interval_between_apps: float
+    app_time: float
+    server_times: list[float]
 
 @dataclass
 class Answer:
-    iters: list[Iter]
-    mathematical_expectations: float
+    iterations: list[Iteration]
+    expected_value: float
 
 @dataclass
 class Queue:
-    answers: list[Answer]
-    average: float 
+    results: list[Answer]
+    average_value: float 
 
-    
-def time_between_applications(alpha, random_count):
-    return round(-1 / alpha * math.log(random_count), 4)
-    
-def max_item_row(lst):
+def round_value(value, decimals=4):
+    return round(value, decimals)
+
+def interval_between_apps(alpha, rand_value):
+    return round_value(-1 / alpha * math.log(rand_value))
+
+def max_row(lst):
     return max(lst)
 
 def transpose(matrix):
@@ -41,81 +42,77 @@ def transpose(matrix):
 
     return transposed_matrix
 
-def max_item_columns(lst):
-    return [max_item_row(row) for row in transpose(lst)]
-        
-        
-def random_number_generator():
-    
-    if (number := round(random.uniform(0, 1), 4)) == 0:
-        return random_number_generator()
+def max_columns(lst):
+    return [max_row(row) for row in transpose(lst)]
+
+def generate_random_number():
+    number = round_value(random.uniform(0, 1))
+    if number == 0:
+        return generate_random_number()
     else:
         return number
 
-def sum_answer(lst):
-    return sum([i.mathematical_expectations for i in lst])
+def sum_expected_values(lst):
+    return sum([answer.expected_value for answer in lst])
 
-
-def simulate_queue(t1, t2, alpha, threads=1, iterations=1):
+def simulate_queue(service_time, max_time, alpha, num_threads=1, num_iterations=1):
+    answers: list[Answer] = []
     
-    answer_list: list[Answer] = []
-    
-    for _ in range(iterations):
-        print(f"iteration {_}")
-        iter_list: list[Iter] = []
-        time = 0
-        random_count = 0
-        tba = 0
-        
+    for iteration in range(num_iterations):
+        iterations: list[Iteration] = []
+        current_time = 0
+        rand_value = 0
+        interval = 0
         servers = []
-        servers_count_row = 0
+        server_row_count = 0
+        app_count = 0
         
-        c = 0 
-        while time <= t2:
-            
+        while current_time <= max_time:
             servers.append([])
             
-            for _ in range(threads):
+            for _ in range(num_threads):
                 servers[-1].append(0)
             
+            column_max_values = max_columns(servers)
             
-            column_max = max_item_columns(servers)
-            
-            for i, j in enumerate(column_max):
-                if time >= j:
-                    servers[servers_count_row][i] = round(time + t1, 4)
+            for index, value in enumerate(column_max_values):
+                if current_time >= value:
+                    servers[server_row_count][index] = round_value(current_time + service_time)
                     break
             else:
-                if i + 1 < len(servers[servers_count_row]):
-                    servers[servers_count_row][i + 1] = round(time + t1, 4)
+                if index + 1 < len(servers[server_row_count]):
+                    servers[server_row_count][index + 1] = round_value(current_time + service_time)
                 else:
-                    column_max_min = min(column_max)
-                    time = column_max_min
+                    min_column_max = min(column_max_values)
+                    current_time = min_column_max
+                    servers[server_row_count][column_max_values.index(min_column_max)] = round_value(current_time + service_time)
                     
-                    servers[servers_count_row][column_max.index(column_max_min)] = round(time + t1, 4)
-                    
-            servers_count_row += 1
+            server_row_count += 1
             
-            iter_list.append(
-                Iter(
-                    item=c, 
-                    random_count=random_count, 
-                    time_between_applications=tba, 
-                    applications_time=time, 
-                    server=servers[-1]
+            iterations.append(
+                Iteration(
+                    index=app_count, 
+                    rand_value=rand_value, 
+                    interval_between_apps=interval, 
+                    app_time=current_time, 
+                    server_times=servers[-1]
                 )
             )
             
+            rand_value = generate_random_number()
+            interval = interval_between_apps(alpha, rand_value)
+            current_time = round_value(current_time + interval)
+            app_count += 1
         
-            random_count = random_number_generator()
-            tba = time_between_applications(alpha, random_count)
-            time = round(time + tba, 4)
-            
-            c += 1
-        
-        answer_list.append(Answer(iter_list[:], c - 1))
+        answers.append(Answer(iterations[:], app_count - 1))
     
-    
-    return Queue(answer_list, round(sum_answer(answer_list) / len(answer_list), 4))
-    
-queue = simulate_queue(1, 10, 5, 2, 100)
+    return Queue(answers, round_value(sum_expected_values(answers) / len(answers)))
+
+# Пример использования
+queue = simulate_queue(
+    service_time=0.5, 
+    max_time=10, 
+    alpha=5,
+    num_threads=3,
+    num_iterations=7
+)
