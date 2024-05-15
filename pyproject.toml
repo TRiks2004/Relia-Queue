@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "smo-over-queue"
+name = "smo_over_queue"
 version = "0.1.0"
 description = ""
 authors = ["triks <trik0001000@gmail.com>"]
