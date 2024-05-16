@@ -1,6 +1,7 @@
 import random
+import math
 
-def round_value(number):
+def round_value(number : float) -> float:
     """
     Округляет заданное число до 4 знаков после запятой.
 
@@ -26,3 +27,28 @@ def generate_random_number():
         return generate_random_number()
     else:
         return number
+    
+def calculate_ln(number: float) -> float:
+    """
+    Возвращает результат натурального логарифма от случайного числа r_i с округлением до 4 знаков после запятой.
+    
+    ### Параметры:
+    - `number` (float): Случайное число r_i 
+
+    ### Возвращает:
+    `float`: Число логарифмирования от случайно числа r_i 
+    """
+    return round_value(-math.log(number))
+
+def calculate_time(alfa: int,number: float) -> float:
+    """
+    Возвращает время между двумя последовательными заявками.
+
+    ##Параметры:
+    - `alfa` (int): Число, задаваемое пользователем
+    - `number` (float): Число, вычисляемое в функции calculate_ln
+
+    ## Возвращает:
+    `float` : Число подсчета времени
+    """
+    return (-1 / alfa) * number
