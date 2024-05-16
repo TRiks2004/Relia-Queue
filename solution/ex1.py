@@ -1,14 +1,24 @@
 import random
 from enum import Enum
+from abc import ABC, abstractmethod
 
 class MethodConnection(Enum):
     Parallel = 'parallel'
     Serial = 'serial'
 
-class Component():
+class Component(ABC):
     probability: float
 
-    def calculate_probability_analytical(self) -> float:
+    @abstractmethod
+    def calculate_probability_simulated(self) -> bool:
+        pass
+
+    @abstractmethod
+    def component_to_string_parallel(self) -> str:
+        pass
+    
+    @abstractmethod
+    def component_to_string_serial(self) -> str:
         pass
 
 class Element(Component):
@@ -17,6 +27,12 @@ class Element(Component):
         self.probability = probability
         self.calculate_probability_simulated = lambda: random.random() < probability
 
+    def component_to_string_parallel(self) -> str:
+        return f'1 - {self.probability}'
+
+    def component_to_string_serial(self) -> str:
+        return f'{self.probability}'
+    
 class Block(Component):
     
     def __init__(self, *components: Component, connection: MethodConnection):
@@ -62,11 +78,23 @@ class Block(Component):
             probability = self.calculate_probability_by_method_simulated(probability, component.calculate_probability_simulated())
         
         return probability
+    
+    def component_to_string_connection(self, component: Component) -> str:
+        match self.connection:
+            case MethodConnection.Parallel:
+                return component.component_to_string_parallel()
+            case MethodConnection.Serial:
+                return component.component_to_string_serial()
+    
+    def component_to_string_parallel(self) -> str:
+        return f"1 - {" * ".join(self.component_to_string_connection(component) for component in self.components)}" 
+
+    def component_to_string_serial(self) -> str:
+        return f"{" * ".join(self.component_to_string_connection(component) for component in self.components)}"
 
 # Ввод данных пользователем
 element_1 = Element(probability=0.8)
 element_2 = Element(probability=0.85)
-
 element_3 = Element(probability=0.6)
 
 block_1 = Block(element_1, element_2, connection=MethodConnection.Parallel)
