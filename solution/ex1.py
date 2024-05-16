@@ -1,89 +1,113 @@
 import random
 from dataclasses import dataclass
 from string import ascii_uppercase
-from typing import List
+from typing import List, Literal
 
-@dataclass
+from enum import Enum
+
+## Вариант 1. Система состоит из двух блоков, соединенных последовательно. 
+#  Система отказывает при отказе хотя бы одного блока. Первый блок содержит три элемента: А, В, С, а второй – два элемента: D, E. 
+#  Элементы каждого блока соединены параллельно. Блок отказывает при одновременном отказе всех элементов, входящих в него. 
+#  Вероятности безотказной работы элементов Р(А), Р(В), Р(С), Р(D), P(E) вводит пользователь.
+
 class Element:
-    probability: float
+    def __init__(self, probability: float):
+        self.probability = probability
 
-@dataclass
-class Block:
-    elements: List[Element]
 
-    @property
-    def num_elements(self) -> int:
-        return len(self.elements)
+class MethodConnection(Enum):
+    Sequentially = 'sequentially'
+    Parallelly = 'parallelly'
 
-    @property
-    def element_probabilities(self) -> List[float]:
-        return [element.probability for element in self.elements]
 
-@dataclass
-class BlockSystem:
-    blocks: List[Block]
+class Block():
 
-    def blocks_system(self, num_blocks: int) -> float:
-        block_probabilities = []
-        for block in self.blocks[:num_blocks]:
-            block_probability = 1
-            for p in block.element_probabilities:
-                block_probability *= 1 - (1 - p)
-            block_probability = 1 - block_probability
-            block_probabilities.append(block_probability)
+    def __init__(self, *elements: Element, connections: MethodConnection = MethodConnection.Parallelly):
+        self.elements = elements
+        self.connections = connections
+    
+    def probability_trouble_free_parallelly(self):
+        
+        probability = 1
+        for element in self.elements:
+           
+            probability *= 1 - element.probability
+            
+        
+        return probability
+    
+    def probability_trouble_free_sequentially(self):
+        
+        probability = 1
+        for element in self.elements:
+            print(f'{element.probability = }')
+            probability *= element.probability
+            print(f'{probability = }')
+        
+        return probability
+    
+    def probability_trouble_free(self):
+        match self.connections:
+            case MethodConnection.Parallelly:
+                return self.probability_trouble_free_parallelly()
+            case MethodConnection.Sequentially:
+                return self.probability_trouble_free_sequentially()
 
-        p_system = 1
-        for p in block_probabilities:
-            p_system *= p
-
-        return p_system
-
-    def simulate_system(self, num_trials: int) -> float:
-        successes = 0
-        total_elements = sum(block.num_elements for block in self.blocks)
-        letters = list(ascii_uppercase[:total_elements])
-        table_header = f"{'Номер теста':^12}|" + "|".join(f"{'Элемент ' + letter:^12}" for letter in letters) + f"|{'Блок 1':^8}|{'Блок 2':^8}|{'Результат':^10}"
-        table_rows = [table_header, "-" * len(table_header)]
-
-        for trial in range(num_trials):
-            block_results = []
-            row = f"{trial + 1:^12}|"
-            letter_index = 0
-            for block in self.blocks:
-                block_elements = [random.random() <= p for p in block.element_probabilities]
-                block_success = any(block_elements)
-                block_results.append(block_success)
-                row += "|".join(f"{int(element):^12}" for element in block_elements)
-                letter_index += block.num_elements
-
-            trial_success = all(block_results)
-            successes += int(trial_success)
-            result = "Успех" if trial_success else "Неудача"
-            row += f"|{int(block_results[0]):^8}|{int(block_results[1]):^8}|{result:^10}"
-            table_rows.append(row)
-
-        table_rows.append("-" * len(table_header))
-
-        p_star = successes / num_trials
-        return p_star, "\n".join(table_rows)
+class BlockSystem():
+    
+    # (1−P(A))⋅(1−P(B))⋅(1−P(C))
+    
+    def __init__(self, *blocks: Block, connections: MethodConnection = MethodConnection.Sequentially):
+        self.blocks = blocks
+        self.connections = connections
+    
+    def probability_trouble_free_parallelly(self):
+        
+        probability = 1
+        for block in self.blocks:
+            probability *= 1 - block.probability_trouble_free()
+        
+        return probability
+    
+    def probability_trouble_free_sequentially(self):
+        
+        probability = 1
+        for block in self.blocks:
+            print(f'\t{block.probability_trouble_free() = }')
+            probability *= block.probability_trouble_free()
+            print(f'\t{probability = }')
+        
+        return probability
+    
+    
+    def probability_trouble_free(self):
+        match self.connections:
+            case MethodConnection.Sequentially:
+                return self.probability_trouble_free_parallelly()
+            case MethodConnection.Parallelly:
+                return self.probability_trouble_free_sequentially()
+        
 
 # Примеры значений
 element1 = Element(probability=0.9)
-element2 = Element(probability=0.8)
-element3 = Element(probability=0.7)
-block1 = Block(elements=[element1, element2, element3])
+element2 = Element(probability=0.85)
+element3 = Element(probability=0.95)
+block1 = Block(element1, element2, element3, connections=MethodConnection.Sequentially)
 
-element4 = Element(probability=0.6)
-element5 = Element(probability=0.5)
-block2 = Block(elements=[element4, element5])
+element4 = Element(probability=0.8)
+element5 = Element(probability=0.75)
+block2 = Block(element4, element5, connections=MethodConnection.Sequentially)
 
-block_system = BlockSystem(blocks=[block1, block2])
+block_system = BlockSystem(block1, block2, connections=MethodConnection.Sequentially)
 
-p_analytical = block_system.blocks_system(num_blocks=2)
+p_analytical = block_system.probability_trouble_free()
 
-num_trials = 10
-p_star, table = block_system.simulate_system(num_trials)
+print(p_analytical)
 
-absolute_error = abs(p_star - p_analytical)
 
-print(table)
+# num_trials = 10
+# p_star, table = block_system.simulate_system(num_trials)
+
+# absolute_error = abs(p_star - p_analytical)
+
+# print(table)
