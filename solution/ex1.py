@@ -1,113 +1,88 @@
 import random
-from dataclasses import dataclass
-from string import ascii_uppercase
-from typing import List, Literal
-
 from enum import Enum
 
-## Вариант 1. Система состоит из двух блоков, соединенных последовательно. 
-#  Система отказывает при отказе хотя бы одного блока. Первый блок содержит три элемента: А, В, С, а второй – два элемента: D, E. 
-#  Элементы каждого блока соединены параллельно. Блок отказывает при одновременном отказе всех элементов, входящих в него. 
-#  Вероятности безотказной работы элементов Р(А), Р(В), Р(С), Р(D), P(E) вводит пользователь.
+class MethodConnection(Enum):
+    Parallel = 'parallel'
+    Serial = 'serial'
 
-class Element:
+class Component():
+    probability: float
+
+    def calculate_probability_analytical(self) -> float:
+        pass
+
+class Element(Component):
+    
     def __init__(self, probability: float):
         self.probability = probability
+        self.calculate_probability_simulated = lambda: random.random() < probability
 
-
-class MethodConnection(Enum):
-    Sequentially = 'sequentially'
-    Parallelly = 'parallelly'
-
-
-class Block():
-
-    def __init__(self, *elements: Element, connections: MethodConnection = MethodConnection.Parallelly):
-        self.elements = elements
-        self.connections = connections
+class Block(Component):
     
-    def probability_trouble_free_parallelly(self):
-        
+    def __init__(self, *components: Component, connection: MethodConnection):
+       self.components = components
+       self.connection = connection
+       
+       self.probability = self.calculate_probability_analytical()
+       
+    def calculate_probability_by_method_analytical(self, probability):
+        match self.connection:
+            case MethodConnection.Parallel:
+                return 1 - probability
+            case MethodConnection.Serial:
+                return probability
+    
+    def calculate_probability_analytical(self):
         probability = 1
-        for element in self.elements:
-           
-            probability *= 1 - element.probability
+        for component in self.components:
+            probability *= self.calculate_probability_by_method_analytical(component.probability)
+        
+        return self.calculate_probability_by_method_analytical(probability)
+    
+    def simulated_probability(self, num_trials) -> float:
+        count = 0
+        
+        for _ in range(num_trials):    
+            simulated = self.calculate_probability_simulated()
+            if simulated:
+                count += 1
+
+        return count / num_trials
             
+    def calculate_probability_by_method_simulated(self, prob_one, prob_two):
+        match self.connection:
+            case MethodConnection.Parallel:
+                return prob_one or prob_two
+            case MethodConnection.Serial:
+                return prob_one and prob_two
+    
+    def calculate_probability_simulated(self):
+        probability = self.components[0].calculate_probability_simulated()
+        for component in self.components[1:]:
+            probability = self.calculate_probability_by_method_simulated(probability, component.calculate_probability_simulated())
         
         return probability
-    
-    def probability_trouble_free_sequentially(self):
-        
-        probability = 1
-        for element in self.elements:
-            print(f'{element.probability = }')
-            probability *= element.probability
-            print(f'{probability = }')
-        
-        return probability
-    
-    def probability_trouble_free(self):
-        match self.connections:
-            case MethodConnection.Parallelly:
-                return self.probability_trouble_free_parallelly()
-            case MethodConnection.Sequentially:
-                return self.probability_trouble_free_sequentially()
 
-class BlockSystem():
-    
-    # (1−P(A))⋅(1−P(B))⋅(1−P(C))
-    
-    def __init__(self, *blocks: Block, connections: MethodConnection = MethodConnection.Sequentially):
-        self.blocks = blocks
-        self.connections = connections
-    
-    def probability_trouble_free_parallelly(self):
-        
-        probability = 1
-        for block in self.blocks:
-            probability *= 1 - block.probability_trouble_free()
-        
-        return probability
-    
-    def probability_trouble_free_sequentially(self):
-        
-        probability = 1
-        for block in self.blocks:
-            print(f'\t{block.probability_trouble_free() = }')
-            probability *= block.probability_trouble_free()
-            print(f'\t{probability = }')
-        
-        return probability
-    
-    
-    def probability_trouble_free(self):
-        match self.connections:
-            case MethodConnection.Sequentially:
-                return self.probability_trouble_free_parallelly()
-            case MethodConnection.Parallelly:
-                return self.probability_trouble_free_sequentially()
-        
+# Ввод данных пользователем
+element_1 = Element(probability=0.8)
+element_2 = Element(probability=0.85)
 
-# Примеры значений
-element1 = Element(probability=0.9)
-element2 = Element(probability=0.85)
-element3 = Element(probability=0.95)
-block1 = Block(element1, element2, element3, connections=MethodConnection.Sequentially)
+element_3 = Element(probability=0.6)
 
-element4 = Element(probability=0.8)
-element5 = Element(probability=0.75)
-block2 = Block(element4, element5, connections=MethodConnection.Sequentially)
+block_1 = Block(element_1, element_2, connection=MethodConnection.Parallel)
 
-block_system = BlockSystem(block1, block2, connections=MethodConnection.Sequentially)
+print(f'----- block_1 -----')
+print(f'{block_1.probability = }')
+print(f'{block_1.simulated_probability(100) = }')
 
-p_analytical = block_system.probability_trouble_free()
+block_2 = Block(element_3, connection=MethodConnection.Parallel)
 
-print(p_analytical)
+print(f'\n----- block_2 -----')
+print(f'{block_2.probability = }')
+print(f'{block_2.simulated_probability(100) = }')
 
+block_all = Block(block_1, block_2, connection=MethodConnection.Serial)
 
-# num_trials = 10
-# p_star, table = block_system.simulate_system(num_trials)
-
-# absolute_error = abs(p_star - p_analytical)
-
-# print(table)
+print(f'\n----- block_all -----')
+print(f'{block_all.probability = }')
+print(f'{block_all.simulated_probability(100) = }')
