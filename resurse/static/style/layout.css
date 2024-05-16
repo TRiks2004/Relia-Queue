@@ -1,3 +1,69 @@
-h1 {
-    color: green;
+body{
+    color: #FFFFFF;
+}
+
+.header{
+    position: absolute;
+    top:0;
+    left: 0;
+    display: flex;
+    width: 100%;
+    height: 90px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    background-color: rgba(3, 23, 44, 0.75);
+}
+
+.app-name{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.app-name img{
+    width: 50px;
+}
+
+.app-name p {
+    font-size: 35px;
+}
+
+.button-container{
+    display: flex;
+    position: relative;
+    flex-direction: row;
+}
+
+.header-button{
+    font-size: 20px;
+    width: 180px;
+    height: 90px;
+    cursor: pointer;
+    align-content: center;
+    text-align: center;
+    transition: 0.5s;
+}
+
+.button:hover{
+    background-color: rgba(180, 191, 202, 0.75);;
+}
+
+.button:active{
+    background-color: rgba(180, 191, 202, 0.5);
+}
+
+.footer{
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 70px;
+    width: 100%;
+    background-color: rgba(3, 23, 44, 0.75);
+    justify-content: center;
+    align-items: center;
+    gap:10px;
 }
