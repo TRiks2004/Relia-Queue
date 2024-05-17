@@ -13,7 +13,7 @@ body{
     top: 0;
     left: 0;
     width: 100%;
-    height: 90px;
+    height: 80px;
     flex-direction: row;
     align-items: center;
     gap: 50px;
@@ -23,11 +23,16 @@ body{
 
 .dropdown {
     display: none;
-    width: 180px;
+    width: 190px;
     position: absolute;
     top: 100%;
     left: 0;
     background-color: rgba(3, 23, 44, 0.95);
+}
+
+.dropdown a{
+    padding: 5px;
+    font-size: 16px;
 }
 
 .header-button:hover .dropdown {
@@ -74,8 +79,8 @@ body{
 
 .header-button{
     font-size: 20px;
-    width: 180px;
-    height: 90px;
+    width: 190px;
+    height: 80px;
     cursor: pointer;
     align-content: center;
     text-align: center;
@@ -102,7 +107,7 @@ body{
     flex-direction: row;
     bottom: 0;
     left: 0;
-    height: 70px;
+    height: 50px;
     width: 100%;
     background-color: #394857;
     justify-content: center;
@@ -301,7 +306,7 @@ body{
     height: 550px;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: start;
     background-color: rgba(3, 23, 44, 0.75);
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 15px;
@@ -344,7 +349,8 @@ body{
     margin-top: 20px;
     align-items: center;
     width: 400px;
-    height: 500px;
+    height: 550px;
+    border-radius: 10px;
     background-color: rgba(37, 52, 67, 0.75);
 }
 
@@ -354,8 +360,9 @@ body{
     justify-content: center;
     align-items: center;
     width: 300px;
-    height: 270px;
-    background-color: rgba(37, 52, 67, 0.75);
+    height: 300px;
+    border-radius: 15px;
+    background-color: rgba(24, 36, 49, 0.75);
 }
 
 .element-form{
@@ -380,7 +387,7 @@ body{
 
 .select{
     width: 170px;
-    height: 30px;
+    height: 40px;
     font-size: 15px;
     background-color: rgba(97, 128, 163, 0.3);
     border: none;
@@ -393,7 +400,6 @@ body{
     background-color: rgb(9, 25, 44);
     border: none;
     color:#FFFFFF;
-    
 }
 
 .plus-button{
