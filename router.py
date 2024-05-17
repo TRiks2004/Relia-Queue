@@ -21,13 +21,41 @@ class ViewList(BaseSettings):
     # layout.html main_page.html qs_theory_page.html block_system_page.html cfr_refusal_page.html cfr_unlimited_page.html about.html                                                               ─╯
     layout: str = plus_html('layout')
     main_page: str = plus_html('main_page')
+    about_page: str = plus_html('about')
+    block_system_page: str = plus_html('block_system_page')
+    cfr_refusal_page: str = plus_html('cfr_refusal_page')
+    cfr_unlimited_page: str = plus_html('cfr_unlimited_page')
     
 view_list = ViewList()
 
 @main_point.get('/', response_class=HTMLResponse)
 def index(request: Request):
     return templates.TemplateResponse(
-        request=request, name=view_list.layout, context={'id': 1, "title": "Your Dynamic Title", 'dynamic_page': view_list.main_page}
+        request=request, name=view_list.layout, context={"title": "ReliaQueue - Главная", 'dynamic_page': view_list.main_page}
+    )
+
+@main_point.get('/about', response_class=HTMLResponse)
+def about(request: Request):
+    return templates.TemplateResponse(
+        request=request, name=view_list.layout, context={"title": "ReliaQueue - О нас", 'dynamic_page': view_list.about_page}
+    )
+
+@main_point.get('/block-system', response_class=HTMLResponse)
+def block_system(request: Request):
+    return templates.TemplateResponse(
+        request=request, name=view_list.layout, context={"title": "ReliaQueue - Система блоков", 'dynamic_page': view_list.block_system_page}
+    )
+
+@main_point.get('/cfr-refusal', response_class=HTMLResponse)
+def cfr_refusal(request: Request):
+    return templates.TemplateResponse(
+        request=request, name=view_list.layout, context={"title": "ReliaQueue - МСМО с отказами", 'dynamic_page': view_list.cfr_refusal_page}
+    )
+
+@main_point.get('/cfr-unlimited', response_class=HTMLResponse)
+def cfr_unlimited(request: Request):
+    return templates.TemplateResponse(
+        request=request, name=view_list.layout, context={"title": "ReliaQueue - МСМО c неограниченной очередью ", 'dynamic_page': view_list.cfr_unlimited_page}
     )
 
 
