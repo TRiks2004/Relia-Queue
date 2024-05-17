@@ -38,11 +38,22 @@ body{
     display: flex;
     flex-direction: row;
     gap: 20px;
+    align-content: center;
+    justify-content: center;
     margin-left: 5dvw;
+    cursor: pointer;
 }
 
 .app-name img{
     width: 50px;
+}
+
+.app-name:hover{
+    transform: scale(1.05);
+}
+
+.app-name:active{
+    opacity: 0.5;
 }
 
 .app-name p {
