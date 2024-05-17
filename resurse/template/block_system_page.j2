@@ -2,9 +2,6 @@
     <div class="skip-parts">
         <div class="skip-button">
             <p class="theme-title">ТЕОРИЯ</p>
-            <span "theme-text">
-                
-            </span>
         </div>
         <div class="skip-button">
             <p class="theme-title">ВВОД ПАРАМЕТРОВ</p>
@@ -13,32 +10,46 @@
             <p class="theme-title">РЕШЕНИЕ</p>
         </div>
     </div>
-    <div class="work-area">
+    <div class="work-area" style="margin-left: 240px">
+        <p class="theme-subtitle" style="text-align: center">Оценка надежности системы методом Монте-Карло</p>
         <p class="theme-title">Теория</p>
         <div class="theory">
+            
         </div>
         <p class="theme-title">Ввод параметров</p>
-        <div class="input-form">
-            <div class="input-column">
-                <p class="form-text">Интенсивность пуассоновского потока</p>
-                <input class="form-input" type="number">
+        <div class="input-form" style="height: 800px; color: #FFFFFF;">
+            <div class="block-system">
+            <p>Введите параметры системы</p>
+            <div class="element-system">
+                <p>Введите вероятность</p>
+                <div class="element-form">
+                    <input class="form-input" type="number" placeholder="Pq элемента">
+                    <button class="percent-button">%</button>
+                </div>
+                <div class="element-form">
+                    <button class="plus-button">
+                      <span>Добавить элемент</span>
+                    </button>
+                  </div>
+                <p>Выберите подключение</p>
+                <select class="select">
+                    <option value="parallel">Паралелльное</option>
+                    <option value="serial">Последовательное</option>
+                </select>
             </div>
-            <div class="input-column">
-                <p class="form-text">Время обслуживания</p>
-                <input class="form-input" type="number">
+            <div class="element-form">
+                <button class="plus-button">
+                    <span>Добавить блок</span>
+                </button>
             </div>
-            <div class="input-column">
-                <p class="form-text">Продолжительность симуляции</p>
-                <input class="form-input" type="number">
+            <p>Выберите подключение</p>
+                <select class="select">
+                    <option value="parallel">Паралелльное</option>
+                    <option value="serial">Последовательное</option>
+                </select>
             </div>
-            <div class="input-column">
-                <p class="form-text">Количество каналов обслуживания</p>
-                <input class="form-input" type="number">
-            </div>
-            <div class="input-column">
-                <p class="form-text">Количество запусков симуляции</p>
-                <input class="form-input" type="number">
-            </div>
+            <p class="theme-text">Промежуточные данные</p>
+            <span>-+-+-+-+</span>
             <button class="solve-button">РЕШИТЬ</button>
         </div>
         <p class="theme-title">Решение</p>

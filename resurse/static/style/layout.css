@@ -60,6 +60,11 @@ body{
     font-size: 35px;
 }
 
+.app-name a {
+    text-decoration: none;
+    color: #FFFFFF;
+}
+
 .button-container{
     display: flex;
     position: absolute;
@@ -75,6 +80,12 @@ body{
     align-content: center;
     text-align: center;
     transition: 0.5s;
+}
+
+.header-button a{
+    text-decoration: none;
+    text-align: center;
+    color: #FFFFFF;
 }
 
 .header-button:hover{
@@ -126,7 +137,6 @@ body{
     font-size: 3dvi;
     justify-self: center;
     align-self: center;
-    margin-top: 40px;
 }
 
 .theme-text{
@@ -159,13 +169,23 @@ body{
 }
 
 .choice-button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: rgba(3, 23, 44, 0.3);
     border-radius: 5px;
     width: 250px;
+    height: 80px;
     cursor: pointer;
     text-align: center;
     transition: 0.2s;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.choice-button a{
+    text-decoration: none;
+    text-align: center;
+    color: #03172C;
 }
 
 .choice-button:hover{
@@ -281,6 +301,7 @@ body{
     height: 550px;
     display: flex;
     flex-direction: column;
+    align-items: center;
     background-color: rgba(3, 23, 44, 0.75);
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 15px;
@@ -299,13 +320,93 @@ body{
     color:#FFFFFF;
     font-size: 16px;
     background-color: transparent;
-    width: 80px;
+    width: 125px;
     height: 35px;
     border: 1px solid #ccc;
     border-radius: 4px;
     text-align: center;
 }
 
+.form-input::placeholder{
+    text-align: start;
+    padding-left: 5px;
+    color: #FFFFFF;
+    font-size: 12px;
+}
+
 .solve-button{
     align-self: center;
+}
+
+.block-system{
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    align-items: center;
+    width: 400px;
+    height: 500px;
+    background-color: rgba(37, 52, 67, 0.75);
+}
+
+.element-system{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    height: 270px;
+    background-color: rgba(37, 52, 67, 0.75);
+}
+
+.element-form{
+    margin: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px
+}
+
+.percent-button{
+    width: 60px;
+    height: 30px;
+    font-weight: 700;
+    font-size: 15px;
+    background-color: rgba(97, 128, 163, 0.3);
+    border: none;
+    color:#FFFFFF;
+    border-radius: 5px;
+}
+
+.select{
+    width: 170px;
+    height: 30px;
+    font-size: 15px;
+    background-color: rgba(97, 128, 163, 0.3);
+    border: none;
+    color:#FFFFFF;
+    border-radius: 5px;
+}
+
+.select option{
+    font-size: 15px;
+    background-color: rgb(9, 25, 44);
+    border: none;
+    color:#FFFFFF;
+    
+}
+
+.plus-button{
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 50px;
+    font-weight: 700;
+    font-size: 15px;
+    background-color: rgba(97, 128, 163, 0.3);
+    border: none;
+    color:#FFFFFF;
+    border-radius: 5px;   
 }
