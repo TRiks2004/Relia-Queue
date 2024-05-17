@@ -1,9 +1,6 @@
-import pathlib
 from uvicorn import run
 
 from app import api_factory 
-
-import environ
 
 from surroundings import config_container
 
