@@ -30,46 +30,46 @@
             <span class="theme-text">
                 В формуле для схемы гибели и размножения получим для предельной вероятности состояния
             </span>
-            <img src="https://math.semestr.ru/cmo/images/c1_image042.gif">
+            <p class="theme-text"><p class="math display">$$p_o=(1+{\frac{\alpha}{\upsilon}}+{\frac{\alpha^2}{2!\upsilon^2}}+...+{\frac{\alpha^k}{k!\upsilon^k}}+...{\frac{\alpha^n}{n!\upsilon^n}})^{-1}$$</span></p>
             <span class="theme-text">где члены разложения</span>
-            <img src="https://math.semestr.ru/cmo/images/c1_image043.gif">
+            <p class="theme-text"><p class="math display">$${\frac{\alpha}{\upsilon}},{\frac{\alpha^2}{2!\upsilon^2}},...,{\frac{\alpha^n}{n!\upsilon^n}}$$</span></p>
             <span class="theme-text">
                 будут представлять собой коэффициенты приp0 в выражениях для предельных вероятностей p1, p2, …, pk, …, pn.
             </span>
             <span class="theme-text">Величина</span>
-            <img src="https://math.semestr.ru/cmo/images/c1_image044.gif">
+            <p class="theme-text"><p class="math display">$$p={\frac{\alpha}{\upsilon}}$$</span></p>
             <span class="theme-text">
                 называется приведенной интенсивностью потока заявок или интенсивностью нагрузки канала.Она выражает среднее число заявок, приходящее за среднее время обслуживания одной заявки. Теперь p1=ρ·p0
             </span>
-            <img src="https://math.semestr.ru/cmo/images/c1_image046.gif">
+            <p class="theme-text"><p class="math display">$$p_2={\frac{p^2}{2!}}p_0,...,p_k={\frac{p^k}{k!}}p_0,...,p_n={\frac{p^n}{n!}}p_0$$</span></p>
             <span class="theme-text">
                 Формулы и для предельных вероятностей получили названия формул Эрланга в честь основателя теории массового обслуживания.
             </span>
             <span class="theme-text">
                 Вероятность отказа СМО есть предельная вероятность того, что все n каналов системы будут заняты, т.е.
             </span>
-            <img src="https://math.semestr.ru/cmo/images/c1_image047.gif">
+            <p class="theme-text"><p class="math display">$$P_{отк}={\frac{p^n}{n!}}p_0$$</span></p>
             <span class="theme-text">
                 Относительная пропускная способность — вероятность того, что заявка будет обслужена:
             </span>
-            <img src="https://math.semestr.ru/cmo/images/c1_image048.gif">
+            <p class="theme-text"><p class="math display">$$Q=1-P_{отк}= {\frac{p^n}{n!}}p_0$$</span></p>        
             <span class="theme-text">
             Абсолютная пропускная способность:
             </span>
-            <img src="https://math.semestr.ru/cmo/images/c1_image049.gif">
+            <p class="theme-text"><p class="math display">$$A=\alpha Q=\alpha(1-{\frac{p^n}{n!}}p_0)$$</span></p>        
             <span class="theme-text">
                 Среднее число занятых каналов k есть математическое ожидание числа занятых каналов:
             </span>
-            <img src="https://math.semestr.ru/cmo/images/c1_image050.gif">
+            <p class="theme-text"><p class="math display">$$\overline{k}=\sum_{k=0}^{n}kp_k$$</span></p>        
             <span class="theme-text">
             где pk — предельные вероятности состояний, определяемых по формулам.
             </span>
             <span class="theme-text">
             Однако среднее число занятых каналов можно найти проще, если учесть, что абсолютная пропускная способность системы А есть не что иное, как интенсивность потока обслуженных системой заявок (в единицу времени). Так как каждый занятый канал обслуживает в среднем μ заявок (в единицу времени), то среднее число занятых каналов
             </span>
-            <img src="https://math.semestr.ru/cmo/images/c1_image051.gif">
+            <p class="theme-text"><p class="math display">$$\overline{k}= {\frac{A}{\upsilon}}$$</span></p>         
             <span class="theme-text">или, учитывая,</span>
-            <img src="https://math.semestr.ru/cmo/images/c1_image052.gif">
+            <p class="theme-text"><p class="math display">$$\overline{k}= p(1-\frac{p^n}{n!}p_0)$$</span></p>         
         </div>
         <p class="theme-title">Ввод параметров</p>
         <div class="input-form">
