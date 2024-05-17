@@ -1,4 +1,5 @@
 body{
+    font-family: 'Ubuntu Sans', sans-serif;
     color: #FFFFFF;
     display: flex;
     flex-direction: column;
