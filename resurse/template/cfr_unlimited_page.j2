@@ -2,9 +2,6 @@
     <div class="skip-parts">
         <div class="skip-button">
             <p class="theme-title">ТЕОРИЯ</p>
-            <span "theme-text">
-                
-            </span>
         </div>
         <div class="skip-button">
             <p class="theme-title">ВВОД ПАРАМЕТРОВ</p>
@@ -16,28 +13,59 @@
     <div class="work-area">
         <p class="theme-title">Теория</p>
         <div class="theory">
+            <span class="theme-text">
+                Рассмотрим задачу. Имеется n-канальная СМО с неограниченной очередью. Поток заявок, поступающих в СМО, имеет интенсивность λ, а поток обслуживании — интенсивность μ. Необходимо найти предельные вероятности состояний СМО и показатели ее эффективности.
+                Система может находиться в одном из состояний S0, S1, S2,…, Sk,…, Sn,…, — нумеруемых по числу заявок, находящихся в СМО: S0 — в системе нет заявок (все каналы свободны); S1 — занят один канал, остальные свободны; S2 — заняты два канала, остальные свободны;..., Sk — занято k каналов, остальные свободны;..., Sn — заняты все n каналов (очереди нет); Sn+1 — заняты все n каналов, в очереди одна заявка;..., Sn+r — заняты все n каналов, r заявок стоит в очереди,....
+            </span>
+            <span class="theme-text">
+                Граф состояний системы показан ниже. Обратим внимание на то, что в отличие от предыдущей СМО, интенсивность потока обслуживаний (переводящего систему из одного состояния в другое справа налево) не остается постоянной, а по мере увеличения числа заявок в СМО от 0 до n увеличивается от величины m до nm, так как соответственно увеличивается число каналов обслуживания. При числе заявок в СМО большем, чем n, интенсивность потока обслуживании сохраняется равной nm.
+            </span>
+            <img src="https://www.semestr.ru/images/math/cmo/c1_image070.jpg">
+            <span class="theme-text">
+                Можно показать, что при r/n < 1 предельные вероятности существуют. Если r/n > 1, очередь растет до бесконечности. Используя формулы (16) и (17) для процесса гибели и размножения, можно получить следующие формулы для предельных вероятностей состояний n-канальной СМО с неограниченной очередью
+            </span>
+            <img src="https://www.semestr.ru/images/math/cmo/c1_image071.gif">
+            <img src="https://www.semestr.ru/images/math/cmo/c1_image072.gif">
+            <img src="https://www.semestr.ru/images/math/cmo/c1_image073.gif">
+            <span class="theme-text">
+                Для n-канальной СМО с неограниченной очередью, используя прежние приемы, можно найти:
+среднее число занятых каналов
+            </span>
+            <img src="https://www.semestr.ru/images/math/cmo/c1_image075.gif">
+            <span class="theme-text">среднее число заявок в очереди</span>
+            <img src="https://www.semestr.ru/images/math/cmo/c1_image076.gif">
+            <span class="theme-text">
+                среднее число заявок в системе
+            </span>
+            <span class="theme-text" style="align-self: center">
+                Lсист=Lоч+ρ,
+            </span>
+            <span class="theme-text">
+                Среднее время пребывания заявки в очереди и среднее время пребывания заявки в системе, как и ранее, находятся по формулам Литтла.
+Замечание. Для СМО с неограниченной очередью при r < 1 любая заявка, пришедшая в систему, будет обслужена, т.е. вероятность отказа Pотк = 0, относительная пропускная способность Q=1, а абсолютная пропускная способность равна интенсивности входящего потока заявок, т.е. А=l.
+            </span>
         </div>
         <p class="theme-title">Ввод параметров</p>
         <div class="input-form">
             <div class="input-column">
-                <p class="form-text">Интенсивность пуассоновского потока</p>
-                <input class="form-input" type="number">
+                <p class="form-text">Время обслуживания заявки</p>
+                <input class="form-input" type="number" placeholder="Цифра">
             </div>
             <div class="input-column">
-                <p class="form-text">Время обслуживания</p>
-                <input class="form-input" type="number">
+                <p class="form-text">Максимальное время симуляции</p>
+                <input class="form-input" type="number" placeholder="Цифра">
             </div>
             <div class="input-column">
-                <p class="form-text">Продолжительность симуляции</p>
-                <input class="form-input" type="number">
+                <p class="form-text">Параметр рассчета интервала между заявками</p>
+                <input class="form-input" type="number" placeholder="Цифра">
             </div>
             <div class="input-column">
-                <p class="form-text">Количество каналов обслуживания</p>
-                <input class="form-input" type="number">
+                <p class="form-text">Количество потоков</p>
+                <input class="form-input" type="number" placeholder="Цифра">
             </div>
             <div class="input-column">
-                <p class="form-text">Количество запусков симуляции</p>
-                <input class="form-input" type="number">
+                <p class="form-text">Количество итераций</p>
+                <input class="form-input" type="number" placeholder="Цифра">
             </div>
             <button class="solve-button">РЕШИТЬ</button>
         </div>

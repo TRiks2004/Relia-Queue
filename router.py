@@ -31,7 +31,7 @@ view_list = ViewList()
 @main_point.get('/', response_class=HTMLResponse)
 def index(request: Request):
     return templates.TemplateResponse(
-        request=request, name=view_list.layout, context={"title": "ReliaQueue - Главная", 'dynamic_page': view_list.cfr_refusal_page}
+        request=request, name=view_list.layout, context={"title": "ReliaQueue - Главная", 'dynamic_page': view_list.cfr_unlimited_page}
     )
 
 @main_point.get('/about', response_class=HTMLResponse)
