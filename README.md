@@ -58,7 +58,7 @@ RELIA-QUEUE - это веб-приложение, разработанное д�
 ## Примеры
 ### Пример главного окна
 ![image](https://drive.google.com/uc?export=view&id=1W0PnAuP_YBC65LavGoLqQwsfZv8BUC_r)
-    ### Пример метода смо с отказом
+### Пример метода смо с отказом
 ![image](https://drive.google.com/uc?export=view&id=1W0PnAuP_YBC65LavGoLqQwsfZv8BUC_r)
 ### Пример метода смо с неограниченной очередью
 ![image](https://drive.google.com/uc?export=view&id=1mY4ai7E7Qryd8N6NE96cKgkimWg7iU1f)
