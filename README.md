@@ -59,11 +59,11 @@ RELIA-QUEUE - это веб-приложение, разработанное д�
 ### Пример главного окна
 ![image](https://drive.google.com/uc?export=view&id=1W0PnAuP_YBC65LavGoLqQwsfZv8BUC_r)
 ### Пример метода смо с отказом
-![image](https://drive.google.com/uc?export=view&id=1W0PnAuP_YBC65LavGoLqQwsfZv8BUC_r)
+![image](https://drive.google.com/uc?export=view&id=10jvwDwinTzKFYmRfSWLCeqze-RaOSW6P)
 ### Пример метода смо с неограниченной очередью
 ![image](https://drive.google.com/uc?export=view&id=1mY4ai7E7Qryd8N6NE96cKgkimWg7iU1f)
-### Пример систем из двух блоков
-![image](https://drive.google.com/uc?export=view&id=1W0PnAuP_YBC65LavGoLqQwsfZv8BUC_r)
+### Пример оценки надежности системы
+![image](https://drive.google.com/uc?export=view&id=1pa5P9esT-jd0k7VE8izSLGupgBOMHjJZ)
 ### Пример страницы о нас
 ![image](https://drive.google.com/uc?export=view&id=11-_feRALCRiRXkSbMxXT-yRPs1tZwDab)
 
