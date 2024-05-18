@@ -1,5 +1,5 @@
-from models import SimulationParameters, SimulationResult
-from utils import generate_random_number, calculate_time
+from .models import SimulationParameters, SimulationResult
+from .utils import generate_random_number, calculate_time
 
 def process_iteration(params: SimulationParameters, iteration: int) -> SimulationResult:
     """

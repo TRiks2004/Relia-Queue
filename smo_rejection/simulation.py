@@ -1,6 +1,6 @@
-from exception import InvalidInputError, NumIterationsNegative, NumIterationsIsZero, NumChannelsNegative, NumChannelsIsZero, AlphaIsZero, AlphaNegative, ServiceTimeNegative, MaxTimeNegative
-from models import SimulationParameters
-from processing import process_iteration
+from .exception import InvalidInputError, NumIterationsNegative, NumIterationsIsZero, NumChannelsNegative, NumChannelsIsZero, AlphaIsZero, AlphaNegative, ServiceTimeNegative, MaxTimeNegative
+from .models import SimulationParameters
+from .processing import process_iteration
 
 def run_simulation(T: float, num_channels: int, service_time: float, num_iterations: int, alfa: int):
     """
