@@ -29,7 +29,6 @@ class Element(Component):
         self.random_value = random.random()
         return self.random_value < self.probability_analytical
 
-
     def to_dict(self) -> dict:
         return {
             'type': self.__class__.__name__,
@@ -38,22 +37,17 @@ class Element(Component):
             'probability': self.random_value < self.probability_analytical
         }
 
-    
 class Block(Component):
     
     def __init__(self, *components: Component, connection: MethodConnection):
-       self.components = components
-       self.connection = connection
-       
-       self.probability_analytical = self.calculate_probability_analytical()
-    
+        self.components = components
+        self.connection = connection
+        self.probability_analytical = self.calculate_probability_analytical()
     
     block_main = None
     block_step: str = None  
     simulated_step: int = None 
-    simulated = {}
-
-    
+    simulated_results = {}
        
     def calculate_probability_by_method_analytical(self, probability):
         match self.connection:
@@ -70,22 +64,21 @@ class Block(Component):
         return self.calculate_probability_by_method_analytical(probability)
     
     def simulated_probability(self, num_trials) -> float:
-        count = 0
+        success_count = 0
         
-        for _ in range(num_trials):            
-            simulated_chek = self.calculate_probability_simulated()
+        for trial in range(num_trials):            
+            is_successful = self.calculate_probability_simulated()
             
-            if simulated_chek:
-                count += 1
+            if is_successful:
+                success_count += 1
                 
-            self.simulated[_] = self.to_dict()
+            self.simulated_results[trial] = self.to_dict()
             
-        
         return {
-            'count': count,
+            'success_count': success_count,
             'num_trials': num_trials,
-            'probability': count / num_trials,
-            'ditails': self.simulated
+            'probability': success_count / num_trials,
+            'details': self.simulated_results
         }
             
     def calculate_probability_by_method_simulated(self, prob_one: bool, prob_two: bool) -> bool:
@@ -96,7 +89,6 @@ class Block(Component):
                 return prob_one and prob_two
     
     def calculate_probability_simulated(self) -> bool:    
-        
         probability = 1 if self.connection == MethodConnection.Serial else 0 
         
         for component in self.components:
@@ -105,7 +97,6 @@ class Block(Component):
         self.probability_simulated = probability
         
         return probability
-    
     
     def to_dict(self) -> dict:
         return {
@@ -118,39 +109,22 @@ class Block(Component):
 import json
 
 # Ввод данных пользователем
-element_1 = Element(probability=0.8)
-element_2 = Element(probability=0.85)
-element_3 = Element(probability=0.6)
-element_4 = Element(probability=0.6)
-element_5 = Element(probability=0.3)
+element_a = Element(probability=0.8)
+element_b = Element(probability=0.85)
+element_c = Element(probability=0.6)
+element_d = Element(probability=0.6)
+element_e = Element(probability=0.3)
 
-block_1 = Block(element_1, element_2, connection=MethodConnection.Parallel)
+block_1 = Block(element_a, element_b, connection=MethodConnection.Parallel)
 
-# print(f'----- block_1 -----')
-# print(f'{block_1.probability = }')
+block_2 = Block(element_c, element_d, connection=MethodConnection.Parallel)
 
-block_2 = Block(element_3, element_4, connection=MethodConnection.Parallel)
-
-# print(f'\n----- block_2 -----')
-# print(f'{block_2.probability = }')
-
-block_all = Block(block_1, element_5,  block_2, connection=MethodConnection.Serial)
-
-print(f'\n----- block_all -----')
-# print(f'{block_all.probability = }')
+block_all = Block(block_1, element_e, block_2, connection=MethodConnection.Serial)
 
 def custom_serializer(obj):
     if isinstance(obj, MethodConnection):
         return obj.value
     raise TypeError(f'Object of type {obj.__class__.__name__} is not JSON serializable')
 
-all_ = block_all.simulated_probability(1)
-print(json.dumps(all_, default=custom_serializer, indent=4))
- 
-
-
-
-
-
-
-
+simulation_results = block_all.simulated_probability(1)
+print(json.dumps(simulation_results, default=custom_serializer, indent=4))
