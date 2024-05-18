@@ -1,8 +1,9 @@
 import random
 from enum import Enum
 from abc import ABC, abstractmethod
-from typing import TypedDict
+from dataclasses import dataclass, asdict
 
+from typing import List
 
 class MethodConnection(Enum):
     Parallel = 'parallel'
@@ -19,27 +20,26 @@ class Component(ABC):
     def to_dict(self) -> dict:
         pass
 
-
-
-class ElementDict(TypedDict):
+@dataclass
+class ElementDict:
     type_component: str
     probability_analytical: float
     random_value: float
-    probability: float
+    probability: bool
 
-
-class BlockDict(TypedDict):
+@dataclass
+class BlockDict:
     type_component: str
     connection: str
     probability: bool
-    components: list[ElementDict]
+    components: List
 
-class SimulationResult(TypedDict):
+@dataclass
+class SimulationResult:
     success_count: int
     num_trials: int
     probability: float
-    details: list[BlockDict | ElementDict]
-
+    details: List[ElementDict | BlockDict]
 
 class Element(Component):
     
@@ -48,7 +48,6 @@ class Element(Component):
     def __init__(self, probability: float):
         self.probability_analytical = probability
         
-    
     def calculate_probability_simulated(self) -> bool:
         self.random_value = random.random()
         return self.random_value < self.probability_analytical
@@ -129,7 +128,7 @@ class Block(Component):
             probability=self.probability_simulated,
             components=[component.to_dict() for component in self.components],
         )
-    
+
 import json
 
 # Ввод данных пользователем
@@ -140,17 +139,19 @@ element_d = Element(probability=0.6)
 element_e = Element(probability=0.3)
 
 block_1 = Block(element_a, element_b, connection=MethodConnection.Parallel)
-
 block_2 = Block(element_c, element_d, connection=MethodConnection.Parallel)
-
 block_all = Block(block_1, block_2, connection=MethodConnection.Serial)
 
 def custom_serializer(obj):
     if isinstance(obj, MethodConnection):
         return obj.value
+    if isinstance(obj, (ElementDict, BlockDict, SimulationResult)):
+        return asdict(obj)
     raise TypeError(f'Object of type {obj.__class__.__name__} is not JSON serializable')
 
 simulation_results = block_all.simulated_probability(2)
+print(simulation_results)
+
 print(json.dumps(simulation_results, default=custom_serializer, indent=4))
 
-print(simulation_results['details'][0]['components'][0]['type_component'])
+simulation_results.details[0]
