@@ -1,0 +1,10 @@
+__pycache__/
+dist/
+
+# IDEs and editors
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+*.tmproj
+*.tmproject
