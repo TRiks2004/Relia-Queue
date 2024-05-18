@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "smo-rejection"
+name = "smo_rejection"
 version = "0.1.0"
 description = ""
 authors = ["mbtmrw <keks2324098@gmail.com>"]
