@@ -5,6 +5,15 @@ from dataclasses import dataclass, asdict
 
 from typing import List
 
+
+class ConstrainElementUp(Exception):
+    pass
+
+class ConstrainElementDown(Exception):
+    pass
+
+
+
 class MethodConnection(Enum):
     Parallel = 'parallel'
     Serial = 'serial'
@@ -46,6 +55,12 @@ class Element(Component):
     random_value: float
     
     def __init__(self, probability: float):
+        
+        if probability > 1:
+            raise ConstrainElementUp
+        elif probability < 0:
+            raise ConstrainElementDown
+        
         self.probability_analytical = probability
         
     def calculate_probability_simulated(self) -> bool:
@@ -129,29 +144,27 @@ class Block(Component):
             components=[component.to_dict() for component in self.components],
         )
 
-import json
+# import json
 
-# Ввод данных пользователем
-element_a = Element(probability=0.8)
-element_b = Element(probability=0.85)
-element_c = Element(probability=0.6)
-element_d = Element(probability=0.6)
-element_e = Element(probability=0.3)
+# # Ввод данных пользователем
+# element_a = Element(probability=0.8)
+# element_b = Element(probability=0.85)
+# element_c = Element(probability=0.6)
+# element_d = Element(probability=0.6)
+# element_e = Element(probability=0.3)
 
-block_1 = Block(element_a, element_b, connection=MethodConnection.Parallel)
-block_2 = Block(element_c, element_d, connection=MethodConnection.Parallel)
-block_all = Block(block_1, block_2, connection=MethodConnection.Serial)
+# block_1 = Block(element_a, element_b, connection=MethodConnection.Parallel)
+# block_2 = Block(element_c, element_d, connection=MethodConnection.Parallel)
+# block_all = Block(block_1, block_2, connection=MethodConnection.Serial)
 
-def custom_serializer(obj):
-    if isinstance(obj, MethodConnection):
-        return obj.value
-    if isinstance(obj, (ElementDict, BlockDict, SimulationResult)):
-        return asdict(obj)
-    raise TypeError(f'Object of type {obj.__class__.__name__} is not JSON serializable')
+# def custom_serializer(obj):
+#     if isinstance(obj, MethodConnection):
+#         return obj.value
+#     if isinstance(obj, (ElementDict, BlockDict, SimulationResult)):
+#         return asdict(obj)
+#     raise TypeError(f'Object of type {obj.__class__.__name__} is not JSON serializable')
 
-simulation_results = block_all.simulated_probability(2)
-print(simulation_results)
+# simulation_results = block_all.simulated_probability(2)
+# print(simulation_results)
 
-print(json.dumps(simulation_results, default=custom_serializer, indent=4))
-
-simulation_results.details[0]
+# print(json.dumps(simulation_results, default=custom_serializer, indent=4))
