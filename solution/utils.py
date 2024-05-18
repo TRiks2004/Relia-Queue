@@ -1,4 +1,3 @@
-import numpy as np
 import random
 import math
 
@@ -9,17 +8,17 @@ def round_value(number: float) -> float:
 def generate_random_number():
     """Генерирует случайное число в диапазоне (0, 1] с округлением до 4 знаков после запятой."""
     while True:
-        number = round_value(np.random.rand())
+        number = round_value(random.random())
         if number > 0:
             return number
 
 def calculate_time(alfa: int, number: float) -> float:
     """Возвращает время между двумя последовательными заявками."""
-    return round_value((-1/alfa) * np.log(number))
+    return round_value(-1/alfa * math.log(number))
 
 def calculate_mean_served_requests(results):
     total_served_requests = [result.served_requests for result in results]
-    return np.mean(total_served_requests)
+    return round_value(sum(total_served_requests) / len(total_served_requests))
 
 def print_results(results, num_channels):
     import pandas as pd

@@ -1,4 +1,3 @@
-import numpy as np
 from models import SimulationParameters, SimulationResult
 from utils import generate_random_number, calculate_time
 
@@ -9,7 +8,7 @@ def process_iteration(params: SimulationParameters, iteration: int) -> Simulatio
     alfa = params.alfa
 
     request_times = []
-    service_end_times = np.zeros(num_channels)
+    service_end_times = [0] * num_channels
     served_requests = 0
     rejected_requests = 0
     request_time = 0
@@ -22,7 +21,7 @@ def process_iteration(params: SimulationParameters, iteration: int) -> Simulatio
         if request_time > T:
             break
 
-        available_server = np.argmin(service_end_times)
+        available_server = service_end_times.index(min(service_end_times))
         if service_end_times[available_server] <= request_time:
             service_end_times[available_server] = request_time + service_time
             served_requests += 1
