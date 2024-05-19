@@ -9,7 +9,7 @@ def main():
     T = 4
     num_channels = 3
     service_time = 0.5
-    num_iterations = 2
+    num_iterations = 10
     alfa = 5
 
     results = run_simulation(T, num_channels, service_time, num_iterations, alfa)
