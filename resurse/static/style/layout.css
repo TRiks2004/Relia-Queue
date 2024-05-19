@@ -366,6 +366,7 @@ body{
 }
 
 .element-form{
+    width: 100px;
     margin: 5px;
     display: flex;
     flex-direction: row;
@@ -407,7 +408,7 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 150px;
+    width: 200px;
     height: 50px;
     font-weight: 700;
     font-size: 15px;
