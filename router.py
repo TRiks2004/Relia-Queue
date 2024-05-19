@@ -20,7 +20,7 @@ class ViewList(BaseSettings):
 
     # layout.html main_page.html qs_theory_page.html block_system_page.html cfr_refusal_page.html cfr_unlimited_page.html about.html                                                               ─╯
     layout: str = plus_html('layout')
-    main_page: str = plus_html('main_page')
+    main_page: str = plus_html('index')
     about_page: str = plus_html('about')
     block_system_page: str = plus_html('block_system_page')
     cfr_refusal_page: str = plus_html('cfr_refusal_page')
