@@ -3,7 +3,7 @@ import os
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from smo_rejection import run_simulation, calculate_mean_served_requests, export_to_pdf
+from smo_rejection import run_simulation, export_to_pdf, export_to_excel
 
 def main():
     T = 4
@@ -14,6 +14,8 @@ def main():
 
     results = run_simulation(T, num_channels, service_time, num_iterations, alfa)
     export_to_pdf(results, "simulation_results.pdf")
+    export_to_excel(results, "simulation_results.xlsx")
+    
 
 if __name__ == "__main__":
     main()
