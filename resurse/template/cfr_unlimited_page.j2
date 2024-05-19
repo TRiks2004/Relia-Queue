@@ -50,25 +50,25 @@
         <div class="input-form">
             <div class="input-column">
                 <p class="form-text">Время обслуживания заявки</p>
-                <input class="form-input" id="input-field" type="number" placeholder="Введите значение">
+                <input class="form-input" id="serviceTimeInput" type="text" placeholder="Введите значение">
             </div>
             <div class="input-column">
                 <p class="form-text">Максимальное время симуляции</p>
-                <input class="form-input" type="number" placeholder="Введите значение">
+                <input class="form-input" id="maxSimulationTimeInput" type="text" placeholder="Введите значение">
             </div>
             <div class="input-column">
-                <p class="form-text">Параметр рассчета интервала между заявками</p>
-                <input class="form-input" type="number" placeholder="Введите значение">
+                <p class="form-text">Параметр расчета интервала между заявками</p>
+                <input class="form-input" id="parameterInput" type="text" placeholder="Введите значение">
             </div>
             <div class="input-column">
                 <p class="form-text">Количество потоков</p>
-                <input class="form-input" type="number" placeholder="Введите значение">
+                <input class="form-input" id="channelCountInput" type="text" placeholder="Введите значение">
             </div>
             <div class="input-column">
                 <p class="form-text">Количество итераций</p>
-                <input class="form-input" type="number" placeholder="Введите значение">
+                <input class="form-input" id="iterationCountInput" type="text" placeholder="Введите значение">
             </div>
-            <button class="solve-button">РЕШИТЬ</button>
+            <button class="solve-button" onclick="unlimitedSolve()">РЕШИТЬ</button>
         </div>
         <p class="theme-title" id="resultTitle">Решение</p>
         <div class="solve-area">

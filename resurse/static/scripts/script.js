@@ -21,9 +21,6 @@ function refusalSolve() {
     var channelCount = parseInt(document.getElementById("channelCountInput").value);
     var simulationCount = parseInt(document.getElementById("simulationCountInput").value);
 
-    // Perform calculations or further processing
-    // ...
-
     // Example: Validate input values
     if (isNaN(intensity) || intensity <= 0) {
         alert("Ошибка: Интенсивность пуассоновского потока не может быть символом или числом меньше 0");
@@ -43,6 +40,40 @@ function refusalSolve() {
     }
     if (isNaN(simulationCount) || simulationCount <= 0) {
         alert("Ошибка: Количество симуляций не может быть символом или числом меньше 0");
+        return;
+    }
+
+    // Continue with the solution
+    // ...
+}
+
+function unlimitedSolve() {
+    // Get input values
+    var serviceTime = parseFloat(document.getElementById("serviceTimeInput").value);
+    var maxSimulationTime = parseFloat(document.getElementById("maxSimulationTimeInput").value);
+    var parameter = parseFloat(document.getElementById("parameterInput").value);
+    var channelCount = parseInt(document.getElementById("channelCountInput").value);
+    var iterationCount = parseInt(document.getElementById("iterationCountInput").value);
+
+    // Example: Validate input values
+    if (isNaN(serviceTime) || serviceTime <= 0) {
+        alert("Ошибка: Время обслуживания заявки не может быть символом или числом меньше 0");
+        return;
+    }
+    if (isNaN(maxSimulationTime) || maxSimulationTime <= 0) {
+        alert("Ошибка: Максимальное время симуляции не может быть символом или числом меньше 0");
+        return;
+    }
+    if (isNaN(parameter) || parameter <= 0) {
+        alert("Ошибка: Параметр для расчета интервала между заявками не может быть символом или числом меньше 0");
+        return;
+    }
+    if (isNaN(channelCount) || channelCount <= 0) {
+        alert("Ошибка: Количество потоков не может быть символом или числом меньше 0");
+        return;
+    }
+    if (isNaN(iterationCount) || iterationCount <= 0) {
+        alert("Ошибка: Количество итераций не может быть символом или числом меньше 0");
         return;
     }
 
