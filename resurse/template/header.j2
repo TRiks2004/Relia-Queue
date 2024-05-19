@@ -8,19 +8,16 @@
         <div class="header-button">
             <p>ЗАДАЧИ</p>
             <div class="dropdown">
-                <div class="header-button">
-                    <a href="/cfr-unlimited">СМО с неограниченной очередью</a>
-                </div>
-                <div class="header-button">
-                    <a href="/cfr-refusal">СМО с отказами</a>
-                </div>
-                <div class="header-button">
-                    <a href="/block-system">Оценка надежности системы</a>
-                </div>
+                <div class="header-button" onclick="redirectTo('/cfr-unlimited')">СМО с неограниченной очередью</div>
+                <div class="header-button" onclick="redirectTo('/cfr-refusal')">СМО с отказами</div>
+                <div class="header-button" onclick="redirectTo('/block-system')">Оценка надежности системы</div>
             </div>
         </div>
-        <div id="about_btn" class="header-button">
-            <a href="/about">О НАС</a>
-        </div>
+        <div class="header-button" onclick="redirectTo('/about')">О НАС</div>
     </div>
+    <script>
+        function redirectTo(path){
+            window.location.href = path
+        }
+    </script>
 </div>

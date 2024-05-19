@@ -78,19 +78,13 @@ body{
 }
 
 .header-button{
-    font-size: 20px;
+    font-size: 18px;
     width: 190px;
     height: 80px;
     cursor: pointer;
     align-content: center;
     text-align: center;
     transition: 0.5s;
-}
-
-.header-button a{
-    text-decoration: none;
-    text-align: center;
-    color: #FFFFFF;
 }
 
 .header-button:hover{
