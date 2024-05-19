@@ -1,18 +1,18 @@
 <div class="calc-area">
         <div class="skip-parts">
-            <div class="skip-button">
+            <button class="skip-button" id="theoryBtn" onclick="goToTheory()">
                 <p class="theme-title">ТЕОРИЯ</p>
-            </div>
-            <div class="skip-button">
+            </button>
+            <button class="skip-button" id="formBtn" onclick="goToForm()">
                 <p class="theme-title">ВВОД ПАРАМЕТРОВ</p>
-            </div>
-            <div class="skip-button">
+            </button>
+            <button class="skip-button" id="resultBtn" onclick="goToResult()">
                 <p class="theme-title">РЕШЕНИЕ</p>
-            </div>
+            </button>
         </div>
         <div class="work-area" style="margin-left: 240px">
             <p class="theme-subtitle" style="text-align: center">Оценка надежности системы методом Монте-Карло</p>
-            <p class="theme-title">Теория</p>
+            <p class="theme-title" id="theoryTitle">Теория</p>
             <div class="theory">
                 <span class="theme-text">
                 Пример. Система состоит из двух блоков, соединенных последовательно. Система отказывает при отказе хотя бы одного блока. Первый блок содержит два элемента: А, В (они соединены параллельно) и отказывает при одновременном отказе обоих элементов. Второй – содержит один элемент С и отказывает при отказе этого элемента.
@@ -69,7 +69,7 @@
                 Искомая абсолютная погрешность равна |Р − P*|= 0.582 − 0.56 = 0.022.
                 </span>
             </div>
-            <p class="theme-title">Ввод параметров</p>
+            <p class="theme-title" id="formTitle">Ввод параметров</p>
             <div class="input-form" style="height: 800px; color: #FFFFFF; align-items: center;">
                 <div class="block-system">
                 <p>Введите параметры системы</p>
@@ -105,7 +105,7 @@
                 <span>-+-+-+-+</span>
                 <button class="solve-button">РЕШИТЬ</button>
             </div>
-            <p class="theme-title">Решение</p>
+            <p class="theme-title" id="resultTitle">Решение</p>
             <div class="solve-area">
     
             </div>

@@ -1,18 +1,18 @@
 <div class="calc-area">
     <div class="skip-parts">
-        <div class="skip-button">
-            <p class="theme-title">ТЕОРИЯ</p>
+            <button class="skip-button" id="theoryBtn" onclick="goToTheory()">
+                <p class="theme-title">ТЕОРИЯ</p>
+            </button>
+            <button class="skip-button" id="formBtn" onclick="goToForm()">
+                <p class="theme-title">ВВОД ПАРАМЕТРОВ</p>
+            </button>
+            <button class="skip-button" id="resultBtn" onclick="goToResult()">
+                <p class="theme-title">РЕШЕНИЕ</p>
+            </button>
         </div>
-        <div class="skip-button">
-            <p class="theme-title">ВВОД ПАРАМЕТРОВ</p>
-        </div>
-        <div class="skip-button">
-            <p class="theme-title">РЕШЕНИЕ</p>
-        </div>
-    </div>
     <div class="work-area">
         <p class="theme-subtitle">СМО с отказами</p>
-        <p class="theme-title">Теория</p>
+        <p class="theme-title" id="theoryTitle">Теория</p>
         <div class="theory">
             <span class="theme-text">Рассмотрим классическую задачу Эрланга.</span>
             <span class="theme-text">
@@ -71,7 +71,7 @@
             <span class="theme-text">или, учитывая,</span>
             <p class="theme-text"><p class="math display">$$\overline{k}= p(1-\frac{p^n}{n!}p_0)$$</span></p>         
         </div>
-        <p class="theme-title">Ввод параметров</p>
+        <p class="theme-title" id="formTitle">Ввод параметров</p>
         <div class="input-form">
             <div class="input-column">
                 <p class="form-text">Интенсивность пуассоновского потока</p>
@@ -95,7 +95,7 @@
             </div>
             <button class="solve-button">РЕШИТЬ</button>
         </div>
-        <p class="theme-title">Решение</p>
+        <p class="theme-title" id="resultTitle">Решение</p>
         <div class="solve-area">
 
         </div>

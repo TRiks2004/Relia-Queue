@@ -1,18 +1,18 @@
 <div class="calc-area">
     <div class="skip-parts">
-        <div class="skip-button">
-            <p class="theme-title">ТЕОРИЯ</p>
+            <button class="skip-button" id="theoryBtn" onclick="goToTheory()">
+                <p class="theme-title">ТЕОРИЯ</p>
+            </button>
+            <button class="skip-button" id="formBtn" onclick="goToForm()">
+                <p class="theme-title">ВВОД ПАРАМЕТРОВ</p>
+            </button>
+            <button class="skip-button" id="resultBtn" onclick="goToResult()">
+                <p class="theme-title">РЕШЕНИЕ</p>
+            </button>
         </div>
-        <div class="skip-button">
-            <p class="theme-title">ВВОД ПАРАМЕТРОВ</p>
-        </div>
-        <div class="skip-button">
-            <p class="theme-title">РЕШЕНИЕ</p>
-        </div>
-    </div>
     <div class="work-area">
         <p class="theme-subtitle">СМО с неограниченными очередями</p>
-        <p class="theme-title">Теория</p>
+        <p class="theme-title" id="theoryTitle">Теория</p>
         <div class="theory">
             <span class="theme-text">
                 Рассмотрим задачу. Имеется n-канальная СМО с неограниченной очередью. Поток заявок, поступающих в СМО, имеет интенсивность λ, а поток обслуживании — интенсивность μ. Необходимо найти предельные вероятности состояний СМО и показатели ее эффективности.
@@ -46,7 +46,7 @@
 Замечание. Для СМО с неограниченной очередью при r < 1 любая заявка, пришедшая в систему, будет обслужена, т.е. вероятность отказа Pотк = 0, относительная пропускная способность Q=1, а абсолютная пропускная способность равна интенсивности входящего потока заявок, т.е. А=l.
             </span>
         </div>
-        <p class="theme-title">Ввод параметров</p>
+        <p class="theme-title" id="formTitle">Ввод параметров</p>
         <div class="input-form">
             <div class="input-column">
                 <p class="form-text">Время обслуживания заявки</p>
@@ -70,7 +70,7 @@
             </div>
             <button class="solve-button">РЕШИТЬ</button>
         </div>
-        <p class="theme-title">Решение</p>
+        <p class="theme-title" id="resultTitle">Решение</p>
         <div class="solve-area">
 
         </div>
