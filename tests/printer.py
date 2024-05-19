@@ -17,7 +17,7 @@ def print_results(results, num_channels):
     import pandas as pd
 
     for result in results:
-        print(f"\n---------------------------- Cимуляция номер: {result.iteration} ----------------------------")
+        print(f"\n------------------------------- Cимуляция номер: {result.iteration} -------------------------------")
         df = pd.DataFrame(result.request_times)
         print(df[['index', 'rand_value', 'iba', 'app_time', f'server_{1}', f'server_{2}', f'server_{3}', 'Обслужено', 'Отказов']].to_string(index=False))
         print(f"\nКоличество исполненных заявок: {result.served_requests}")
