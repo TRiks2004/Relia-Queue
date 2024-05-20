@@ -66,3 +66,6 @@ class ErrorInputParametres(unittest.TestCase):
         Проверка вызова исключения AlphaNegative при отрицательном значении альфа.
         """
         self.assertRaises(AlphaNegative, run_simulation, 1, 2, 3, 4, -5)
+
+if __name__ == "__main__":
+    unittest.main()

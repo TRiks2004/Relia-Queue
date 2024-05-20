@@ -36,7 +36,7 @@ def run_simulation(T: float, num_channels: int, service_time: float, num_iterati
     # Проверка корректности входных параметров
     if T <= 0:
         raise MaxTimeNegative("Максимальное время симуляции должно быть положительным числом.")
-    if num_channels <= 0:
+    if num_channels < 0:
         raise NumChannelsNegative("Количество каналов должно быть положительным числом.")
     if num_channels == 0:
         raise NumChannelsIsZero("Количество каналов не может быть нулевым.")
