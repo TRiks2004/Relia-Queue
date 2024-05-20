@@ -1,0 +1,148 @@
+<div class="calc-area">
+        <div class="skip-parts">
+            <button class="skip-button" id="theoryBtn" onclick="goToTheory()">
+                <p class="theme-title">ТЕОРИЯ</p>
+            </button>
+            <button class="skip-button" id="formBtn" onclick="goToForm()">
+                <p class="theme-title">ВВОД ПАРАМЕТРОВ</p>
+            </button>
+            <button class="skip-button" id="resultBtn" onclick="goToResult()">
+                <p class="theme-title">РЕШЕНИЕ</p>
+            </button>
+        </div>
+        <div class="work-area" style="margin-left: 240px">
+            <p class="theme-subtitle" style="text-align: center">Оценка надежности системы методом Монте-Карло</p>
+            <p class="theme-title" id="theoryTitle">Теория</p>
+            <div class="theory">
+                <span class="theme-text">
+                Пример. Система состоит из двух блоков, соединенных последовательно. Система отказывает при отказе хотя бы одного блока. Первый блок содержит два элемента: А, В (они соединены параллельно) и отказывает при одновременном отказе обоих элементов. Второй – содержит один элемент С и отказывает при отказе этого элемента.
+                </span>
+                <span class="theme-text">
+                    1. Найти методом Монте-Карло оценку Р* надежности (вероятности безотказной работы) системы, зная вероятности безотказной работы элементов: Р(А)=0.8, Р (В)=0.85, Р (С)=0.6;
+                </span>
+                <span class="theme-text">
+                2. Найти абсолютную погрешность |Р − Р*| найденного значения, где Р- надежность системы, вычисленная аналитически.
+                </span>
+                <span class="theme-text">
+                Произвести 50 испытаний.
+                </span>
+                <span> </span>
+                <span> --------- </span>
+                <span> </span>
+                <span class="theme-text">
+                С помощью генератора случайных чисел получаем (или выбираем из специальных таблиц равномерно распределенных случайных чисел) три случайных числа, например: 0.10, 0.09 и 0.73.
+                </span>
+                <span class="theme-text">
+                Далее считаем, если случайное число меньше вероятности соответствующего события, то событие наступило (элемент работает безотказно).
+                </span>
+                <span class="theme-text">
+                Если случайное число больше или равно вероятности события, то событие не наступило (отказ).
+                </span>
+                <span class="theme-text">
+                Разыграем события А, В, С, состоящие в безотказной работе соответственно элементов А, В, С. Результаты испытания будем записывать в расчетную таблицу. 
+                </span>
+                <span class="theme-text">
+                Поскольку Р(А) = 0.8 и 0.10 < 0.8, то событие наступило, т.е. элемент А в этом испытании работает безотказно. Так как Р(В)=0.85 и 0.09<0.85, то событие В наступило, т.е. элемент В работает безотказно.
+                </span>
+                <span class="theme-text">
+                Таким образом, оба элемента первого блока работают; следовательно, работает и сам первый блок. В соответствующих клетках таблицы 1 ставим знак плюс (или 1).
+                </span>
+                <span class="theme-text">
+                Так как Р(С)=0.6 и 0.73>0.6, то событие С не наступило, т.е. элемент C получает отказ; другими словами, второй блок, а значит и вся система, получают отказ. В соответствующих клетках таблицы 1 ставим знак минус (или 0).
+                </span>
+                <span class="theme-text">
+                Аналогично разыгрываются и остальные испытания. В таблице 1 приведены результаты четырех испытаний.
+                </span>
+                <img src="https://sun9-26.userapi.com/impg/FoWEAhFwJQs4TYSGlt5RRTZX4d_h04lOL5MCww/mwujYa2EpAs.jpg?size=618x204&quality=96&sign=580b7ab724f2f77d6c7870dd6d7e911e&type=album">
+                <span class="theme-text">
+                Произведя 50 испытаний, получим, что в 28 из них система работала безотказно. В качестве оценки искомой надежности Р примем относительную частоту Р*=28/50=0.56.
+                </span>
+                <span class="theme-text">
+                Найдем надежность системы Р аналитически. Вероятности безотказной работы первого и второго блоков соответственно равны:
+                </span>
+                <p class="theme-text"><span class="math display">$$P_1 = 1-P(\overline{A})\space\cdot\space P(\overline{B}) = 1 - 0.2\space\cdot\space 0.15 = 0.97,\space P_2 = P(C) = 0.6$$</span></p>
+                <span class="theme-text">
+                Вероятность безотказной работы системы
+                </span>
+                <p class="theme-text"><span class="math display">$$P = P_1\space\cdot\space P_2 = 0.97\space\cdot\space 0.6 = 0.582$$</span></p>
+                <span class="theme-text">
+                Искомая абсолютная погрешность равна |Р − P*|= 0.582 − 0.56 = 0.022.
+                </span>
+            </div>
+            <p class="theme-title" id="formTitle">Ввод параметров</p>
+            <div class="input-form" style="height: 800px; color: #FFFFFF; align-items: center;">
+                <div class="block-system">
+                <p class="theme-text">Введите параметры системы</p>
+                <div class="element-system">
+                    <p>Введите вероятность элемента</p>
+                    <div class="element-form">
+                        <input class="form-input" type="text" id="probabilityInput" placeholder="Pq элемента">
+                        <button class="percent-button">%</button>
+                    </div>
+                    <button class="add-button">Добавить элемент</button>
+                    <p>Выберите подключение</p>
+                    <select class="select">
+                        <option value="parallel">Паралелльное</option>
+                        <option value="serial">Последовательное</option>
+                    </select>
+                </div>
+                <button class="add-button">Добавить блок</button>
+                <p>Выберите подключение</p>
+                    <select class="select">
+                        <option value="parallel">Паралелльное</option>
+                        <option value="serial">Последовательное</option>
+                    </select>
+                </div>
+                <p class="theme-text">Промежуточные данные</p>
+                <span>-+-+-+-+</span>
+                <button class="solve-button" onclick="blockSystemSolve()">РЕШИТЬ</button>
+            </div>
+            <p class="theme-title" id="resultTitle">Решение</p>
+            <div class="solve-area">
+                <table class="t-table" border="1" style="text-align: center;"> 
+                    <tr> 
+                        <th rowspan="2">Номер испытания</th> 
+                        <th colspan="5">Случайные числа моделирующие элементы</th> 
+                        <th colspan="5">Элементы</th> 
+                        <th rowspan="2">Блок</th> 
+                    </tr> 
+                    <tr> 
+                        <th>A1</th> 
+                        <th>A2</th> 
+                        <th>...</th> 
+                        <th>A(N-1)</th> 
+                        <th>A(N)</th> 
+                        <th>A1</th> 
+                        <th>A2</th> 
+                        <th>...</th> 
+                        <th>A(N-1)</th> 
+                        <th>A(N)</th> 
+                    </tr> 
+                </table> 
+                <button onclick="showTrials()">Показать 3 испытания</button>
+                <script>
+                    function showTrials() {
+                        let trials = [
+                            ["1", "1", "0.4", "...", "0.28", "1", "0", "1", "...", "1", "0", "0"],
+                            ["2", "0.97", "0.9", "...", "0.16", "0.76", "1", "1", "...", "1", "1", "0"],
+                            ["3", "0.18", "0.21", "...", "0.06", "0", "0", "1", "...", "0", "1", "1"]
+                        ];
+
+                        let table = document.querySelector("table");
+
+                        for (let i = 0; i < trials.length; i++) {
+                            let row = table.insertRow(-1);
+                            for (let j = 0; j < trials[i].length; j++) {
+                                let cell = row.insertCell(j);
+                                cell.innerHTML = trials[i][j];
+                            }
+                        }
+                    }
+                </script>
+            </div>
+            <div style="margin-top: 90px;">
+                <button class="header-button">Сохранить решение в PDF</button>
+                <button class="header-button">Сохранить решение в Excel</button>
+            </div>
+        </div>
+    </div>
