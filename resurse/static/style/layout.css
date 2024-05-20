@@ -360,7 +360,7 @@ body{
 }
 
 .element-form{
-    width: 100px;
+    width: 170px;
     margin: 5px;
     display: flex;
     flex-direction: row;
@@ -378,6 +378,15 @@ body{
     border: none;
     color:#FFFFFF;
     border-radius: 5px;
+    cursor: pointer;
+}
+
+.percent-button:hover{
+    background-color: rgba(180, 191, 202, 0.75);
+}
+
+.percent-button:active{
+    background-color: rgba(180, 191, 202, 0.5);
 }
 
 .select{
@@ -388,6 +397,15 @@ body{
     border: none;
     color:#FFFFFF;
     border-radius: 5px;
+    cursor: pointer;
+}
+
+.select:hover{
+    background-color: rgba(180, 191, 202, 0.75);
+}
+
+.select:active{
+    background-color: rgba(180, 191, 202, 0.5);
 }
 
 .select option{
@@ -395,19 +413,25 @@ body{
     background-color: rgb(9, 25, 44);
     border: none;
     color:#FFFFFF;
+    cursor: pointer;
 }
 
-.plus-button{
-    margin-top: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 200px;
-    height: 50px;
-    font-weight: 700;
-    font-size: 15px;
+.add-button{
+    margin-top: 20px;
+    width: 170px;
+    height: 40px;
     background-color: rgba(97, 128, 163, 0.3);
     border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 15px;
     color:#FFFFFF;
-    border-radius: 5px;   
+}
+
+.add-button:hover{
+    background-color: rgba(180, 191, 202, 0.75);
+}
+
+.add-button:active{
+    background-color: rgba(180, 191, 202, 0.5);
 }

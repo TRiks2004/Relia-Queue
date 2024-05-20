@@ -80,3 +80,17 @@ function unlimitedSolve() {
     // Continue with the solution
     // ...
 }
+
+function blockSystemSolve(){
+    // Get input values
+    var probability = parseFloat(document.getElementById("probabilityInput").value);
+
+    if (isNaN(probability) || probability <= 0) {
+        alert("Ошибка: Вероятность не может быть символом или числом меньше 0");
+        return;
+    }
+    if (probability > 1) {
+        alert("Ошибка: Вероятность не может быть больше 1");
+        return;    
+    }
+}
