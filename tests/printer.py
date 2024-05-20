@@ -20,7 +20,7 @@ def print_simulation_results(results, T, num_channels, service_time, num_iterati
     num_iterations (int): Количество итераций симуляции.
     alfa (int): Параметр для расчета интервалов между заявками.
     """
-    for i, result in enumerate(results[:3], start=1):
+    for i, result in enumerate(results, start=1):
         print(f' Итерация номер: {i} '.center(75, '-'))
 
         table = PrettyTable()
