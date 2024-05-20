@@ -2,7 +2,7 @@ import random
 from .component import Component
 from ..exceptions import ConstrainElementUp, ConstrainElementDown
 
-from ..date.element_dict import ElementDict
+from ..date import ElementDict
 
 class Element(Component):
     

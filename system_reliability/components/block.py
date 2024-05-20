@@ -1,8 +1,7 @@
 from ..enums import MethodConnection
 
 
-from ..date.simulation import SimulationResult
-from ..date.block_dict import BlockDict
+from ..date import SimulationResult, BlockDict, CulculateResult
 
 from .component import Component
 
@@ -73,4 +72,12 @@ class Block(Component):
             connection=self.connection.value,
             probability=self.probability_simulated,
             components=[component.to_dict() for component in self.components],
+        )
+
+    
+    def calculate(self):
+        simulated = self.simulated_probability(num_trials=10000)
+        
+        return CulculateResult(
+            simulated_results=simulated
         )
