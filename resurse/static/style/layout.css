@@ -1,3 +1,5 @@
+/* -------------------------------------- */
+
 body{
     font-family: 'Ubuntu Sans', sans-serif;
     color: #FFFFFF;
@@ -337,37 +339,6 @@ body{
     align-self: center;
 }
 
-.block-system{
-    display: flex;
-    flex-direction: column;
-    margin-top: 20px;
-    align-items: center;
-    width: 400px;
-    height: 550px;
-    border-radius: 10px;
-    background-color: rgba(37, 52, 67, 0.75);
-}
-
-.element-system{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 300px;
-    height: 300px;
-    border-radius: 15px;
-    background-color: rgba(24, 36, 49, 0.75);
-}
-
-.element-form{
-    width: 170px;
-    margin: 5px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 10px
-}
 
 .percent-button{
     width: 60px;
@@ -447,3 +418,185 @@ body{
     width: 60px;
     height: 40px;
 }
+
+/* -------------------------------------- */
+
+
+
+
+.system-block {
+    width: 100%;
+    max-width: 400px;
+    background: black;
+    border-radius: 25px;
+    padding: 20px;
+    box-sizing: border-box;
+    margin: 0 auto;
+  }
+
+  .block {
+    width: 100%;
+    background: wheat;
+    border-radius: 25px;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+    position: relative;
+  }
+
+  .block-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .element {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background: black;
+    border-radius: 25px;
+    padding: 10px;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+    position: relative;
+  }
+
+  .button-with-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-bottom: 15px;
+  }
+
+  .button-with-icon .icon {
+    margin-right: 8px;
+  }
+
+  .button-with-icon:hover {
+    background-color: #0056b3;
+  }
+
+  .calculate-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: red;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-bottom: 15px;
+  }
+
+  .calculate-button .icon {
+    margin-right: 8px;
+  }
+
+  .calculate-button:hover {
+    background-color: darkred;
+  }
+
+  .text {
+    color: white;
+  }
+
+  .delete-button {
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+
+  .delete-button:hover {
+    background: darkred;
+  }
+
+  .input-container {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    position: relative;
+  }
+
+  .input-field {
+    flex-grow: 1;
+    padding: 5px;
+    padding-right: 20px; /* Space for % sign */
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+
+  .input-container::after {
+    content: '%';
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #333;
+  }
+
+  .delete-block-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: darkred;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+
+  .delete-block-button:hover {
+    background: red;
+  }
+
+  .checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+  }
+
+  .checkbox-container label {
+    margin-right: 10px;
+    color: black;
+  }
+
+  .checkbox-container-white {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+  }
+
+  .checkbox-container-white label {
+    margin-right: 10px;
+    color: white;
+  }
+
+  .button-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+  }
+
+  .calculate-button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
