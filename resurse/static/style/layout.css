@@ -435,3 +435,15 @@ body{
 .add-button:active{
     background-color: rgba(180, 191, 202, 0.5);
 }
+
+.t-table{
+    margin-top: 20px;
+    width: 900px;
+    overflow: scroll;
+    color: rgb(14, 37, 64);
+}
+
+.t-table th{
+    width: 60px;
+    height: 40px;
+}
