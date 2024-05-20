@@ -80,30 +80,50 @@ let blockCounter = 0;
       });
     }
 
-    function calculateData() {
+    async function calculateData() {
       const blocks = document.querySelectorAll('.system-block .block');
       const systemMode = document.querySelector('.checkbox-container-white input[type="radio"]:checked').parentNode.textContent.trim();
       let result = {
         systemMode: systemMode,
         blocks: []
       };
-
+    
       blocks.forEach((block, index) => {
         let blockData = {
           blockNumber: index + 1,
           mode: block.querySelector('.checkbox-container input[type="radio"]:checked').parentNode.textContent.trim(),
           elements: []
         };
-
+    
         const elements = block.querySelectorAll('.element .input-field');
         elements.forEach((element) => {
           blockData.elements.push({
-            value: element.value
+            value: parseInt(element.value)
           });
         });
-
+    
         result.blocks.push(blockData);
       });
-
+    
       console.log(JSON.stringify(result, null, 2));
+    
+      try {
+        const response = await fetch('calculate/system_reliability', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(result)
+        });
+    
+        if (response.ok) {
+          const responseData = await response.json();
+          console.log('System Reliability:', responseData);
+        } else {
+          console.error('Failed to calculate system reliability', response.status, response.statusText);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
     }
+    
