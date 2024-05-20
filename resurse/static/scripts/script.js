@@ -9,9 +9,10 @@ const goToForm = () => {
 }
 
 const goToResult = () => {
-    const resultTitle = document.getElementById("resultTitle");
+    const resultTitle = document.getElementById("saveContainer");
     resultTitle.scrollIntoView({ behavior: 'smooth' });
 }
+
 
 function refusalSolve() {
     var channelCount = parseInt(document.getElementById("channelCountInput").value);
@@ -32,6 +33,7 @@ function refusalSolve() {
     else{
         var list = ["Индекс", "Случайное число", "МЕЖ", "Время в очереди", "Обслужено", "Отказов"];''
         generateTables(list, simulationCount);
+        goToResult();
     }
 
 }
@@ -109,6 +111,7 @@ function unlimitedSolve() {
     else{
         list = ["Индекс", "Случайное значение", "Интервал между заявками", "Время обслуживания"];
         generateTables(list, iterationCount);
+        goToResult();
     }
 }
 
