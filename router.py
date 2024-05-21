@@ -64,7 +64,7 @@ def cfr_unlimited(request: Request):
     )
 
 class InputParameters(BaseSettings):
-    value: int
+    value: float
 
 class CFRUnlimitedParameters(BaseSettings):
     serviceTime: float
@@ -84,14 +84,5 @@ async def run_simulation_handler(request: Request):
         num_threads=parameters.channelCount,
         num_iterations=parameters.iterationCount
     )
-
-    def custom_serializer(obj):
-        if is_dataclass(obj):
-            return asdict(obj)
-        elif isinstance(obj, list):
-            return [custom_serializer(item) for item in obj]
-        elif isinstance(obj, dict):
-            return {key: custom_serializer(value) for key, value in obj.items()}
-        raise TypeError(f'Object of type {obj.__class__.__name__} is not JSON serializable')
     
-    return json.dumps(results, default=custom_serializer)
+    return results

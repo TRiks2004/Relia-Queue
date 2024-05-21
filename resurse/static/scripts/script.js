@@ -26,7 +26,7 @@ function generateCFRTables(list, sim_count, simulation_data, num_threads) {
         existingDiv.remove();
     }
 
-    for (var i = 0; i < sim_count; i++) {
+    for (var i = 0; i < simulation_data.results.length; i++) {
         var table = document.createElement("table");
         table.classList.add("t-table");
         table.setAttribute("border", "1");
@@ -40,30 +40,52 @@ function generateCFRTables(list, sim_count, simulation_data, num_threads) {
         simulationNumber.classList.add("simulation-number");
         table.appendChild(simulationNumber);
 
-        // Проверяем, что simulation_data содержит результаты
-        if (simulation_data.results && simulation_data.results.length > i) {
-            var iterationsData = simulation_data.results[i].iterations;
-            if (iterationsData && iterationsData.length > 0) {
-                for (var j = 0; j < iterationsData.length; j++) {
-                    var tableRow = document.createElement("tr");
-                    var iterationData = iterationsData[j];
+        // Add headers
+        for (var j = 0; j < list.length; j++) {
+            var th = document.createElement("th");
+            th.textContent = list[j];
+            tableRow.appendChild(th);
+        }
 
-                    for (var k = 0; k < list.length; k++) {
-                        var td = document.createElement("td");
-                        td.textContent = iterationData[list[k].toLowerCase()] || "";
-                        tableRow.appendChild(td);
-                    }
+        // Add server columns
+        for (var j = 1; j <= num_threads; j++) {
+            var th = document.createElement("th");
+            th.textContent = "Сервер " + j;
+            tableRow.appendChild(th);
+        }
 
-                    for (var k = 0; k < num_threads; k++) {
-                        var td = document.createElement("td");
-                        td.textContent = iterationData.server_times ? iterationData.server_times[k] || "" : "";
-                        tableRow.appendChild(td);
-                    }
+        table.appendChild(tableRow);
 
-                    table.appendChild(tableRow);
+        // Add request times
+        for (var k = 0; k < simulation_data.results[i].iterations.length; k++) {
+            var rowData = simulation_data.results[i].iterations[k];
+            var row = document.createElement("tr");
+        
+            for (var key in rowData) {
+                if (key !== 'server_times') {
+                    var cell = document.createElement("td");
+                    cell.textContent = rowData[key];
+                    row.appendChild(cell);
                 }
             }
+        
+            // Add server times
+            for (var j = 0; j < num_threads; j++) {
+                var cell = document.createElement("td");
+                cell.textContent = rowData.server_times[j];
+                row.appendChild(cell);
+            }
+        
+            table.appendChild(row);
         }
+
+        // Add expected value row
+        var expectedValueRow = document.createElement("tr");
+        var expectedValueCell = document.createElement("td");
+        expectedValueCell.setAttribute("colspan", list.length + num_threads);
+        expectedValueCell.textContent = "Ожидаемое значение: " + simulation_data.results[i].expected_value;
+        expectedValueRow.appendChild(expectedValueCell);
+        table.appendChild(expectedValueRow);
 
         table.style.marginBottom = "40px";
         document.body.appendChild(table);
@@ -109,8 +131,8 @@ async function unlimitedSolve() {
 
         if (response.ok){
             const data = await response.json();
-            console.log('Simulation Results: ', data);
-            var list = ["Индекс", "Случайное значение", "Интервал между заявками", "Время обслуживания"];
+            console.log(data);
+            const list = ["Индекс", "Случайное значение", "Интервал между заявками", "Время обслуживания"];
             generateCFRTables(list, iterationCount, data, channelCount);
             goToResult();
         } else {
