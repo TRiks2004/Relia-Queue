@@ -74,7 +74,7 @@ class SimulationInput(BaseModel):
 @main_point.post('/cfr-refusal')
 async def run_simulation_handler(request: Request):
     data = await request.json()
-    params = SimulationParameters(**data)
+    params = SimulationInput(**data)
     results = run_simulation(
         T=params.T,
         num_channels=params.num_channels,
@@ -83,13 +83,4 @@ async def run_simulation_handler(request: Request):
         alfa=params.alfa,
     )
 
-    # Преобразование результатов в JSON
-    import json
-    from dataclasses import asdict
-
-    def custom_serializer(obj):
-        if hasattr(obj, '__dataclass_fields__'):
-            return asdict(obj)
-        raise TypeError(f'Object of type {obj.__class__.__name__} is not JSON serializable')
-
-    return json.dumps(results, default=custom_serializer)
+    return results
