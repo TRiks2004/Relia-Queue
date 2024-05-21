@@ -71,7 +71,7 @@ function generateCFRTables(list, sim_count) {
 async function unlimitedSolve() {
     var serviceTimeInput = document.getElementById("serviceTimeInput").value;
     var maxSimulationTimeInput = document.getElementById("maxSimulationTimeInput").value;
-    var parameterInput = document.getElementById("parameterInput").value;
+    var alphaInput = document.getElementById("parameterInput").value;
     var channelCountInput = document.getElementById("channelCountInput").value;
     var iterationCountInput = document.getElementById("iterationCountInput").value;
 
@@ -85,7 +85,7 @@ async function unlimitedSolve() {
     const formData = {
         service_time: parseInt(serviceTimeInput),
         max_simulation_time: parseInt(maxSimulationTimeInput),
-        parameter: parseFloat(parameterInput),
+        alpha: parseFloat(alphaInput),
         channel_count: channelCount,
         iteration_count: iterationCount,
     };
