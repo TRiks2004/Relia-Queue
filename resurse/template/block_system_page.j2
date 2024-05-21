@@ -100,28 +100,31 @@
       </span>
     </div>
 
-    <div>
-      <div class="system-block">
-        <div class="button-container">
-          <button class="button-with-icon" id="add-block-button"
-            onclick="addBlock()">
-            <span class="icon"><i class="fas fa-plus"></i></span>
-            Добавить новый блок
-          </button>
-        </div>
-        <div class="checkbox-container-white">
-          <label><input type="radio" name="system-mode" class="mode-radio">
-            Параллельно</label>
-          <label><input type="radio" name="system-mode" class="mode-radio"
-              checked> Последовательно</label>
-        </div>
-        <div class="calculate-button-container">
-          <button class="calculate-button" id="CalculateButton"
-            onclick="calculateData()">
-            <span class="icon"><i class="fas fa-calculator"></i></span>
-            Вычислить
-          </button>
-        </div>
-      </div >
-    </div>
+    <div class="input-form" style="height: 800px; color: #FFFFFF; align-items: center;">
+                <div class="block-system">
+                <p class="theme-text">Введите параметры системы</p>
+                <div class="element-system">
+                    <p>Введите вероятность элемента</p>
+                    <div class="element-form">
+                        <input class="form-input" type="text" id="probabilityInput" placeholder="Pq элемента">
+                        <button class="percent-button">%</button>
+                    </div>
+                    <button class="add-button">Добавить элемент</button>
+                    <p>Выберите подключение</p>
+                    <select class="select">
+                        <option value="parallel">Паралелльное</option>
+                        <option value="serial">Последовательное</option>
+                    </select>
+                </div>
+                <button class="add-button">Добавить блок</button>
+                <p>Выберите подключение</p>
+                    <select class="select">
+                        <option value="parallel">Паралелльное</option>
+                        <option value="serial">Последовательное</option>
+                    </select>
+                </div>
+                <p class="theme-text">Промежуточные данные</p>
+                <span>-+-+-+-+</span>
+                <button class="solve-button" onclick="blockSystemSolve()">РЕШИТЬ</button>
+            </div>
   </div>
