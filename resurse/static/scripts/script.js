@@ -83,15 +83,15 @@ async function unlimitedSolve() {
     }
 
     const formData = {
-        service_time: parseFloat(serviceTimeInput),
-        max_simulation_time: parseFloat(maxSimulationTimeInput),
+        serviceTime: parseFloat(serviceTimeInput),
+        maxSimulationTime: parseFloat(maxSimulationTimeInput),
         alpha: parseFloat(alphaInput),
-        channel_count: channelCount,
-        iteration_count: iterationCount,
+        channelCount: channelCount,
+        iterationCount: iterationCount,
     };
 
     try{
-        const response = await fetch('cfr-unlimited', {
+        const response = await fetch('/cfr-unlimited', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

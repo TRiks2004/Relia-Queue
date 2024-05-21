@@ -68,9 +68,9 @@ class InputParameters(BaseSettings):
     value: int
 
 class CFRUnlimitedParameters(BaseSettings):
-    serviceTime: int
-    maxSimulationTime: int
-    alpha: int
+    serviceTime: float
+    maxSimulationTime: float
+    alpha: float
     channelCount: int
     iterationCount: int
 
