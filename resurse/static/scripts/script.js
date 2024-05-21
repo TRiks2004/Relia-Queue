@@ -83,15 +83,15 @@ async function unlimitedSolve() {
     }
 
     const formData = {
-        service_time: parseInt(serviceTimeInput),
-        max_simulation_time: parseInt(maxSimulationTimeInput),
+        service_time: parseFloat(serviceTimeInput),
+        max_simulation_time: parseFloat(maxSimulationTimeInput),
         alpha: parseFloat(alphaInput),
         channel_count: channelCount,
         iteration_count: iterationCount,
     };
 
     try{
-        const response = await fetch('calculate/unlimited_reliability', {
+        const response = await fetch('cfr-unlimited', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

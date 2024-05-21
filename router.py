@@ -6,6 +6,11 @@ from pydantic_settings import BaseSettings
 
 from surroundings import config_fast_api
 
+from smo_over_queue import simulate_queue
+
+import json
+from dataclasses import asdict
+
 main_point = APIRouter(
     prefix=''
 )
@@ -73,3 +78,17 @@ class CFRUnlimitedParameters(BaseSettings):
 async def run_simulation_handler(request: Request):
     data = await request.json()
     parameters = CFRUnlimitedParameters(**data)
+    results = simulate_queue(
+        service_time=parameters.serviceTime,
+        max_simulation_time=parameters.maxSimulationTime,
+        alpha=parameters.alpha,
+        channel_count=parameters.channelCount,
+        iteration_count=parameters.iterationCount
+    )
+
+    def custom_serializer(obj):
+        if hasattr(obj, '__dataclass_field__'):
+            return asdict(obj)
+        raise TypeError(f'Object of type {obj.__class__.__name__} is not JSON serializable')
+    
+    return json.dumps(results, default=custom_serializer)
