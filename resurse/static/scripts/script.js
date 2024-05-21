@@ -68,6 +68,31 @@ function generateCFRTables(list, sim_count) {
     document.body.appendChild(div);
 }
 
+function unlimitedSolve() {
+    var serviceTime = parseInt(document.getElementById("serviceTimeInput").value);
+    var maxSimulationTime = parseInt(document.getElementById("maxSimulationTimeInput").value);
+    var parameter = parseInt(document.getElementById("parameterInput").value);
+    var channelCount = parseInt(document.getElementById("channelCountInput").value);
+    var iterationCount = parseInt(document.getElementById("iterationCountInput").value);
+
+    if (isNaN(iterationCount) || iterationCount <= 0) {
+        alert("Ошибка: Количество итераций не может быть символом или числом меньше 0");
+        return;
+    }
+    if (isNaN(channelCount) || channelCount <= 0) {
+        alert("Ошибка: Количество потоков не может быть символом или числом меньше 0");
+        return;
+    }
+    if (channelCount > 5){
+        alert("Ошибка: число серверов (каналов) ограничено до 5.")
+    }
+    else{
+        list = ["Индекс", "Случайное значение", "Интервал между заявками", "Время обслуживания"];
+        generateCFRTables(list, iterationCount);
+        goToResult();
+    }
+}
+
 function refusalSolve() {
     var channelCount = parseInt(document.getElementById("channelCountInput").value);
     var simulationCount = parseInt(document.getElementById("simulationCountInput").value);
@@ -87,29 +112,6 @@ function refusalSolve() {
     else{
         var list = ["Индекс", "Случайное число", "МЕЖ", "Время в очереди", "Обслужено", "Отказов"];''
         generateCFRTables(list, simulationCount);
-        goToResult();
-    }
-
-}
-
-function unlimitedSolve() {
-    var channelCount = parseInt(document.getElementById("channelCountInput").value);
-    var iterationCount = parseInt(document.getElementById("iterationCountInput").value);
-
-    if (isNaN(iterationCount) || iterationCount <= 0) {
-        alert("Ошибка: Количество итераций не может быть символом или числом меньше 0");
-        return;
-    }
-    if (isNaN(channelCount) || channelCount <= 0) {
-        alert("Ошибка: Количество потоков не может быть символом или числом меньше 0");
-        return;
-    }
-    if (channelCount > 5){
-        alert("Ошибка: число серверов (каналов) ограничено до 5.")
-    }
-    else{
-        list = ["Индекс", "Случайное значение", "Интервал между заявками", "Время обслуживания"];
-        generateCFRTables(list, iterationCount);
         goToResult();
     }
 }
