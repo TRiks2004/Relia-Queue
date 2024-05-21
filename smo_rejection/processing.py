@@ -61,8 +61,8 @@ def process_iteration(params: SimulationParameters, iteration: int) -> Simulatio
             'rand_value': round(rand_value, 4),
             'iba': round(inter_arrival_time, 4),
             'app_time': round(request_time, 4),
-            'Обслужено': serviced,
-            'Отказов': rejected,
+            'serviced': serviced,
+            'rejected': rejected,
         }
 
         # Добавить информацию о времени окончания обслуживания на каждом канале
