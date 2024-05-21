@@ -180,8 +180,71 @@ async function refusalSolve() {
     
         console.log('Added total summary');
     }
-    
 
+    async function downloadPDF() {
+        const intensityInput = document.getElementById('intensityInput').value;
+        const serviceTimeInput = document.getElementById('serviceTimeInput').value;
+        const simulationDurationInput = document.getElementById('simulationDurationInput').value;
+        const channelCountInput = document.getElementById('channelCountInput').value;
+        const simulationCountInput = document.getElementById('simulationCountInput').value;
+    
+        const channelCount = parseInt(channelCountInput);
+        const simulationCount = parseInt(simulationCountInput);
+    
+        if (isNaN(simulationCount) || simulationCount <= 0) {
+            alert("Ошибка: Количество симуляций должно быть положительным числом");
+            return;
+        }
+    
+        if (isNaN(channelCount) || channelCount <= 0) {
+            alert("Ошибка: Количество каналов должно быть положительным числом");
+            return;
+        }
+    
+        if (channelCount > 5) {
+            alert("Ошибка: количество серверов (каналов) ограничено до 5.");
+            return;
+        }
+    
+        const formData = {
+            T: parseFloat(simulationDurationInput),
+            num_channels: channelCount,
+            service_time: parseFloat(serviceTimeInput),
+            num_iterations: simulationCount,
+            alfa: parseFloat(intensityInput),
+            response_format: 'pdf', // Указываем формат ответа как PDF
+        };
+    
+        try {
+            const response = await fetch('/cfr-refusal', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+    
+            if (response.ok) {
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+    
+                // Создаем ссылку для скачивания PDF-файла
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'simulation_results.pdf';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+            } else {
+                console.error('Failed to retrieve PDF', response.status, response.statusText);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+    
+    
+    
 function unlimitedSolve() {
     var channelCount = parseInt(document.getElementById("channelCountInput").value);
     var iterationCount = parseInt(document.getElementById("iterationCountInput").value);

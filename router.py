@@ -1,6 +1,8 @@
 from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse
+from fastapi.responses import FileResponse
 from fastapi.templating import Jinja2Templates
+from fastapi.responses import Response
 
 from pydantic_settings import BaseSettings
 from fastapi import FastAPI, Form
@@ -8,7 +10,7 @@ from surroundings import config_fast_api
 from dataclasses import asdict
 from pydantic import BaseModel
 import json
-from smo_rejection import run_simulation, SimulationParameters 
+from smo_rejection import run_simulation, SimulationParameters, export_to_pdf
 
 main_point = APIRouter(
     prefix=''
@@ -72,7 +74,7 @@ class SimulationInput(BaseModel):
     alfa: int
 
 @main_point.post('/cfr-refusal')
-async def run_simulation_handler(request: Request):
+async def run_simulation_handler(request: Request, response_format: str = 'json'):
     data = await request.json()
     params = SimulationInput(**data)
     results = run_simulation(
@@ -83,4 +85,13 @@ async def run_simulation_handler(request: Request):
         alfa=params.alfa,
     )
 
-    return results
+    if response_format == 'pdf':
+        # Создание PDF-файла и получение его содержимого
+        pdf_content = export_to_pdf(results)
+
+        # Отправка PDF-файла в ответе
+        return Response(content=pdf_content, media_type='application/pdf', headers={'Content-Disposition': 'attachment; filename="simulation_results.pdf"'})
+    else:
+        # Возвращение результатов в формате JSON
+        return results
+
