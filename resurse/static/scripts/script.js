@@ -68,29 +68,50 @@ function generateCFRTables(list, sim_count) {
     document.body.appendChild(div);
 }
 
-function unlimitedSolve() {
-    var serviceTime = parseInt(document.getElementById("serviceTimeInput").value);
-    var maxSimulationTime = parseInt(document.getElementById("maxSimulationTimeInput").value);
-    var parameter = parseInt(document.getElementById("parameterInput").value);
-    var channelCount = parseInt(document.getElementById("channelCountInput").value);
-    var iterationCount = parseInt(document.getElementById("iterationCountInput").value);
+async function unlimitedSolve() {
+    var serviceTimeInput = document.getElementById("serviceTimeInput").value;
+    var maxSimulationTimeInput = document.getElementById("maxSimulationTimeInput").value;
+    var parameterInput = document.getElementById("parameterInput").value;
+    var channelCountInput = document.getElementById("channelCountInput").value;
+    var iterationCountInput = document.getElementById("iterationCountInput").value;
 
-    if (isNaN(iterationCount) || iterationCount <= 0) {
-        alert("Ошибка: Количество итераций не может быть символом или числом меньше 0");
-        return;
-    }
-    if (isNaN(channelCount) || channelCount <= 0) {
-        alert("Ошибка: Количество потоков не может быть символом или числом меньше 0");
-        return;
-    }
+    const channelCount = parseInt(channelCountInput);
+    const iterationCount = parseInt(iterationCountInput);
+
     if (channelCount > 5){
         alert("Ошибка: число серверов (каналов) ограничено до 5.")
     }
-    else{
-        list = ["Индекс", "Случайное значение", "Интервал между заявками", "Время обслуживания"];
-        generateCFRTables(list, iterationCount);
-        goToResult();
+
+    const formData = {
+        service_time: parseInt(serviceTimeInput),
+        max_simulation_time: parseInt(maxSimulationTimeInput),
+        parameter: parseFloat(parameterInput),
+        channel_count: channelCount,
+        iteration_count: iterationCount,
+    };
+
+    try{
+        const response = await fetch('calculate/unlimited_reliability', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        });
+
+        if (response.ok){
+            const data = await response.json();
+            console.log('Simulation Results: ', data);
+            var list = ["Индекс", "Случайное значение", "Интервал между заявками", "Время обслуживания"];
+            generateCFRTables(list, iterationCount);
+            goToResult();
+        } else {
+            alert('Failed to run simulation: ', response.status, response.statusText);
+        }
+    } catch (error) {
+        alert('Error: ', error);
     }
+
 }
 
 function refusalSolve() {
