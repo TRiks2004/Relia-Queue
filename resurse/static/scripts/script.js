@@ -14,30 +14,63 @@ const goToResult = () => {
 }
 
 
-function refusalSolve() {
-    var channelCount = parseInt(document.getElementById("channelCountInput").value);
-    var simulationCount = parseInt(document.getElementById("simulationCountInput").value);
+async function refusalSolve() {
+    const intensityInput = document.getElementById('intensityInput').value;
+    const serviceTimeInput = document.getElementById('serviceTimeInput').value;
+    const simulationDurationInput = document.getElementById('simulationDurationInput').value;
+    const channelCountInput = document.getElementById('channelCountInput').value;
+    const simulationCountInput = document.getElementById('simulationCountInput').value;
 
-    if (isNaN(simulationCount) || simulationCount <= 0){
-        alert("Ошибка: Количество симуляций не может быть символом или числом меньше 0")
-    }    
-    
+    const channelCount = parseInt(channelCountInput);
+    const simulationCount = parseInt(simulationCountInput);
+
+    if (isNaN(simulationCount) || simulationCount <= 0) {
+        alert("Ошибка: Количество симуляций не может быть символом или числом меньше 0");
+        return;
+    }
+
     if (isNaN(channelCount) || channelCount <= 0) {
         alert("Ошибка: Количество каналов не может быть символом или числом меньше 0");
         return;
     }
 
-    if (channelCount > 5){
-        alert("Ошибка: число серверов (каналов) ограничено до 5.")
-    }
-    else{
-        var list = ["Индекс", "Случайное число", "МЕЖ", "Время в очереди", "Обслужено", "Отказов"];''
-        generateTables(list, simulationCount);
-        goToResult();
+    if (channelCount > 5) {
+        alert("Ошибка: число серверов (каналов) ограничено до 5.");
+        return;
     }
 
-}
+    const formData = {
+        T: parseFloat(simulationDurationInput),
+        num_channels: channelCount,
+        service_time: parseFloat(serviceTimeInput),
+        num_iterations: simulationCount,
+        alfa: parseFloat(intensityInput),
+    };
 
+    try {
+        const response = await fetch('/cfr-refusal', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        });
+
+        if (response.ok) {
+            const responseData = await response.json();
+            console.log('Simulation Results:', responseData);
+            
+            // Здесь вы можете обработать полученные результаты на сайте
+            // и вызвать функции для генерации таблиц и перехода к результатам
+            const list = ["Индекс", "Случайное число", "МЕЖ", "Время в очереди", "Обслужено", "Отказов"];
+            generateTables(list, simulationCount);
+            goToResult();
+        } else {
+            console.error('Failed to run simulation', response.status, response.statusText);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }}
 function generateTables(list, sim_count) {
     // Remove existing tables
     var existingTables = document.querySelectorAll(".t-table");

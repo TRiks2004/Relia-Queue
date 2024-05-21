@@ -3,8 +3,12 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
 from pydantic_settings import BaseSettings
-
+from fastapi import FastAPI, Form
 from surroundings import config_fast_api
+from dataclasses import asdict
+from pydantic import BaseModel
+import json
+from smo_rejection import run_simulation, SimulationParameters 
 
 main_point = APIRouter(
     prefix=''
@@ -17,8 +21,6 @@ def plus_html(view_name: str) -> str:
     return f"{view_name}.j2"
 
 class ViewList(BaseSettings):
-
-    # layout.html main_page.html qs_theory_page.html block_system_page.html cfr_refusal_page.html cfr_unlimited_page.html about.html                                                               ─╯
     layout: str = plus_html('layout')
     main_page: str = plus_html('index')
     about_page: str = plus_html('about')
@@ -59,6 +61,35 @@ def cfr_unlimited(request: Request):
     )
 
 
+class InputParameter(BaseModel):
+    value: float
 
+class SimulationInput(BaseModel):
+    T: float
+    num_channels: int
+    service_time: float
+    num_iterations: int
+    alfa: int
 
+@main_point.post('/cfr-refusal')
+async def run_simulation_handler(request: Request):
+    data = await request.json()
+    params = SimulationParameters(**data)
+    results = run_simulation(
+        T=params.T,
+        num_channels=params.num_channels,
+        service_time=params.service_time,
+        num_iterations=params.num_iterations,
+        alfa=params.alfa,
+    )
 
+    # Преобразование результатов в JSON
+    import json
+    from dataclasses import asdict
+
+    def custom_serializer(obj):
+        if hasattr(obj, '__dataclass_fields__'):
+            return asdict(obj)
+        raise TypeError(f'Object of type {obj.__class__.__name__} is not JSON serializable')
+
+    return json.dumps(results, default=custom_serializer)
