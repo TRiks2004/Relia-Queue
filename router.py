@@ -84,14 +84,6 @@ async def run_simulation_handler(request: Request, response_format: str = 'json'
         num_iterations=params.num_iterations,
         alfa=params.alfa,
     )
-
-    if response_format == 'pdf':
-        # Создание PDF-файла и получение его содержимого
-        pdf_content = export_to_pdf(results)
-
-        # Отправка PDF-файла в ответе
-        return Response(content=pdf_content, media_type='application/pdf', headers={'Content-Disposition': 'attachment; filename="simulation_results.pdf"'})
-    else:
-        # Возвращение результатов в формате JSON
-        return results
+    
+    return results
 
