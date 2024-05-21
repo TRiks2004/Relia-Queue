@@ -1,8 +1,8 @@
 import json
-from solution.components.block import Block
-from solution.components.element import Element
+from system_reliability.components.block import Block
+from system_reliability.components.element import Element
 
-from solution.enums import MethodConnection
+from system_reliability.enums import MethodConnection
 
 from dataclasses import asdict
 

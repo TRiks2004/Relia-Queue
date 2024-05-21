@@ -76,7 +76,7 @@ class Block(Component):
 
     
     def calculate(self):
-        simulated = self.simulated_probability(num_trials=10000)
+        simulated = self.simulated_probability(num_trials=50)
         
         return CulculateResult(
             simulated_results=simulated
