@@ -1,12 +1,13 @@
 [tool.poetry]
 name = "smo_rejection"
-version = "0.4.4"
+version = "0.5.4"
 description = ""
 authors = ["mbtmrw <keks2324098@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
+reportlab = "^4.2.0"
 
 
 [build-system]

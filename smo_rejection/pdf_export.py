@@ -5,18 +5,17 @@ from reportlab.lib.units import inch
 from reportlab.lib import colors
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase import pdfmetrics
-from .utils import calculate_mean_served_requests
+import io
 
-def export_to_pdf(results, filename):
+def export_to_pdf(results):
     """
     Экспортирует результаты симуляции в PDF-файл.
 
     ### Параметры:
     * `results (list)` - Список результатов симуляции.
-    * `filename (str)` - Имя файла для сохранения результатов.
 
-    ### Примечание:
-    Функция создает новый PDF-документ и записывает в него результаты симуляции.
+    ### Возвращает:
+    * `pdf_content (bytes)` - Содержимое PDF-файла в виде байтового объекта.
     """
     # Регистрация шрифта Arial для поддержки кириллицы
     pdfmetrics.registerFont(TTFont('Arial', 'arial.ttf'))
@@ -26,8 +25,11 @@ def export_to_pdf(results, filename):
     styles.add(ParagraphStyle(name='Cyrillic', fontName='Arial', fontSize=10))
     styles.add(ParagraphStyle(name='CyrillicHeading3', fontName='Arial', fontSize=12, spaceAfter=6))
 
+    # Создание байтового объекта для записи PDF
+    pdf_bytes = io.BytesIO()
+
     # Создание документа PDF с указанным размером страницы и кодировкой
-    doc = SimpleDocTemplate(filename, pagesize=letter, encoding='UTF-8')
+    doc = SimpleDocTemplate(pdf_bytes, pagesize=letter, encoding='UTF-8')
     elements = []
 
     for i, result in enumerate(results, start=1):
@@ -68,3 +70,9 @@ def export_to_pdf(results, filename):
 
     # Построение и сохранение PDF документа
     doc.build(elements)
+
+    # Получение содержимого PDF в виде байтов
+    pdf_bytes.seek(0)  # Перематываем объект BytesIO в начало
+    pdf_content = pdf_bytes.getvalue()
+
+    return pdf_content
