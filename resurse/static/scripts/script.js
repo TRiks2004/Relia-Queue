@@ -13,32 +13,7 @@ const goToResult = () => {
     resultTitle.scrollIntoView({ behavior: 'smooth' });
 }
 
-
-function refusalSolve() {
-    var channelCount = parseInt(document.getElementById("channelCountInput").value);
-    var simulationCount = parseInt(document.getElementById("simulationCountInput").value);
-
-    if (isNaN(simulationCount) || simulationCount <= 0){
-        alert("Ошибка: Количество симуляций не может быть символом или числом меньше 0")
-    }    
-    
-    if (isNaN(channelCount) || channelCount <= 0) {
-        alert("Ошибка: Количество каналов не может быть символом или числом меньше 0");
-        return;
-    }
-
-    if (channelCount > 5){
-        alert("Ошибка: число серверов (каналов) ограничено до 5.")
-    }
-    else{
-        var list = ["Индекс", "Случайное число", "МЕЖ", "Время в очереди", "Обслужено", "Отказов"];''
-        generateTables(list, simulationCount);
-        goToResult();
-    }
-
-}
-
-function generateTables(list, sim_count) {
+function generateCFRTables(list, sim_count) {
     // Remove existing tables
     var existingTables = document.querySelectorAll(".t-table");
     for (var i = 0; i < existingTables.length; i++) {
@@ -93,6 +68,30 @@ function generateTables(list, sim_count) {
     document.body.appendChild(div);
 }
 
+function refusalSolve() {
+    var channelCount = parseInt(document.getElementById("channelCountInput").value);
+    var simulationCount = parseInt(document.getElementById("simulationCountInput").value);
+
+    if (isNaN(simulationCount) || simulationCount <= 0){
+        alert("Ошибка: Количество симуляций не может быть символом или числом меньше 0")
+    }    
+    
+    if (isNaN(channelCount) || channelCount <= 0) {
+        alert("Ошибка: Количество каналов не может быть символом или числом меньше 0");
+        return;
+    }
+
+    if (channelCount > 5){
+        alert("Ошибка: число серверов (каналов) ограничено до 5.")
+    }
+    else{
+        var list = ["Индекс", "Случайное число", "МЕЖ", "Время в очереди", "Обслужено", "Отказов"];''
+        generateCFRTables(list, simulationCount);
+        goToResult();
+    }
+
+}
+
 function unlimitedSolve() {
     var channelCount = parseInt(document.getElementById("channelCountInput").value);
     var iterationCount = parseInt(document.getElementById("iterationCountInput").value);
@@ -110,7 +109,7 @@ function unlimitedSolve() {
     }
     else{
         list = ["Индекс", "Случайное значение", "Интервал между заявками", "Время обслуживания"];
-        generateTables(list, iterationCount);
+        generateCFRTables(list, iterationCount);
         goToResult();
     }
 }
