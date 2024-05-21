@@ -85,7 +85,7 @@ class TestUtilityFunctions(unittest.TestCase):
         """
         self.assertEqual(calculate_time(2, 0.5), 0.3466)
         self.assertEqual(calculate_time(1, 0.1), 2.3026)
-        self.assertEqual(calculate_time(5, 0.9), 0.0210)
+        self.assertEqual(calculate_time(5, 0.9), 0.0211)
         self.assertEqual(calculate_time(10, 0.01), 0.4605)
 
 if __name__ == "__main__":
