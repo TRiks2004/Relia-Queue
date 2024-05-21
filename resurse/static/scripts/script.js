@@ -13,6 +13,32 @@ const goToResult = () => {
     resultTitle.scrollIntoView({ behavior: 'smooth' });
 }
 
+function saveTablesToPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    const tables = document.querySelectorAll(".t-table");
+    let currentY = 10; // Initial Y position
+
+    tables.forEach((table, index) => {
+        // Add title for each simulation
+        doc.text("Simulation " + (index + 1), 10, currentY);
+        currentY += 10; // Add space after the title
+
+        // Add table with a margin
+        doc.autoTable({
+            html: table,
+            startY: currentY,
+            margin: { top: 10 } // Add margin at the top of the table
+        });
+
+        currentY = doc.lastAutoTable.finalY + 20; // Update current Y position, add space after the table
+    });
+
+    doc.save("tables.pdf");
+}
+
+
 function generateCFRTables(list, sim_count, simulation_data, num_threads) {
     // Remove existing tables
     var existingTables = document.querySelectorAll(".t-table");
@@ -36,7 +62,7 @@ function generateCFRTables(list, sim_count, simulation_data, num_threads) {
 
         // Add simulation number above the table
         var simulationNumber = document.createElement("div");
-        simulationNumber.textContent = "Симуляция №" + (i + 1);
+        simulationNumber.textContent = "Simulation" + (i + 1);
         simulationNumber.classList.add("simulation-number");
         table.appendChild(simulationNumber);
 
@@ -50,7 +76,7 @@ function generateCFRTables(list, sim_count, simulation_data, num_threads) {
         // Add server columns
         for (var j = 1; j <= num_threads; j++) {
             var th = document.createElement("th");
-            th.textContent = "Сервер " + j;
+            th.textContent = "thread " + j;
             tableRow.appendChild(th);
         }
 
@@ -132,7 +158,7 @@ async function unlimitedSolve() {
         if (response.ok){
             const data = await response.json();
             console.log(data);
-            const list = ["Индекс", "Случайное значение", "Интервал между заявками", "Время обслуживания"];
+            const list = ["index", "random_value", "request_time", "service_time"];
             generateCFRTables(list, iterationCount, data, channelCount);
             goToResult();
         } else {
