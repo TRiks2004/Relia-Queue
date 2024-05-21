@@ -80,15 +80,10 @@ async def run_simulation_handler(request: Request):
     parameters = CFRUnlimitedParameters(**data)
     results = simulate_queue(
         service_time=parameters.serviceTime,
-        max_simulation_time=parameters.maxSimulationTime,
+        max_time=parameters.maxSimulationTime,
         alpha=parameters.alpha,
-        channel_count=parameters.channelCount,
-        iteration_count=parameters.iterationCount
+        num_threads=parameters.channelCount,
+        num_iterations=parameters.iterationCount
     )
-
-    def custom_serializer(obj):
-        if hasattr(obj, '__dataclass_field__'):
-            return asdict(obj)
-        raise TypeError(f'Object of type {obj.__class__.__name__} is not JSON serializable')
     
-    return json.dumps(results, default=custom_serializer)
+    return json.dumps(results)
