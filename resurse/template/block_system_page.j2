@@ -70,16 +70,12 @@
                 </span>
             </div>
             <p class="theme-title" id="formTitle">Ввод параметров</p>
-            <div class="input-form" style="height: 800px; color: #FFFFFF; align-items: center;">
-                <div >
-                    <div class="system-block">
-                        <div class="button-container">
+             <div class="system-block">
                         <button class="button-with-icon" id="add-block-button"
                             onclick="addBlock()">
                             <span class="icon"><i class="fas fa-plus"></i></span>
                             Добавить новый блок
                         </button>
-                        </div>
                         <div class="checkbox-container-white">
                         <label><input type="radio" name="system-mode" class="mode-radio">
                             Параллельно</label>
@@ -93,10 +89,8 @@
                             Вычислить
                         </button>
                         </div>
+                        <button class="solve-button" onclick="blockSystemSolve()">РЕШИТЬ</button>
                     </div >
-                </div>
-                <button class="solve-button" onclick="blockSystemSolve()">РЕШИТЬ</button>
-            </div>
             <p class="theme-title" id="resultTitle">Решение</p>
             <div class="solve-area">
                 <table class="t-table" border="1" style="text-align: center;"> 
