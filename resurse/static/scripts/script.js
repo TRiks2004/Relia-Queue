@@ -13,7 +13,7 @@ const goToResult = () => {
     resultTitle.scrollIntoView({ behavior: 'smooth' });
 }
 
-function generateCFRTables(list, sim_count) {
+function generateCFRTables(list, sim_count, simulation_data, num_threads) {
     // Remove existing tables
     var existingTables = document.querySelectorAll(".t-table");
     for (var i = 0; i < existingTables.length; i++) {
@@ -26,7 +26,7 @@ function generateCFRTables(list, sim_count) {
         existingDiv.remove();
     }
 
-    for (var i = 1; i <= sim_count; i++) {
+    for (var i = 0; i < sim_count; i++) {
         var table = document.createElement("table");
         table.classList.add("t-table");
         table.setAttribute("border", "1");
@@ -36,31 +36,39 @@ function generateCFRTables(list, sim_count) {
 
         // Add simulation number above the table
         var simulationNumber = document.createElement("div");
-        simulationNumber.textContent = "Симуляция №" + i;
+        simulationNumber.textContent = "Симуляция №" + (i + 1);
         simulationNumber.classList.add("simulation-number");
         table.appendChild(simulationNumber);
 
-        // Add additional columns
-        for (var j = 0; j < list.length; j++) {
-            var th = document.createElement("th");
-            th.textContent = list[j];
-            tableRow.appendChild(th);
+        // Проверяем, что simulation_data содержит результаты
+        if (simulation_data.results && simulation_data.results.length > i) {
+            var iterationsData = simulation_data.results[i].iterations;
+            if (iterationsData && iterationsData.length > 0) {
+                for (var j = 0; j < iterationsData.length; j++) {
+                    var tableRow = document.createElement("tr");
+                    var iterationData = iterationsData[j];
+
+                    for (var k = 0; k < list.length; k++) {
+                        var td = document.createElement("td");
+                        td.textContent = iterationData[list[k].toLowerCase()] || "";
+                        tableRow.appendChild(td);
+                    }
+
+                    for (var k = 0; k < num_threads; k++) {
+                        var td = document.createElement("td");
+                        td.textContent = iterationData.server_times ? iterationData.server_times[k] || "" : "";
+                        tableRow.appendChild(td);
+                    }
+
+                    table.appendChild(tableRow);
+                }
+            }
         }
 
-        var channelCount = parseInt(document.getElementById("channelCountInput").value);
-
-        // Add server columns
-        for (var j = 1; j <= channelCount; j++) {
-            var th = document.createElement("th");
-            th.textContent = "Сервер " + j;
-            tableRow.appendChild(th);
-        }
-        
         table.style.marginBottom = "40px";
-        table.appendChild(tableRow);
         document.body.appendChild(table);
     }
-    
+
     // Add a div with top margin of 60px
     var div = document.createElement("div");
     div.classList.add("top-margin-div");
@@ -103,13 +111,13 @@ async function unlimitedSolve() {
             const data = await response.json();
             console.log('Simulation Results: ', data);
             var list = ["Индекс", "Случайное значение", "Интервал между заявками", "Время обслуживания"];
-            generateCFRTables(list, iterationCount);
+            generateCFRTables(list, iterationCount, data, channelCount);
             goToResult();
         } else {
-            alert('Failed to run simulation: ', response.status, response.statusText);
+            console.log('Failed to run simulation: ', response.status, response.statusText);
         }
     } catch (error) {
-        alert('Error: ', error);
+        console.log('Error: ', error);
     }
 
 }

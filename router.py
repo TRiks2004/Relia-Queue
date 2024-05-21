@@ -9,7 +9,7 @@ from surroundings import config_fast_api
 from smo_over_queue import simulate_queue
 
 import json
-from dataclasses import asdict
+from dataclasses import asdict, is_dataclass
 
 main_point = APIRouter(
     prefix=''
@@ -63,7 +63,6 @@ def cfr_unlimited(request: Request):
         request=request, name=view_list.layout, context={"title": "ReliaQueue - МСМО c неограниченной очередью ", 'dynamic_page': view_list.cfr_unlimited_page}
     )
 
-
 class InputParameters(BaseSettings):
     value: int
 
@@ -85,5 +84,14 @@ async def run_simulation_handler(request: Request):
         num_threads=parameters.channelCount,
         num_iterations=parameters.iterationCount
     )
+
+    def custom_serializer(obj):
+        if is_dataclass(obj):
+            return asdict(obj)
+        elif isinstance(obj, list):
+            return [custom_serializer(item) for item in obj]
+        elif isinstance(obj, dict):
+            return {key: custom_serializer(value) for key, value in obj.items()}
+        raise TypeError(f'Object of type {obj.__class__.__name__} is not JSON serializable')
     
-    return json.dumps(results)
+    return json.dumps(results, default=custom_serializer)
