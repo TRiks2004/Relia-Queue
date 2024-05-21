@@ -5,6 +5,7 @@ from reportlab.lib.units import inch
 from reportlab.lib import colors
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase import pdfmetrics
+from .utils import calculate_mean_served_requests
 import io
 
 def export_to_pdf(results):
