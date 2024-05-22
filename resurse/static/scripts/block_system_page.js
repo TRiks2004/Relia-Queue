@@ -105,13 +105,14 @@ async function fetchSystemReliability() {
   try {
 
     const systemData = buildSystemData(blocks, systemMode); // Построить данные системы
-    
+
     const response = await postData('calculate/system_reliability', systemData); // Отправить данные на сервер
 
     if (response.ok) {
       const reliabilityData = JSON.parse(await response.json());
       console.log('Reliability data:', reliabilityData);
       displayReliabilityTables(reliabilityData); // Показать таблицы надежности
+      document.getElementById('generate-pdf').style.display = 'inline-block'; // Показать кнопку генерации PDF
     } else {
       console.error('Failed to calculate system reliability', response.status, response.statusText);
     }

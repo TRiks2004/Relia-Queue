@@ -220,6 +220,7 @@ async def generate_pdf(request: Request):
             table {{
                 width: 100%;
                 border-collapse: collapse;
+                margin-bottom: 20px;
             }}
             th, td {{
                 border: 1px solid black;
