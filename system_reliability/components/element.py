@@ -1,4 +1,7 @@
 import random
+
+from system_reliability.components.block import Block
+from system_reliability.enums import MethodConnection
 from .component import Component
 from ..exceptions import ConstrainElementUp, ConstrainElementDown
 
@@ -28,3 +31,6 @@ class Element(Component):
             random_value=self.random_value,
             probability=self.random_value < self.probability_analytical
         )
+        
+    def to_dict_analytical(self, mode: MethodConnection):
+        return Block.get_formula_analytical(self.probability_analytical, mode)

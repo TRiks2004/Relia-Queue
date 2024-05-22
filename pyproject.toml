@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "system_reliability"
-version = "0.1.1"
+version = "0.2.0"
 description = ""
 authors = ["triks <trik0001000@gmail.com>"]
 readme = "README.md"

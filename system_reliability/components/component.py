@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
 
+from system_reliability.enums import MethodConnection
+
 class Component(ABC):
     probability_analytical: float
 
@@ -9,4 +11,8 @@ class Component(ABC):
     
     @abstractmethod
     def to_dict(self) -> dict:
+        pass
+    
+    @abstractmethod
+    def to_dict_analytical(self, mode: MethodConnection) -> dict:
         pass

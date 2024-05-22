@@ -25,3 +25,4 @@ class SimulationResult:
 @dataclass
 class CulculateResult:
     simulated_results: SimulationResult
+    analytical_results: str

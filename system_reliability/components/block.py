@@ -11,11 +11,8 @@ class Block(Component):
         self.components = components
         self.connection = connection
         self.probability_analytical = self.calculate_probability_analytical()
-    
-    block_main = None
-    block_step: str = None  
-    simulated_step: int = None 
-    simulated_results = []
+        self.probability_simulated = None
+        self.simulated_results = []
        
     def calculate_probability_by_method_analytical(self, probability):
         match self.connection:
@@ -74,10 +71,29 @@ class Block(Component):
             components=[component.to_dict() for component in self.components],
         )
 
+    def to_dict_analytical(self, mode: MethodConnection):
+        # print(self.probability_analytical)
+        # print(Block.get_formula_analytical(self.probability_analytical, mode))
+
+        return Block.get_formula_analytical(' * '.join([component.to_dict_analytical(self.connection) for component in self.components]), mode)
+        
+    def get_formula_analytical(probability: int, mode: MethodConnection):
+        match mode:
+            case MethodConnection.Parallel:
+                return f'(1 - {probability})'
+            case MethodConnection.Serial:
+                return f'{probability}'
+        
+    
     
     def calculate(self):
         simulated = self.simulated_probability(num_trials=50)
         
+        
         return CulculateResult(
-            simulated_results=simulated
+            simulated_results=simulated,
+            analytical_results=self.to_dict_analytical(self.connection) + f' = {self.calculate_probability_analytical()}'
+            
         )
+        
+        

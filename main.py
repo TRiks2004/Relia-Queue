@@ -16,7 +16,7 @@ element_e = Element(probability=0.3)
 block_1 = Block(element_a, element_b, connection=MethodConnection.Parallel)
 block_2 = Block(element_c, element_d, connection=MethodConnection.Parallel)
 
-block_all = Block(block_1, block_2, connection=MethodConnection.Serial)
+block_all = Block(block_1, block_2, connection=MethodConnection.Parallel)
 
 def custom_serializer(obj):
     if isinstance(obj, MethodConnection):
@@ -25,6 +25,7 @@ def custom_serializer(obj):
         return asdict(obj)
     raise TypeError(f'Object of type {obj.__class__.__name__} is not JSON serializable')
 
-simulation_results = block_all.simulated_probability(2)
+simulation_results = block_all.calculate()
 
-print(json.dumps(simulation_results, default=custom_serializer, indent=4))
+print(simulation_results.analytical_results)
+# print(json.dumps(simulation_results, default=custom_serializer, indent=4))
