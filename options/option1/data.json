@@ -1,0 +1,9 @@
+{
+    "parameters": {
+        "serviceTime": 0.5,
+        "maxSimulationTime": 10,
+        "alpha": 3,
+        "channelCount": 3,
+        "iterationCount": 3
+    }
+}
