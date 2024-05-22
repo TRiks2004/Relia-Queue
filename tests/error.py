@@ -11,7 +11,7 @@ from smo_rejection import (
     NumIterationsNegative, NumIterationsIsZero,
     MaxTimeNegative,
     NumChannelsIsZero, NumChannelsNegative,
-    AlphaIsZero, AlphaNegative
+    AlphaIsZero, AlphaNegative,
 )
 
 class ErrorInputParametres(unittest.TestCase):
@@ -66,6 +66,37 @@ class ErrorInputParametres(unittest.TestCase):
         Проверка вызова исключения AlphaNegative при отрицательном значении альфа.
         """
         self.assertRaises(AlphaNegative, run_simulation, 1, 2, 3, 4, -5)
+
+    def test_alpha_big(self):
+        """
+        Проверка вызова исключения AlphaNegative при отрицательном значении альфа.
+        """
+        self.assertRaises(MaxAlhfa, run_simulation, 1, 2, 3, 4, -5)
+
+    def test_alpha_negative(self):
+        """
+        Проверка вызова исключения AlphaNegative при отрицательном значении альфа.
+        """
+        self.assertRaises(AlphaNegative, run_simulation, 1, 2, 3, 4, -5)
+
+    def test_alpha_negative(self):
+        """
+        Проверка вызова исключения AlphaNegative при отрицательном значении альфа.
+        """
+        self.assertRaises(AlphaNegative, run_simulation, 1, 2, 3, 4, -5)
+
+    def test_alpha_negative(self):
+        """
+        Проверка вызова исключения AlphaNegative при отрицательном значении альфа.
+        """
+        self.assertRaises(AlphaNegative, run_simulation, 1, 2, 3, 4, -5)
+
+    def test_alpha_negative(self):
+        """
+        Проверка вызова исключения AlphaNegative при отрицательном значении альфа.
+        """
+        self.assertRaises(AlphaNegative, run_simulation, 1, 2, 3, 4, -5)
+
 
 class TestUtilityFunctions(unittest.TestCase):
 

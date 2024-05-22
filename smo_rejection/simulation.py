@@ -1,4 +1,4 @@
-from .exception import InvalidInputError, NumIterationsNegative, NumIterationsIsZero, NumChannelsNegative, NumChannelsIsZero, AlphaIsZero, AlphaNegative, ServiceTimeNegative, MaxTimeNegative
+from .exception import InvalidInputError,MaxNumChannels,MaxAlfha,MaxServiceTime,MaxNumIteration,MaxSimulationTime, NumIterationsNegative, NumIterationsIsZero, NumChannelsNegative, NumChannelsIsZero, AlphaIsZero, AlphaNegative, ServiceTimeNegative, MaxTimeNegative
 from .models import SimulationParameters
 from .processing import process_iteration
 
@@ -50,6 +50,17 @@ def run_simulation(T: float, num_channels: int, service_time: float, num_iterati
         raise AlphaNegative("Альфа не может быть отрицательной")
     if alfa == 0:
         raise AlphaIsZero("Альфа не может быть равным нулю")
+    
+    if num_channels > 5:
+        raise MaxNumChannels("Вы ввели слишком большое число используемых каналов")
+    if num_iterations > 100000:
+        raise MaxNumIteration("Количество итераций слишком велико.")
+    if service_time > 1000:
+        raise MaxServiceTime("Время обслуживания слишком велико.")
+    if T > 100000:
+        raise MaxSimulationTime("Максимальное время симуляции слишком велико")
+    if alfa > 100:
+        raise MaxAlfha("Альфа слишком велика.")
 
     # Создание объекта SimulationParameters
     params = SimulationParameters(T=T, num_channels=num_channels, service_time=service_time, num_iterations=num_iterations, alfa=alfa)

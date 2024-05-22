@@ -37,3 +37,24 @@ class ServiceTimeNegative(Exception):
 class MaxTimeNegative(Exception):
     """Исключение выбрасывается, если максимальное время симуляции отрицательное."""
     pass
+
+class MaxNumChannels(Exception):
+    """Исключение выбрасывается, если максимальное время симуляции отрицательное."""
+    pass
+
+class MaxNumIteration(Exception):
+    """Исключение выбрасывается, если максимальное время симуляции отрицательное."""
+    pass
+
+class MaxServiceTime(Exception):
+    """Исключение выбрасывается, если максимальное время симуляции отрицательное."""
+    pass
+
+class MaxSimulationTime(Exception):
+    """Исключение выбрасывается, если максимальное время симуляции отрицательное."""
+    pass
+
+class MaxAlfha(Exception):
+    """Исключение выбрасывается, если максимальное время симуляции отрицательное."""
+    pass
+
