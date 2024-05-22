@@ -1,11 +1,11 @@
 import sys
 import os
+from unittest.mock import Mock
 
-# Добавляем в системный путь директорию на один уровень выше текущего файла
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import unittest
-from smo_rejection import run_simulation,round_value, calculate_time
+from smo_rejection import run_simulation,round_value, calculate_time, calculate_mean_served_requests
 from smo_rejection import (
     ServiceTimeNegative, 
     NumIterationsNegative, NumIterationsIsZero,
@@ -87,6 +87,38 @@ class TestUtilityFunctions(unittest.TestCase):
         self.assertEqual(calculate_time(1, 0.1), 2.3026)
         self.assertEqual(calculate_time(5, 0.9), 0.0211)
         self.assertEqual(calculate_time(10, 0.01), 0.4605)
+
+class TestCalculateMeanServedRequests(unittest.TestCase):
+    def test_single_result(self):
+        """
+        Тест на то, что функция возвращает правильное значение при передаче одного результата.
+        """
+        mock_result = Mock(served_requests=100)
+        results = [mock_result]
+        mean_served_requests = calculate_mean_served_requests(results)
+        self.assertEqual(mean_served_requests, 100.0)
+
+    def test_multiple_results(self):
+        """
+        Тест на то, что функция возвращает правильное значение при передаче нескольких результатов.
+        """
+        mock_result1 = Mock(served_requests=100)
+        mock_result2 = Mock(served_requests=200)
+        mock_result3 = Mock(served_requests=150)
+        results = [mock_result1, mock_result2, mock_result3]
+        mean_served_requests = calculate_mean_served_requests(results)
+        self.assertEqual(mean_served_requests, 150.0)
+
+    def test_rounding(self):
+        """
+        Тест на то, что функция правильно округляет результат до 4 знаков после запятой.
+        """
+        mock_result1 = Mock(served_requests=100.12345)
+        mock_result2 = Mock(served_requests=200.67890)
+        results = [mock_result1, mock_result2]
+        mean_served_requests = calculate_mean_served_requests(results)
+        self.assertEqual(mean_served_requests, 150.4012)
+
 
 if __name__ == "__main__":
     unittest.main()

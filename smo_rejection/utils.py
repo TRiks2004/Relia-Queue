@@ -49,4 +49,6 @@ def calculate_mean_served_requests(results):
     * `float` - Среднее количество обслуженных заявок с 4 знаками после запятой.
     """
     total_served_requests = [result.served_requests for result in results]
+    if not results:
+        return None
     return round_value(sum(total_served_requests) / len(total_served_requests))
