@@ -1,5 +1,3 @@
-var pdfBtn = document.getElementById("pdfButton");
-
 const goToTheory = () => {
     const theoryTitle = document.getElementById("theoryTitle");
     theoryTitle.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
@@ -20,6 +18,12 @@ function saveTablesToPDF() {
     const doc = new jsPDF();
 
     const tables = document.querySelectorAll(".t-table");
+
+    if (tables.length === 0) {
+        alert("На странице нет таблиц для сохранения в PDF.");
+        return;
+    }
+
     let currentY = 10; // Initial Y position
 
     tables.forEach((table, index) => {
@@ -39,6 +43,7 @@ function saveTablesToPDF() {
 
     doc.save("tables.pdf");
 }
+
 
 function generateCFRTables(list, sim_count, simulation_data, num_threads) {
     // Remove existing tables
@@ -125,7 +130,6 @@ function generateCFRTables(list, sim_count, simulation_data, num_threads) {
     document.body.appendChild(div);
 }
 
-
 async function unlimitedSolve() {
     var serviceTime = parseFloat(document.getElementById("serviceTimeInput").value);
     var maxSimulationTime = parseFloat(document.getElementById("maxSimulationTimeInput").value);
@@ -172,7 +176,6 @@ async function unlimitedSolve() {
                 const data = await response.json();
                 console.log(data);
                 const list = ["index", "random_value", "request_time", "service_time"];
-                pdfBtn.style.visibility = 'visible';
                 generateCFRTables(list, iteration, data, channelCount);
                 goToResult();
             } else {
@@ -181,42 +184,5 @@ async function unlimitedSolve() {
         } catch (error) {
             console.log('Error: ', error);
         }
-    }
-}
-
-function refusalSolve() {
-    var channelCount = parseInt(document.getElementById("channelCountInput").value);
-    var simulationCount = parseInt(document.getElementById("simulationCountInput").value);
-
-    if (isNaN(simulationCount) || simulationCount <= 0){
-        alert("Ошибка: Количество симуляций не может быть символом или числом меньше 0")
-    }    
-    
-    if (isNaN(channelCount) || channelCount <= 0) {
-        alert("Ошибка: Количество каналов не может быть символом или числом меньше 0");
-        return;
-    }
-
-    if (channelCount > 5){
-        alert("Ошибка: число серверов (каналов) ограничено до 5.")
-    }
-    else{
-        var list = ["Индекс", "Случайное число", "МЕЖ", "Время в очереди", "Обслужено", "Отказов"];''
-        generateCFRTables(list, simulationCount);
-        goToResult();
-    }
-}
-
-function blockSystemSolve(){
-    // Get input values
-    var probability = parseFloat(document.getElementById("probabilityInput").value);
-
-    if (isNaN(probability) || probability <= 0) {
-        alert("Ошибка: Вероятность не может быть символом или числом меньше 0");
-        return;
-    }
-    if (probability > 1) {
-        alert("Ошибка: Вероятность не может быть больше 1");
-        return;    
     }
 }

@@ -221,6 +221,7 @@ body{
 
 .calc-area{
     display: flex;
+    margin-bottom: 50px;
     flex-direction: row;
     width: 100%;
 }
