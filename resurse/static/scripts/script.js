@@ -38,6 +38,39 @@ function saveTablesToPDF() {
     doc.save("tables.pdf");
 }
 
+function downloadCSV(filename, csvContent) {
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+function saveTablesToCSV() {
+    const tables = document.querySelectorAll(".t-table");
+    let csvContent = '';
+
+    tables.forEach((table, index) => {
+        csvContent += "Simulation" + (index + 1) + '\n';
+
+        table.querySelectorAll('tr').forEach((row) => {
+            row.querySelectorAll('th, td').forEach((cell, cellIndex) => {
+                csvContent += cell.innerText;
+                if (cellIndex < row.children.length - 1) {
+                    csvContent += ',';
+                }
+            });
+            csvContent += '\n';
+        });
+
+        csvContent += '\n'; // Добавляем пустую строку между таблицами
+    });
+
+    downloadCSV('tables.csv', csvContent);
+}
 
 function generateCFRTables(list, sim_count, simulation_data, num_threads) {
     // Remove existing tables
@@ -109,7 +142,7 @@ function generateCFRTables(list, sim_count, simulation_data, num_threads) {
         var expectedValueRow = document.createElement("tr");
         var expectedValueCell = document.createElement("td");
         expectedValueCell.setAttribute("colspan", list.length + num_threads);
-        expectedValueCell.textContent = "Ожидаемое значение: " + simulation_data.results[i].expected_value;
+        expectedValueCell.textContent = "Expected value: " + simulation_data.results[i].expected_value;
         expectedValueRow.appendChild(expectedValueCell);
         table.appendChild(expectedValueRow);
 
