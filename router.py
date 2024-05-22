@@ -22,6 +22,14 @@ from smo_rejection import run_simulation
 from smo_over_queue import simulate_queue
 
 
+from schemas import (
+    CFRUnlimitedParameters, SimulationInput, SystemReliabilityForm
+)
+
+
+
+
+
 main_point = APIRouter(
     prefix=''
 )
@@ -71,17 +79,6 @@ def cfr_unlimited(request: Request):
         request=request, name=view_list.layout, context={"title": "ReliaQueue - МСМО c неограниченной очередью ", 'dynamic_page': view_list.cfr_unlimited_page}
     )
 
-# Класс для ввода параметров с одним полем value
-class InputParameters(BaseSettings):
-    value: float
-
-# Класс для параметров симуляции CFRUnlimited с необходимыми полями
-class CFRUnlimitedParameters(BaseSettings):
-    serviceTime: float
-    maxSimulationTime: float
-    alpha: float
-    channelCount: int
-    iterationCount: int
 
 # Обработчик POST-запроса для симуляции CFR Unlimited
 @main_point.post('/cfr-unlimited')
@@ -104,18 +101,6 @@ async def run_simulation_handler(request: Request):
     # Возврат результатов симуляции
     return results
 
-
-class SystemReliabilityElement(BaseSettings):
-    value: int
-
-class SystemReliabilityBlock(BaseSettings):
-    blockNumber: int
-    mode: str
-    elements: list[SystemReliabilityElement]
-
-class SystemReliabilityForm(BaseSettings):
-    systemMode: str
-    blocks: list[SystemReliabilityBlock]
 
 
 def with_connection(mode: str) -> enums_system_reliability.MethodConnection:
@@ -194,8 +179,6 @@ def calculate_system_reliability(form: SystemReliabilityForm):
 
     return json_result
 
-
-
 config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
 
 @main_point.post("/calculate/system_reliability/generate-pdf")
@@ -244,33 +227,6 @@ async def generate_pdf(request: Request):
         })
     except Exception as e:
         return JSONResponse(content={"error": str(e)}, status_code=500)
-
-
-class InputParameter(BaseModel):
-    """
-    Модель данных для представления отдельного числового параметра.
-
-    Атрибуты:
-        value (float): Значение параметра.
-    """
-    value: float
-
-class SimulationInput(BaseModel):
-    """
-    Модель данных для представления входных параметров симуляции.
-
-    Атрибуты:
-        T (float): Продолжительность симуляции.
-        num_channels (int): Количество каналов обслуживания.
-        service_time (float): Время обслуживания.
-        num_iterations (int): Количество итераций симуляции.
-        alfa (int): Интенсивность потока заявок.
-    """
-    T: float
-    num_channels: int
-    service_time: float
-    num_iterations: int
-    alfa: int
 
 # Определение точки входа (роута) для запуска симуляции
 @main_point.post('/cfr-refusal')
