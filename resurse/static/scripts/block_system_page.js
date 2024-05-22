@@ -1,14 +1,19 @@
-let blockCounter = 0;
-const maxBlocks = 5;
-const maxElements = 5;
+let blockCounter = 0; // Счетчик блоков
+const maxBlocks = 5; // Максимальное количество блоков
+const maxElements = 5; // Максимальное количество элементов в блоке
 
+
+
+
+
+// Функция для добавления нового элемента в блок
 function addElement(button) {
-  const block = button.parentNode.parentNode;
-  const elements = block.querySelectorAll('.element');
+  const block = button.parentNode.parentNode; // Найти родительский блок
+  const elements = block.querySelectorAll('.element'); // Найти все элементы в блоке
 
-  const addElementButton = block.querySelector('.button-with-icon');
+  const addElementButton = block.querySelector('.button-with-icon'); // Кнопка добавления нового элемента
 
-  const newElement = document.createElement('div');
+  const newElement = document.createElement('div'); // Создать новый элемент
   newElement.className = 'element';
   newElement.innerHTML = `
         <div class="input-container">
@@ -17,18 +22,20 @@ function addElement(button) {
         <button class="delete-button" onclick="deleteElement(this)">x</button>
       `;
 
-  block.insertBefore(newElement, addElementButton.parentNode);
+  block.insertBefore(newElement, addElementButton.parentNode); // Вставить новый элемент перед кнопкой добавления
 
+  // Скрыть кнопку добавления элемента, если достигнут максимальный лимит элементов
   if (elements.length === maxElements - 1) {
     addElementButton.style.display = 'none';
   }
 }
 
+// Функция для добавления нового блока
 function addBlock() {
-  const blocks = document.querySelectorAll('.system-block .block');
+  const blocks = document.querySelectorAll('.system-block .block'); // Найти все блоки
 
-  blockCounter++;
-  const newBlock = document.createElement('div');
+  blockCounter++; // Увеличить счетчик блоков
+  const newBlock = document.createElement('div'); // Создать новый блок
   newBlock.className = 'block';
   newBlock.innerHTML = `
         <div class="block-title">Блок ${blockCounter}</div>
@@ -45,62 +52,78 @@ function addBlock() {
         </div>
       `;
 
-  const addBlockButton = document.querySelector('.system-block > .button-container');
-  addBlockButton.parentNode.insertBefore(newBlock, addBlockButton);
+  const addBlockButton = document.querySelector('#add-block-button'); // Кнопка добавления нового блока
+  if (addBlockButton) {
+    addBlockButton.parentNode.insertBefore(newBlock, addBlockButton); // Вставить новый блок перед кнопкой добавления блока
 
-  if (blocks.length === maxBlocks - 1) {
-    addBlockButton.style.display = 'none';
+    // Скрыть кнопку добавления блока, если достигнут максимальный лимит блоков
+    if (blocks.length === maxBlocks - 1) {
+      addBlockButton.style.display = 'none';
+    }
+  } else {
+    console.error('Add block button not found');
   }
 }
 
+// Функция для удаления элемента из блока
 function deleteElement(button) {
-  const element = button.parentNode;
-  const block = element.parentNode;
-  element.remove();
+  const element = button.parentNode; // Найти элемент
+  const block = element.parentNode; // Найти родительский блок
+  element.remove(); // Удалить элемент
 
-  const addElementButton = block.querySelector('.button-with-icon');
-  addElementButton.style.display = 'inline-flex';
+  const addElementButton = block.querySelector('.button-with-icon'); // Кнопка добавления элемента
+  addElementButton.style.display = 'inline-flex'; // Показать кнопку добавления элемента
 }
 
+// Функция для удаления блока
 function deleteBlock(button) {
-  const block = button.parentNode;
-  block.remove();
-  updateBlockTitles();
-  const addBlockButton = document.getElementById('add-block-button').parentNode;
-  addBlockButton.style.display = 'flex';
+  const block = button.parentNode; // Найти блок
+  block.remove(); // Удалить блок
+  updateBlockTitles(); // Обновить заголовки блоков
+  const addBlockButton = document.getElementById('add-block-button').parentNode; // Кнопка добавления блока
+  addBlockButton.style.display = 'flex'; // Показать кнопку добавления блока
 }
 
+// Функция для обновления заголовков блоков после удаления блока
 function updateBlockTitles() {
-  const blocks = document.querySelectorAll('.system-block .block');
-  blockCounter = 0;
+  const blocks = document.querySelectorAll('.system-block .block'); // Найти все блоки
+  blockCounter = 0; // Сбросить счетчик блоков
   blocks.forEach((block, index) => {
     blockCounter++;
     const title = block.querySelector('.block-title');
-    title.textContent = `Блок ${index + 1}`;
+    title.textContent = `Блок ${index + 1}`; // Обновить заголовок блока
   });
 }
 
+// Функция для отправки данных на сервер и получения надежности системы
 async function fetchSystemReliability() {
-  const blocks = document.querySelectorAll('.system-block .block');
-  const systemMode = document.querySelector('.checkbox-container-white input[type="radio"]:checked').parentNode.textContent.trim();
+  const blocks = document.querySelectorAll('.system-block .block'); // Найти все блоки
+  const systemMode = document.querySelector('.checkbox-container-white input[type="radio"]:checked').parentNode.textContent.trim(); // Получить режим системы
   
-  const systemData = buildSystemData(blocks, systemMode);
+  
 
   try {
-    const response = await postData('calculate/system_reliability', systemData);
+
+    const systemData = buildSystemData(blocks, systemMode); // Построить данные системы
+
+    const response = await postData('calculate/system_reliability', systemData); // Отправить данные на сервер
 
     if (response.ok) {
       const reliabilityData = JSON.parse(await response.json());
       console.log('Reliability data:', reliabilityData);
-      displayReliabilityTables(reliabilityData);
+      displayReliabilityTables(reliabilityData); // Показать таблицы надежности
+      document.getElementById('generate-pdf').style.display = 'inline-block'; // Показать кнопку генерации PDF
     } else {
       console.error('Failed to calculate system reliability', response.status, response.statusText);
     }
   } catch (error) {
-    console.error('Error:', error);
+    alert('Ошибка: ' + error.message); // Отобразить сообщение об ошибке в браузере
+    const container = document.getElementById('Container-Table');
+    container.innerHTML = '';
   }
 }
 
+// Функция для построения данных системы
 function buildSystemData(blocks, systemMode) {
   const systemData = {
     systemMode: systemMode,
@@ -109,27 +132,49 @@ function buildSystemData(blocks, systemMode) {
 
   blocks.forEach((block, index) => {
     const blockData = buildBlockData(block, index);
-    systemData.blocks.push(blockData);
+    systemData.blocks.push(blockData); // Добавить данные блока в данные системы
   });
 
   return systemData;
 }
 
 function buildBlockData(block, index) {
+  const reliabilityInput = block.querySelector('.reliability-input');
+  const reliabilityValue = parseFloat(reliabilityInput.value);
+
+  // Проверка, что значение находится в диапазоне от 0 до 100
+  if (reliabilityValue < 0 || reliabilityValue > 100 || isNaN(reliabilityValue)) {
+    throw new Error('Недопустимое значение надежности блока ' + (index + 1) + ': ' + reliabilityValue);
+  }
+
+  return {
+    id: block.dataset.id,
+    name: block.querySelector('.block-name').textContent.trim(),
+    reliability: reliabilityValue,
+  };
+}
+
+// Функция для построения данных блока
+function buildBlockData(block, index) {
+  const elements = block.querySelectorAll('.element .input-field');
   const blockData = {
     blockNumber: index + 1,
     mode: block.querySelector('.checkbox-container input[type="radio"]:checked').parentNode.textContent.trim(),
     elements: []
   };
 
-  const elements = block.querySelectorAll('.element .input-field');
-  elements.forEach((element) => {
-    blockData.elements.push({ value: parseInt(element.value) });
+  elements.forEach(element => {
+    const value = parseInt(element.value);
+    if (isNaN(value) || value < 0 || value > 100) {
+      throw new Error('Недопустимое значение надежности элемента в блоке ' + blockData.blockNumber + ': ' + element.value);
+    }
+    blockData.elements.push({ value });
   });
 
   return blockData;
 }
 
+// Функция для отправки данных на сервер
 async function postData(url, data) {
   const response = await fetch(url, {
     method: 'POST',
@@ -139,88 +184,100 @@ async function postData(url, data) {
   return response;
 }
 
+// Функция для отображения таблиц надежности
 function displayReliabilityTables(data) {
   const container = document.getElementById('Container-Table');
   container.innerHTML = '';
 
-  let count = 0;
-  for (const key in data.system) {
-   
-    generateTable(++count, data.system[key]);
-  }
+  generateSystemTables(data); // Генерация таблиц системы
+  generateBlockTables(data); // Генерация таблиц блоков
 
-  generateTableBlocks(data);
+  displayTextElement(container, `Произведя ${data.num_trials} испытаний, получим, что в ${data.success_count} из них система работала безотказно. В качестве оценки искомой надежности Р примем относительную частоту Р*=${data.success_count}/${data.num_trials}=${data.system_probability}.`);
+  displayTextElement(container, 'Найдем надежность системы Р аналитически. Вероятности безотказной работы блоков:');
+  displayTextElement(container, 'P = ' + data.analytical);
+  displayTextElement(container, `Искомая абсолютная погрешность равна |Р−P*| = ${data.dif}`);
 
-
-  // Произведя 50 испытаний, получим, что в 28 из них система работала безотказно. 
-  // В качестве оценки искомой надежности Р примем относительную частоту Р*=28/50=0.56.
-
-  const textElement = document.createElement('p');
-  textElement.classList.add('text-container');
-
-  const content = `Произведя ${data['num_trials']} испытаний, получим, что в ${data['success_count']} из них система работала безотказно. В качестве оценки искомой надежности Р примем относительную частоту Р*=${data['success_count']}/${data['num_trials']}=${data['system_probability']}.`;
-
-  textElement.textContent = content;
-  container.appendChild(textElement);
+  document.getElementById('generate-pdf').addEventListener('click', function() {
+    const container = document.getElementById('Container-Table');
+    const htmlContent = container.innerHTML;
+  
+    // Отправляем HTML на сервер
+    sendHtmlToServer(htmlContent);
+  });
+  
 }
 
-function generateTableBlocks(data) {
+function sendHtmlToServer(htmlContent) {
+  fetch('/calculate/system_reliability/generate-pdf', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8'
+    },
+    body: JSON.stringify({ html: htmlContent })
+  })
+  .then(response => {
+    if (!response.ok) {
+      return response.json().then(err => { throw new Error(err.error); });
+    }
+    return response.blob();
+  })
+  .then(blob => {
+    const url = window.URL.createObjectURL(new Blob([blob], { type: 'application/pdf' }));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'generated.pdf');
+    document.body.appendChild(link);
+    link.click();
+    link.parentNode.removeChild(link);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+}
 
-  console.log(data);
 
+
+
+// Функция для генерации таблиц системы
+function generateSystemTables(data) {
+  let count = 0;
+  for (const key in data.system) {
+    generateTable(++count, data.system[key]);
+  }
+}
+
+// Функция для генерации таблиц блоков
+function generateBlockTables(data) {
   const countBlocks = Object.keys(data.system).length;
 
   const table = document.createElement('table');
 
-  const firstRow = document.createElement('tr');
-  
-  const cell = document.createElement('td');
-  cell.rowSpan = 2;
-  cell.textContent = 'Номер испытания';
-  firstRow.appendChild(cell);
-
-  const firstRowCell = document.createElement('td');
-  firstRowCell.colSpan = countBlocks;
-  firstRowCell.textContent = `Блоки - (${data.system_mode})`;
-  firstRow.appendChild(firstRowCell);
-
-  const cell2 = document.createElement('td');
-  cell2.rowSpan = 2;
-  cell2.textContent = 'Система';
-  firstRow.appendChild(cell2);
-
+  const firstRow = createFirstRowWithSpan(countBlocks, `Блоки - (${data.system_mode})`);
   table.appendChild(firstRow);
 
+  const secondRow = createSecondRowWithBlockHeaders(countBlocks);
+  table.appendChild(secondRow);
 
-  const SecondRow = document.createElement('tr');
+  appendIterationsToTable(data, table, countBlocks);
 
-  for (let i = 0; i < countBlocks; i++) {
-    const cell_block = document.createElement('td');
-    cell_block.textContent = `Блок ${i + 1}`;
-    SecondRow.appendChild(cell_block);
-  }
+  const container = document.getElementById('Container-Table');
+  container.appendChild(table);
+}
 
-  table.appendChild(SecondRow);
-
-
-  let system_create = false;
-
+// Функция для добавления итераций в таблицу
+function appendIterationsToTable(data, table, countBlocks) {
   for (const key in data.system[Object.keys(data.system)[0]].iteration) {
-
     let row = document.createElement('tr');
 
-    
-
-    if (key == '49'){
-       const cell_skip = generateSkipCells(2 + countBlocks);
-       for (let i = 0; i < cell_skip.length; i++) {
-         const cell = document.createElement('td');
-         cell.textContent = cell_skip[i];
-         row.appendChild(cell);
-       }
-       table.appendChild(row);
-
-       row = document.createElement('tr');
+    if (key == '49') {
+      const cell_skip = generateSkipCells(2 + countBlocks);
+      for (let i = 0; i < cell_skip.length; i++) {
+        const cell = document.createElement('td');
+        cell.textContent = cell_skip[i];
+        row.appendChild(cell);
+      }
+      table.appendChild(row);
+      row = document.createElement('tr');
     }
 
     let cell = document.createElement('td');
@@ -239,24 +296,17 @@ function generateTableBlocks(data) {
 
     table.appendChild(row);
   }
-  // for (const key in data) {
-  //   
-    
-
-  //   const cells = []
-
-  //   
-    
-  //   row.appendChild(cell);
-  // }
-
-
-  const container = document.getElementById('Container-Table');
-  container.appendChild(table);
 }
 
+// Функция для отображения текстового элемента
+function displayTextElement(container, text) {
+  const textElement = document.createElement('p');
+  textElement.classList.add('text-container');
+  textElement.textContent = text;
+  container.appendChild(textElement);
+}
 
-
+// Функция для генерации подзаголовков
 function generateSubHeaders(elementCount, blockNumber) {
   const subHeaders = [];
   const startCharCode = 'A'.charCodeAt(0);
@@ -268,24 +318,28 @@ function generateSubHeaders(elementCount, blockNumber) {
   return subHeaders;
 }
 
+// Функция для генерации ячеек со случайными значениями
 function generateRandomValueCells(iterations) {
   return iterations.map(item => Math.round(item.random_value * 100) + '%');
 }
 
+// Функция для получения символа для булевого значения
 function getSymbolForBoolean(value) {
   return value ? '+' : '-';
 }
 
+// Функция для генерации ячеек с проверками
 function generateCheckCells(iterations) {
   return iterations.map(item => getSymbolForBoolean(item.probability));
 }
 
+// Функция для генерации пропущенных ячеек
 function generateSkipCells(count) {
   return Array(count).fill('...');
 }
 
+// Функция для генерации таблицы
 function generateTable(blockNumber, details) {
-  console.log(details);
   const elementCount = details.iteration[0].iteration.length;
 
   const table = document.createElement('table');
@@ -296,13 +350,13 @@ function generateTable(blockNumber, details) {
 
   for (const key in details.iteration) {
     createDataRow(table, key, details.iteration[key], elementCount);
-
   }
 
   const container = document.getElementById('Container-Table');
   container.appendChild(table);
 }
 
+// Функция для создания первой строки таблицы
 function createFirstRow(blockNumber, mode, elementCount) {
   const firstRow = document.createElement('tr');
   const firstRowCell = document.createElement('td');
@@ -313,6 +367,28 @@ function createFirstRow(blockNumber, mode, elementCount) {
   return firstRow;
 }
 
+// Функция для создания первой строки таблицы с объединением ячеек
+function createFirstRowWithSpan(colSpan, textContent) {
+  const firstRow = document.createElement('tr');
+  const cell = document.createElement('td');
+  cell.rowSpan = 2;
+  cell.textContent = 'Номер испытания';
+  firstRow.appendChild(cell);
+
+  const firstRowCell = document.createElement('td');
+  firstRowCell.colSpan = colSpan;
+  firstRowCell.textContent = textContent;
+  firstRow.appendChild(firstRowCell);
+
+  const secondCell = document.createElement('td');
+  secondCell.rowSpan = 2;
+  secondCell.textContent = 'Система';
+  firstRow.appendChild(secondCell);
+
+  return firstRow;
+}
+
+// Функция для создания второй строки таблицы
 function createSecondRow(elementCount) {
   const secondRow = document.createElement('tr');
   const headers = ['Номер испытания', 'Случайные числа моделирующие элементы', 'Элементы', 'Блок'];
@@ -331,6 +407,20 @@ function createSecondRow(elementCount) {
   return secondRow;
 }
 
+// Функция для создания второй строки таблицы с заголовками блоков
+function createSecondRowWithBlockHeaders(countBlocks) {
+  const secondRow = document.createElement('tr');
+
+  for (let i = 0; i < countBlocks; i++) {
+    const cell_block = document.createElement('td');
+    cell_block.textContent = `Блок ${i + 1}`;
+    secondRow.appendChild(cell_block);
+  }
+
+  return secondRow;
+}
+
+// Функция для создания третьей строки таблицы
 function createThirdRow(elementCount, blockNumber) {
   const thirdRow = document.createElement('tr');
   const subHeaders = [
@@ -347,10 +437,10 @@ function createThirdRow(elementCount, blockNumber) {
   return thirdRow;
 }
 
+// Функция для создания строки с данными
 function createDataRow(table, key, iterationData, elementCount) {
   let row = document.createElement('tr');
 
-  // Добавляем ячейки с '...' для ключа '49'
   if (key === '49') {
     const skipCells = generateSkipCells(elementCount * 2 + 2);
     skipCells.forEach(cellData => {
@@ -359,12 +449,9 @@ function createDataRow(table, key, iterationData, elementCount) {
       row.appendChild(cell);
     });
     table.appendChild(row);
-
-    row = document.createElement('tr')
+    row = document.createElement('tr');
   }
 
-  // Добавляем данные для текущего ключа
-  
   const cells = [
     Number(key) + 1,
     ...generateRandomValueCells(iterationData.iteration),
@@ -380,5 +467,3 @@ function createDataRow(table, key, iterationData, elementCount) {
 
   table.appendChild(row);
 }
-
-

@@ -1,6 +1,6 @@
 from typing import Annotated
 from fastapi import APIRouter, Depends, Request
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
 
 from pydantic_settings import BaseSettings
@@ -50,7 +50,7 @@ def about(request: Request):
 @main_point.get('/block-system', response_class=HTMLResponse)
 def block_system(request: Request):
     return templates.TemplateResponse(
-        request=request, name=view_list.layout, context={"title": "ReliaQueue - Система блоков", 'dynamic_page': 'block_system_page1.html'}
+        request=request, name=view_list.layout, context={"title": "ReliaQueue - Система блоков", 'dynamic_page': view_list.block_system_page}
     )
 
 @main_point.get('/cfr-refusal', response_class=HTMLResponse)
@@ -118,8 +118,6 @@ def calculate_system_reliability(form: SystemReliabilityForm):
 
     json_result = json.dumps(result_calc, default=custom_serializer, indent=4)
 
-    print(json_result)
-    
     blok_list = {}
 
     blok_list['system'] = {}
@@ -153,38 +151,65 @@ def calculate_system_reliability(form: SystemReliabilityForm):
     blok_list['success_count'] = result_calc.simulated_results.success_count
     blok_list['num_trials'] = result_calc.simulated_results.num_trials
 
+    blok_list['analytical'] = result_calc.analytical_results
+    blok_list['analytical_probability'] = float(result_calc.analytical_results.split('=')[1].replace(' ', ''))
+    blok_list['dif'] = round(abs(blok_list['system_probability'] - blok_list['analytical_probability']), 4)
     json_result = json.dumps(blok_list, default=custom_serializer, indent=4)
 
     return json_result
 
-    
+from fastapi.responses import StreamingResponse
+import pdfkit
+from io import BytesIO
 
-# {
-#   "systemMode": "Последовательно",
-#   "blocks": [
-#     {
-#       "blockNumber": 1,
-#       "mode": "Параллельно",
-#       "elements": [
-#         {
-#           "value": "0"
-#         }
-#       ]
-#     },
-#     {
-#       "blockNumber": 2,
-#       "mode": "Параллельно",
-#       "elements": [
-#         {
-#           "value": "0"
-#         },
-#         {
-#           "value": "0"
-#         }
-#       ]
-#     }
-#   ]
-# }
+config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
+
+@main_point.post("/calculate/system_reliability/generate-pdf")
+async def generate_pdf(request: Request):
+    data = await request.json()
+    html = data.get("html")
+
+    if not html:
+        return JSONResponse(content={"error": "No HTML content provided"}, status_code=400)
+
+    # Добавление стиля для поддержки кириллицы
+    styled_html = f"""
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <style>
+            body {{
+                font-family: DejaVu Sans, sans-serif;
+            }}
+            table {{
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 20px;
+            }}
+            th, td {{
+                border: 1px solid black;
+                padding: 8px;
+                text-align: left;
+            }}
+        </style>
+    </head>
+    <body>
+        {html}
+    </body>
+    </html>
+    """
+
+    # Генерация PDF
+    try:
+        pdf = pdfkit.from_string(styled_html, False, configuration=config)
+        pdf_bytes = BytesIO(pdf)
+        pdf_bytes.seek(0)
+
+        return StreamingResponse(pdf_bytes, media_type="application/pdf", headers={
+            "Content-Disposition": "attachment; filename=generated.pdf"
+        })
+    except Exception as e:
+        return JSONResponse(content={"error": str(e)}, status_code=500)
 
 
 

@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "reliaqueue"
+name = "test0901991"
 version = "0.1.0"
 description = "Имитационное моделирование. Системы массового обслуживания."
 authors = ["triks <trik0001000@gmail.com>"]
@@ -12,7 +12,7 @@ fastapi = {extras = ["all"], version = "^0.111.0"}
 django-environ = "^0.11.2"
 jinja2 = "^3.1.4"
 pydantic = {extras = ["dotenv"], version = "^2.7.1"}
-system-reliability = "^0.1.0"
+pdfkit = "^1.0.0"
 
 
 [build-system]
