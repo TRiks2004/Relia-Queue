@@ -18,6 +18,10 @@ from system_reliability import enums as enums_system_reliability
 
 from surroundings import config_fast_api
 
+from smo_rejection import run_simulation
+from smo_over_queue import simulate_queue
+
+
 main_point = APIRouter(
     prefix=''
 )
