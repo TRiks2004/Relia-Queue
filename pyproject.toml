@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "test0901991"
+name = "f8t9vigobhjlnkbhgytr645y6u7i8o"
 version = "0.1.0"
 description = "Имитационное моделирование. Системы массового обслуживания."
 authors = ["triks <trik0001000@gmail.com>"]
@@ -18,6 +18,7 @@ reportlab = "^4.2.0"
 openpyxl = "^3.1.2"
 smo-rejection = "^0.5.6"
 system-reliability = "^0.4.0"
+smo-over-queue = "^0.1.1"
 
 
 [build-system]

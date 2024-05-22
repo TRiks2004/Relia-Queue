@@ -68,14 +68,13 @@
                 <p class="form-text">Количество итераций</p>
                 <input class="form-input" id="iterationCountInput" type="text" placeholder="Введите значение">
             </div>
-            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; align-self: center;">
-                <button class="solve-button" onclick="refusalSolve()">РЕШИТЬ</button>
+            <div style="display: flex; justify-content: center; align-items: center;">
+                <button class="solve-button" onclick="unlimitedSolve()">РЕШИТЬ</button>
             </div>
         </div>
         <p class="theme-title" id="resultTitle">Решение</p>
         <div id="saveContainer">
-            <button class="header-button">Сохранить решение в PDF</button>
-            <button class="header-button">Сохранить решение в Excel</button>
+            <button class="header-button" id="pdfButton" onclick="saveTablesToPDF()">Сохранить решение в PDF</button>
         </div>
     </div>
 </div>

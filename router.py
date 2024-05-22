@@ -17,9 +17,6 @@ import system_reliability.components.element
 from system_reliability import enums as enums_system_reliability
 
 from surroundings import config_fast_api
-from smo_rejection import run_simulation
-
-
 
 main_point = APIRouter(
     prefix=''
@@ -69,6 +66,39 @@ def cfr_unlimited(request: Request):
     return templates.TemplateResponse(
         request=request, name=view_list.layout, context={"title": "ReliaQueue - МСМО c неограниченной очередью ", 'dynamic_page': view_list.cfr_unlimited_page}
     )
+
+# Класс для ввода параметров с одним полем value
+class InputParameters(BaseSettings):
+    value: float
+
+# Класс для параметров симуляции CFRUnlimited с необходимыми полями
+class CFRUnlimitedParameters(BaseSettings):
+    serviceTime: float
+    maxSimulationTime: float
+    alpha: float
+    channelCount: int
+    iterationCount: int
+
+# Обработчик POST-запроса для симуляции CFR Unlimited
+@main_point.post('/cfr-unlimited')
+async def run_simulation_handler(request: Request):
+    # Получение данных из запроса в формате JSON
+    data = await request.json()
+
+    # Преобразование данных в объект класса CFRUnlimitedParameters
+    parameters = CFRUnlimitedParameters(**data)
+
+    # Запуск симуляции с использованием параметров
+    results = simulate_queue(
+        service_time=parameters.serviceTime,
+        max_time=parameters.maxSimulationTime,
+        alpha=parameters.alpha,
+        num_threads=parameters.channelCount,
+        num_iterations=parameters.iterationCount
+    )
+    
+    # Возврат результатов симуляции
+    return results
 
 
 class SystemReliabilityElement(BaseSettings):
