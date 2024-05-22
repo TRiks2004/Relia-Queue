@@ -153,7 +153,7 @@ async function unlimitedSolve() {
         isNaN(alpha) || alpha < 0 ||
         isNaN(channelCount) || channelCount < 0 ||
         isNaN(iteration) || iteration < 0) {
-        alert("Ошибка: Пожалуйста, убедитесь, что все введенные значения являются числами и больше или равны нулю.");
+        alert("Ошибка: Пожалуйста, убедитесь, что все введенные значения являются числами и больше нуля.");
         return;
     }
     if (channelCount > 5){
