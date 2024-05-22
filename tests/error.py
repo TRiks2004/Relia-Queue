@@ -12,6 +12,7 @@ from smo_rejection import (
     MaxTimeNegative,
     NumChannelsIsZero, NumChannelsNegative,
     AlphaIsZero, AlphaNegative,
+    MaxAlfha,MaxNumChannels,MaxNumIteration,MaxServiceTime,MaxSimulationTime
 )
 
 class ErrorInputParametres(unittest.TestCase):
@@ -69,33 +70,33 @@ class ErrorInputParametres(unittest.TestCase):
 
     def test_alpha_big(self):
         """
-        Проверка вызова исключения AlphaNegative при отрицательном значении альфа.
+        Проверка вызова исключения MaxAlfha при большом значении альфа.
         """
-        self.assertRaises(MaxAlhfa, run_simulation, 1, 2, 3, 4, -5)
+        self.assertRaises(MaxAlfha, run_simulation, 1, 2, 3, 4, 101)
 
-    def test_alpha_negative(self):
+    def test_num_iteration_big(self):
         """
-        Проверка вызова исключения AlphaNegative при отрицательном значении альфа.
+        Проверка вызова исключения MaxNumIteration при большом значении числа итераций.
         """
-        self.assertRaises(AlphaNegative, run_simulation, 1, 2, 3, 4, -5)
+        self.assertRaises(MaxNumIteration, run_simulation, 1, 2, 3, 100100, 5)
 
-    def test_alpha_negative(self):
+    def test_num_channels_big(self):
         """
-        Проверка вызова исключения AlphaNegative при отрицательном значении альфа.
+        Проверка вызова исключения MaxNumChannels при большом значении числа каналов.
         """
-        self.assertRaises(AlphaNegative, run_simulation, 1, 2, 3, 4, -5)
+        self.assertRaises(MaxNumChannels, run_simulation, 1, 10, 3, 4, 5)
 
-    def test_alpha_negative(self):
+    def test_service_time_big(self):
         """
-        Проверка вызова исключения AlphaNegative при отрицательном значении альфа.
+        Проверка вызова исключения MaxServiceTime при большом значении времени обслуживания.
         """
-        self.assertRaises(AlphaNegative, run_simulation, 1, 2, 3, 4, -5)
+        self.assertRaises(MaxServiceTime, run_simulation, 1, 2, 1010, 4, 5)
 
-    def test_alpha_negative(self):
+    def test_simulation_time_big(self):
         """
-        Проверка вызова исключения AlphaNegative при отрицательном значении альфа.
+        Проверка вызова исключения MaxSimulationTime при большом значении времени симуляции.
         """
-        self.assertRaises(AlphaNegative, run_simulation, 1, 2, 3, 4, -5)
+        self.assertRaises(MaxSimulationTime, run_simulation, 100100, 2, 3, 4, 5)
 
 
 class TestUtilityFunctions(unittest.TestCase):
