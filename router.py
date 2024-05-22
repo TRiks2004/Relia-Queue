@@ -63,9 +63,11 @@ def cfr_unlimited(request: Request):
         request=request, name=view_list.layout, context={"title": "ReliaQueue - МСМО c неограниченной очередью ", 'dynamic_page': view_list.cfr_unlimited_page}
     )
 
+# Класс для ввода параметров с одним полем value
 class InputParameters(BaseSettings):
     value: float
 
+# Класс для параметров симуляции CFRUnlimited с необходимыми полями
 class CFRUnlimitedParameters(BaseSettings):
     serviceTime: float
     maxSimulationTime: float
@@ -73,10 +75,16 @@ class CFRUnlimitedParameters(BaseSettings):
     channelCount: int
     iterationCount: int
 
+# Обработчик POST-запроса для симуляции CFR Unlimited
 @main_point.post('/cfr-unlimited')
 async def run_simulation_handler(request: Request):
+    # Получение данных из запроса в формате JSON
     data = await request.json()
+
+    # Преобразование данных в объект класса CFRUnlimitedParameters
     parameters = CFRUnlimitedParameters(**data)
+
+    # Запуск симуляции с использованием параметров
     results = simulate_queue(
         service_time=parameters.serviceTime,
         max_time=parameters.maxSimulationTime,
@@ -85,4 +93,5 @@ async def run_simulation_handler(request: Request):
         num_iterations=parameters.iterationCount
     )
     
+    # Возврат результатов симуляции
     return results
