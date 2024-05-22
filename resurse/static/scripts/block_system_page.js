@@ -100,9 +100,12 @@ async function fetchSystemReliability() {
   const blocks = document.querySelectorAll('.system-block .block'); // Найти все блоки
   const systemMode = document.querySelector('.checkbox-container-white input[type="radio"]:checked').parentNode.textContent.trim(); // Получить режим системы
   
-  const systemData = buildSystemData(blocks, systemMode); // Построить данные системы
+  
 
   try {
+
+    const systemData = buildSystemData(blocks, systemMode); // Построить данные системы
+    
     const response = await postData('calculate/system_reliability', systemData); // Отправить данные на сервер
 
     if (response.ok) {
@@ -113,7 +116,9 @@ async function fetchSystemReliability() {
       console.error('Failed to calculate system reliability', response.status, response.statusText);
     }
   } catch (error) {
-    console.error('Error:', error);
+    alert('Ошибка: ' + error.message); // Отобразить сообщение об ошибке в браузере
+    const container = document.getElementById('Container-Table');
+    container.innerHTML = '';
   }
 }
 
@@ -132,17 +137,37 @@ function buildSystemData(blocks, systemMode) {
   return systemData;
 }
 
+function buildBlockData(block, index) {
+  const reliabilityInput = block.querySelector('.reliability-input');
+  const reliabilityValue = parseFloat(reliabilityInput.value);
+
+  // Проверка, что значение находится в диапазоне от 0 до 100
+  if (reliabilityValue < 0 || reliabilityValue > 100 || isNaN(reliabilityValue)) {
+    throw new Error('Недопустимое значение надежности блока ' + (index + 1) + ': ' + reliabilityValue);
+  }
+
+  return {
+    id: block.dataset.id,
+    name: block.querySelector('.block-name').textContent.trim(),
+    reliability: reliabilityValue,
+  };
+}
+
 // Функция для построения данных блока
 function buildBlockData(block, index) {
+  const elements = block.querySelectorAll('.element .input-field');
   const blockData = {
     blockNumber: index + 1,
     mode: block.querySelector('.checkbox-container input[type="radio"]:checked').parentNode.textContent.trim(),
     elements: []
   };
 
-  const elements = block.querySelectorAll('.element .input-field');
-  elements.forEach((element) => {
-    blockData.elements.push({ value: parseInt(element.value) }); // Добавить данные элемента в данные блока
+  elements.forEach(element => {
+    const value = parseInt(element.value);
+    if (isNaN(value) || value < 0 || value > 100) {
+      throw new Error('Недопустимое значение надежности элемента в блоке ' + blockData.blockNumber + ': ' + element.value);
+    }
+    blockData.elements.push({ value });
   });
 
   return blockData;
