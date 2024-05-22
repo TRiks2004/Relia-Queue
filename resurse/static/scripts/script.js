@@ -1,3 +1,5 @@
+var pdfBtn = document.getElementById("pdfButton");
+
 const goToTheory = () => {
     const theoryTitle = document.getElementById("theoryTitle");
     theoryTitle.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
@@ -36,40 +38,6 @@ function saveTablesToPDF() {
     });
 
     doc.save("tables.pdf");
-}
-
-function downloadCSV(filename, csvContent) {
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.setAttribute('href', url);
-    link.setAttribute('download', filename);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-}
-
-function saveTablesToCSV() {
-    const tables = document.querySelectorAll(".t-table");
-    let csvContent = '';
-
-    tables.forEach((table, index) => {
-        csvContent += "Simulation" + (index + 1) + '\n';
-
-        table.querySelectorAll('tr').forEach((row) => {
-            row.querySelectorAll('th, td').forEach((cell, cellIndex) => {
-                csvContent += cell.innerText;
-                if (cellIndex < row.children.length - 1) {
-                    csvContent += ',';
-                }
-            });
-            csvContent += '\n';
-        });
-
-        csvContent += '\n'; // Добавляем пустую строку между таблицами
-    });
-
-    downloadCSV('tables.csv', csvContent);
 }
 
 function generateCFRTables(list, sim_count, simulation_data, num_threads) {
@@ -153,54 +121,67 @@ function generateCFRTables(list, sim_count, simulation_data, num_threads) {
     // Add a div with top margin of 60px
     var div = document.createElement("div");
     div.classList.add("top-margin-div");
-    div.style.marginTop = "60px";
+    div.style.marginTop = "30px";
     document.body.appendChild(div);
 }
 
+
 async function unlimitedSolve() {
-    var serviceTimeInput = document.getElementById("serviceTimeInput").value;
-    var maxSimulationTimeInput = document.getElementById("maxSimulationTimeInput").value;
-    var alphaInput = document.getElementById("parameterInput").value;
-    var channelCountInput = document.getElementById("channelCountInput").value;
-    var iterationCountInput = document.getElementById("iterationCountInput").value;
+    var serviceTime = parseFloat(document.getElementById("serviceTimeInput").value);
+    var maxSimulationTime = parseFloat(document.getElementById("maxSimulationTimeInput").value);
+    var alpha = parseFloat(document.getElementById("parameterInput").value);
+    var channelCount = parseInt(document.getElementById("channelCountInput").value);
+    var iteration = parseInt(document.getElementById("iterationCountInput").value);
 
-    const channelCount = parseInt(channelCountInput);
-    const iterationCount = parseInt(iterationCountInput);
+    if (!serviceTime || !maxSimulationTime || !alpha || !channelCount || !iteration){
+        alert("Ошибка: все поля ввода должны быть заполнены.");
+    }
 
+    if (isNaN(serviceTime) || serviceTime < 0 ||
+        isNaN(maxSimulationTime) || maxSimulationTime < 0 ||
+        isNaN(alpha) || alpha < 0 ||
+        isNaN(channelCount) || channelCount < 0 ||
+        isNaN(iteration) || iteration < 0) {
+        alert("Ошибка: Пожалуйста, убедитесь, что все введенные значения являются числами и больше или равны нулю.");
+    }
     if (channelCount > 5){
-        alert("Ошибка: число серверов (каналов) ограничено до 5.")
+        alert("Ошибка: число серверов (каналов) ограничено до 5.");
     }
-
-    const formData = {
-        serviceTime: parseFloat(serviceTimeInput),
-        maxSimulationTime: parseFloat(maxSimulationTimeInput),
-        alpha: parseFloat(alphaInput),
-        channelCount: channelCount,
-        iterationCount: iterationCount,
-    };
-
-    try{
-        const response = await fetch('/cfr-unlimited', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        });
-
-        if (response.ok){
-            const data = await response.json();
-            console.log(data);
-            const list = ["index", "random_value", "request_time", "service_time"];
-            generateCFRTables(list, iterationCount, data, channelCount);
-            goToResult();
-        } else {
-            console.log('Failed to run simulation: ', response.status, response.statusText);
+    if (iteration > 100){
+        alert("Ошибка: число итераций ограничено до 100.")
+    }
+    else{
+        const formData = {
+            serviceTime: serviceTime,
+            maxSimulationTime: maxSimulationTime,
+            alpha: alpha,
+            channelCount: channelCount,
+            iterationCount: iteration,
+        };
+    
+        try{
+            const response = await fetch('/cfr-unlimited', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+    
+            if (response.ok){
+                const data = await response.json();
+                console.log(data);
+                const list = ["index", "random_value", "request_time", "service_time"];
+                pdfBtn.style.visibility = 'visible';
+                generateCFRTables(list, iteration, data, channelCount);
+                goToResult();
+            } else {
+                console.log('Failed to run simulation: ', response.status, response.statusText);
+            }
+        } catch (error) {
+            console.log('Error: ', error);
         }
-    } catch (error) {
-        console.log('Error: ', error);
     }
-
 }
 
 function refusalSolve() {
