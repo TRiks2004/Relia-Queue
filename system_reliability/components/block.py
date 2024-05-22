@@ -75,7 +75,10 @@ class Block(Component):
         # print(self.probability_analytical)
         # print(Block.get_formula_analytical(self.probability_analytical, mode))
 
-        return Block.get_formula_analytical(' * '.join([component.to_dict_analytical(self.connection) for component in self.components]), mode)
+        
+        formula = [component.to_dict_analytical(self.connection if len(self.components) > 1 else MethodConnection.Serial) for component in self.components]
+        
+        return Block.get_formula_analytical(' * '.join(formula), mode)
         
     def get_formula_analytical(probability: int, mode: MethodConnection):
         match mode:

@@ -7,16 +7,16 @@ from system_reliability.enums import MethodConnection
 from dataclasses import asdict
 
 # Ввод данных пользователем
-element_a = Element(probability=0.8)
+element_a = Element(probability=0)
 element_b = Element(probability=0.85)
-element_c = Element(probability=0.6)
+element_c = Element(probability=0)
 element_d = Element(probability=0.6)
 element_e = Element(probability=0.3)
 
-block_1 = Block(element_a, element_b, connection=MethodConnection.Parallel)
-block_2 = Block(element_c, element_d, connection=MethodConnection.Parallel)
+block_1 = Block(element_a, connection=MethodConnection.Parallel)
+block_2 = Block(element_c, connection=MethodConnection.Serial)
 
-block_all = Block(block_1, block_2, connection=MethodConnection.Parallel)
+block_all = Block(block_1, block_2, connection=MethodConnection.Serial)
 
 def custom_serializer(obj):
     if isinstance(obj, MethodConnection):
