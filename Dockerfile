@@ -33,8 +33,7 @@ RUN poetry config virtualenvs.create false && poetry install --no-root --no-inte
 COPY . .
 
 # Copy static files separately to ensure they are updated
-COPY ./static /code/static
-
+COPY ./resurse /code/resurse
 # Expose port 8200
 EXPOSE 8200
 
