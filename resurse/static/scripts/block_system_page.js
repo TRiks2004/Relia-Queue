@@ -39,7 +39,7 @@ function addBlock() {
   newBlock.className = 'block';
   newBlock.innerHTML = `
         <div class="block-title">Блок ${blockCounter}</div>
-        <div class="button-container">
+        <div class="button-container-block">
           <button class="button-with-icon" onclick="addElement(this)">
             <span class="icon"><i class="fas fa-plus"></i></span>
             Добавить новый элемент

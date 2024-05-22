@@ -1,33 +1,31 @@
-from typing import Annotated
-from fastapi import APIRouter, Depends, Request
-from fastapi.responses import HTMLResponse, JSONResponse
-from fastapi import APIRouter, Request
-from fastapi.responses import HTMLResponse
-from fastapi.responses import FileResponse
+from fastapi import APIRouter, Request, FastAPI
+from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import Response
 
+from pydantic import BaseModel
 from pydantic_settings import BaseSettings
+
+from dataclasses import asdict
+from io import BytesIO
+import json
+
+import pdfkit
+
+import system_reliability
 import system_reliability.components.block
 import system_reliability.components.element
-
-from fastapi import FastAPI, Form
-from surroundings import config_fast_api
-from dataclasses import asdict
-from pydantic import BaseModel
-import json
-from smo_rejection import run_simulation, SimulationParameters, export_to_pdf
-
-import system_reliability 
 from system_reliability import enums as enums_system_reliability
-from system_reliability import date as date_system_reliability
+
+from surroundings import config_fast_api
+from smo_rejection import run_simulation
+
+
 
 main_point = APIRouter(
     prefix=''
 )
 
 templates = Jinja2Templates(directory=config_fast_api.templates_dir)
-
 
 def plus_html(view_name: str) -> str:
     return f"{view_name}.j2"
@@ -92,9 +90,6 @@ def with_connection(mode: str) -> enums_system_reliability.MethodConnection:
             return enums_system_reliability.MethodConnection.Serial
         case 'Параллельно':
             return enums_system_reliability.MethodConnection.Parallel
-
-import json
-from dataclasses import asdict
 
 def custom_serializer(obj):
     if isinstance(obj, enums_system_reliability.MethodConnection):
@@ -165,9 +160,7 @@ def calculate_system_reliability(form: SystemReliabilityForm):
 
     return json_result
 
-from fastapi.responses import StreamingResponse
-import pdfkit
-from io import BytesIO
+
 
 config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
 
@@ -218,7 +211,6 @@ async def generate_pdf(request: Request):
     except Exception as e:
         return JSONResponse(content={"error": str(e)}, status_code=500)
 
-from pydantic import BaseModel
 
 class InputParameter(BaseModel):
     """
@@ -245,8 +237,6 @@ class SimulationInput(BaseModel):
     service_time: float
     num_iterations: int
     alfa: int
-
-from fastapi import FastAPI, Request
 
 # Определение точки входа (роута) для запуска симуляции
 @main_point.post('/cfr-refusal')

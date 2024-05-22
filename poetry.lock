@@ -943,6 +943,17 @@ anyio = ">=3.4.0,<5"
 full = ["httpx (>=0.22.0)", "itsdangerous", "jinja2", "python-multipart (>=0.0.7)", "pyyaml"]
 
 [[package]]
+name = "system-reliability"
+version = "0.4.0"
+description = ""
+optional = false
+python-versions = "<4.0,>=3.12"
+files = [
+    {file = "system_reliability-0.4.0-py3-none-any.whl", hash = "sha256:1b6dc234027a458d6e7fb02370472afd467a63154024e1381a811f283f87ccce"},
+    {file = "system_reliability-0.4.0.tar.gz", hash = "sha256:7797e622ee766b91e4f50b3c3cd414b7617a11642367a7fd95dac127d88987ba"},
+]
+
+[[package]]
 name = "typer"
 version = "0.12.3"
 description = "Typer, build great CLIs. Easy to code. Based on Python type hints."
@@ -1297,4 +1308,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "22ec18feab66c7c5758d68323bc50196ee6431ad417ce3e32282b219392023c9"
+content-hash = "d08687f5642062c3a697407537971fab439e8d65de5799fbf6d55dcd382d5417"
