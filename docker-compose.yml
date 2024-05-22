@@ -1,0 +1,14 @@
+version: "3"
+
+name: relia-queue
+
+services:
+  relia-queue:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "8200:8200"
+    volumes:
+      - .:/code:rw
+
+

@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "f8t9vigobhjlnkbhgytr645y6u7i8o"
+name = "Relia-Queue"
 version = "0.1.0"
 description = "Имитационное моделирование. Системы массового обслуживания."
 authors = ["triks <trik0001000@gmail.com>"]
