@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "reliaqueue"
+name = "options-selenium"
 version = "0.1.0"
 description = "Имитационное моделирование. Системы массового обслуживания."
 authors = ["triks <trik0001000@gmail.com>"]
