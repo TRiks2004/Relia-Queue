@@ -1,6 +1,4 @@
-/* -------------------------------------- */
-
-/* body{
+body{
     font-family: 'Ubuntu Sans', sans-serif;
     color: #FFFFFF;
     display: flex;
@@ -335,58 +333,6 @@
     font-size: 12px;
 }
 
-.solve-button{
-    align-self: center;
-}
-
-
-.percent-button{
-    width: 60px;
-    height: 30px;
-    font-weight: 700;
-    font-size: 15px;
-    background-color: rgba(97, 128, 163, 0.3);
-    border: none;
-    color:#FFFFFF;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.percent-button:hover{
-    background-color: rgba(180, 191, 202, 0.75);
-}
-
-.percent-button:active{
-    background-color: rgba(180, 191, 202, 0.5);
-}
-
-.select{
-    width: 170px;
-    height: 40px;
-    font-size: 15px;
-    background-color: rgba(97, 128, 163, 0.3);
-    border: none;
-    color:#FFFFFF;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.select:hover{
-    background-color: rgba(180, 191, 202, 0.75);
-}
-
-.select:active{
-    background-color: rgba(180, 191, 202, 0.5);
-}
-
-.select option{
-    font-size: 15px;
-    background-color: rgb(9, 25, 44);
-    border: none;
-    color:#FFFFFF;
-    cursor: pointer;
-}
-
 .add-button{
     margin-top: 20px;
     width: 170px;
@@ -417,12 +363,7 @@
 .t-table th{
     width: 60px;
     height: 40px;
-} */
-
-/* -------------------------------------- */
-
-
-
+}
 
 .system-block {
     color: #FFFFFF;
@@ -608,14 +549,5 @@
     margin-top: 20px;
   }
 
-  body{
-    font-family: 'Ubuntu Sans', sans-serif;
-    color: #FFFFFF;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-  
-
+ 
   
