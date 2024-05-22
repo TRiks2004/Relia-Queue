@@ -27,9 +27,6 @@ from schemas import (
 )
 
 
-
-
-
 main_point = APIRouter(
     prefix=''
 )
@@ -49,34 +46,81 @@ class ViewList(BaseSettings):
     
 view_list = ViewList()
 
+
+
+def get_css_file(name: str) -> str:
+    return f'static/style/{name}.css'
+
+class CSSFile(BaseSettings):
+    layout: str = get_css_file('layout')
+
+css_file = CSSFile()
+
+def get_js_file(name: str) -> str:
+    return f'static/scripts/{name}.js'
+
+class JSFile(BaseSettings):
+    script: str = get_js_file('script')
+    block_system_page: str = get_js_file('block_system_page')
+    smo_rejection: str = get_js_file('smo_rejection')
+    smo_over_queue: str = get_js_file('smo-over-queue')
+
+js_file = JSFile()
+
+
 @main_point.get('/', response_class=HTMLResponse)
 def index(request: Request):
     return templates.TemplateResponse(
-        request=request, name=view_list.layout, context={"title": "ReliaQueue - Главная", 'dynamic_page': view_list.main_page}
+        request=request, name=view_list.layout, context={
+            "title": "ReliaQueue - Главная", 
+            'dynamic_page': view_list.main_page,
+            'styles': [css_file.layout],
+            'javascripts': [js_file.script],
+        }
     )
 
 @main_point.get('/about', response_class=HTMLResponse)
 def about(request: Request):
     return templates.TemplateResponse(
-        request=request, name=view_list.layout, context={"title": "ReliaQueue - О нас", 'dynamic_page': view_list.about_page}
+        request=request, name=view_list.layout, context={
+            "title": "ReliaQueue - О нас", 
+            'dynamic_page': view_list.about_page,
+            'styles': [css_file.layout],
+            'javascripts': [js_file.script],
+        }
     )
 
 @main_point.get('/block-system', response_class=HTMLResponse)
 def block_system(request: Request):
     return templates.TemplateResponse(
-        request=request, name=view_list.layout, context={"title": "ReliaQueue - Система блоков", 'dynamic_page': view_list.block_system_page}
+        request=request, name=view_list.layout, context={
+            "title": "ReliaQueue - Система блоков", 
+            'dynamic_page': view_list.block_system_page,
+            'styles': [css_file.layout],
+            'javascripts': [js_file.script, js_file.block_system_page],
+        }
     )
 
 @main_point.get('/cfr-refusal', response_class=HTMLResponse)
 def cfr_refusal(request: Request):
     return templates.TemplateResponse(
-        request=request, name=view_list.layout, context={"title": "ReliaQueue - МСМО с отказами", 'dynamic_page': view_list.cfr_refusal_page}
+        request=request, name=view_list.layout, context={
+            "title": "ReliaQueue - МСМО с отказами", 
+            'dynamic_page': view_list.cfr_refusal_page,
+            'styles': [css_file.layout],
+            'javascripts': [js_file.script, js_file.smo_rejection],
+        }
     )
 
 @main_point.get('/cfr-unlimited', response_class=HTMLResponse)
 def cfr_unlimited(request: Request):
     return templates.TemplateResponse(
-        request=request, name=view_list.layout, context={"title": "ReliaQueue - МСМО c неограниченной очередью ", 'dynamic_page': view_list.cfr_unlimited_page}
+        request=request, name=view_list.layout, context={
+            "title": "ReliaQueue - МСМО c неограниченной очередью", 
+            'dynamic_page': view_list.cfr_unlimited_page,
+            'styles': [css_file.layout],
+            'javascripts': [js_file.script, js_file.smo_over_queue],
+        }
     )
 
 
@@ -100,8 +144,6 @@ async def run_simulation_handler(request: Request):
     
     # Возврат результатов симуляции
     return results
-
-
 
 def with_connection(mode: str) -> enums_system_reliability.MethodConnection:
     match mode:
