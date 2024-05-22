@@ -70,72 +70,34 @@
                 </span>
             </div>
             <p class="theme-title" id="formTitle">Ввод параметров</p>
+
              <div class="system-block">
-                        <button class="button-with-icon" id="add-block-button"
-                            onclick="addBlock()">
-                            <span class="icon"><i class="fas fa-plus"></i></span>
-                            Добавить новый блок
-                        </button>
-                        <div class="checkbox-container-white">
-                        <label><input type="radio" name="system-mode" class="mode-radio">
-                            Параллельно</label>
-                        <label><input type="radio" name="system-mode" class="mode-radio"
-                            checked> Последовательно</label>
-                        </div>
-                        <div class="calculate-button-container">
-                        <button class="calculate-button" id="CalculateButton"
-                            onclick="calculateData()">
-                            <span class="icon"><i class="fas fa-calculator"></i></span>
-                            Вычислить
-                        </button>
-                        </div>
-                    </div >
+                <button class="button-with-icon" id="add-block-button"
+                    onclick="addBlock()">
+                    <span class="icon"><i class="fas fa-plus"></i></span>
+                    Добавить новый блок
+                </button>
+                <div class="checkbox-container-white">
+                <label><input type="radio" name="system-mode" class="mode-radio">
+                    Параллельно</label>
+                <label><input type="radio" name="system-mode" class="mode-radio"
+                    checked> Последовательно</label>
+                </div>
+                <div class="calculate-button-container">
+                <button class="calculate-button" id="CalculateButton"
+                    onclick="fetchSystemReliability()">
+                    <span class="icon"><i class="fas fa-calculator"></i></span>
+                    Вычислить
+                </button>
+                </div>
+            </div >
+
             <p class="theme-title" id="resultTitle">Решение</p>
-            <div class="solve-area">
-                <table class="t-table" border="1" style="text-align: center;"> 
-                    <tr> 
-                        <th rowspan="2">Номер испытания</th> 
-                        <th colspan="5">Случайные числа моделирующие элементы</th> 
-                        <th colspan="5">Элементы</th> 
-                        <th rowspan="2">Блок</th> 
-                    </tr> 
-                    <tr> 
-                        <th>A1</th> 
-                        <th>A2</th> 
-                        <th>...</th> 
-                        <th>A(N-1)</th> 
-                        <th>A(N)</th> 
-                        <th>A1</th> 
-                        <th>A2</th> 
-                        <th>...</th> 
-                        <th>A(N-1)</th> 
-                        <th>A(N)</th> 
-                    </tr> 
-                </table> 
-                <button onclick="showTrials()">Показать 3 испытания</button>
-                <script>
-                    function showTrials() {
-                        let trials = [
-                            ["1", "1", "0.4", "...", "0.28", "1", "0", "1", "...", "1", "0", "0"],
-                            ["2", "0.97", "0.9", "...", "0.16", "0.76", "1", "1", "...", "1", "1", "0"],
-                            ["3", "0.18", "0.21", "...", "0.06", "0", "0", "1", "...", "0", "1", "1"]
-                        ];
-
-                        let table = document.querySelector("table");
-
-                        for (let i = 0; i < trials.length; i++) {
-                            let row = table.insertRow(-1);
-                            for (let j = 0; j < trials[i].length; j++) {
-                                let cell = row.insertCell(j);
-                                cell.innerHTML = trials[i][j];
-                            }
-                        }
-                    }
-                </script>
-            </div>
+            
+            <div id="Container-Table"></div>
+            
             <div id="saveContainer">
-                <button class="header-button">Сохранить решение в PDF</button>
-                <button class="header-button">Сохранить решение в Excel</button>
+                <button id="generate-pdf" class="header-button">Сохранить решение в PDF</button>
             </div>
         </div>
     </div>

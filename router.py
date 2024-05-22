@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Request
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
 
 from pydantic_settings import BaseSettings
@@ -95,3 +95,153 @@ async def run_simulation_handler(request: Request):
         raise TypeError(f'Object of type {obj.__class__.__name__} is not JSON serializable')
     
     return json.dumps(results, default=custom_serializer)
+
+import system_reliability 
+import system_reliability.components.block
+import system_reliability.components.element
+from system_reliability import enums as enums_system_reliability
+from system_reliability import date as date_system_reliability
+
+import json
+from dataclasses import asdict
+
+def custom_serializer(obj):
+    if isinstance(obj, enums_system_reliability.MethodConnection):
+        return obj.value
+    if hasattr(obj, '__dataclass_fields__'):
+        return asdict(obj)
+    raise TypeError(f'Object of type {obj.__class__.__name__} is not JSON serializable')
+    
+
+class SystemReliabilityElement(BaseSettings):
+    value: int
+
+class SystemReliabilityBlock(BaseSettings):
+    blockNumber: int
+    mode: str
+    elements: list[SystemReliabilityElement]
+
+class SystemReliabilityForm(BaseSettings):
+    systemMode: str
+    blocks: list[SystemReliabilityBlock]
+
+def with_connection(mode: str) -> enums_system_reliability.MethodConnection:
+    match mode:
+        case 'Последовательно':
+            return enums_system_reliability.MethodConnection.Serial
+        case 'Параллельно':
+            return enums_system_reliability.MethodConnection.Parallel
+
+
+@main_point.post('/calculate/system_reliability')
+def calculate_system_reliability(form: SystemReliabilityForm):
+
+    system = []
+    for block in form.blocks:
+        elements = []
+        for element in block.elements:
+            elements.append(system_reliability.components.element.Element(probability=element.value / 100))
+
+        system.append(
+            system_reliability.components.block.Block(
+                *elements, connection=with_connection(block.mode)
+            )
+        )
+
+    result = system_reliability.components.block.Block(*system, connection=with_connection(form.systemMode))
+
+    result_calc = result.calculate()
+
+    json_result = json.dumps(result_calc, default=custom_serializer, indent=4)
+
+    blok_list = {}
+
+    blok_list['system'] = {}
+    blok_list['blocks_choice'] = {}
+
+    selected_indices = [0, 1, 2, len(result_calc.simulated_results.details) - 1]  # Select 1st, 2nd, 3rd, and last
+    for i in selected_indices:
+        iteration = result_calc.simulated_results.details[i]
+        for j, blok in enumerate(iteration.components):
+            if f'block_{j}' not in blok_list['system']:
+                blok_list['system'][f'block_{j}'] = {
+                    'mode': blok.connection,
+                    'iteration': {}
+                }
+
+            blok_list['system'][f'block_{j}']['iteration'][i] = {
+                'blok_probability': blok.probability,
+                'iteration': [
+                    {
+                        'random_value': element.random_value,
+                        'probability': element.probability,
+                        'probability_analytical': element.probability_analytical
+                    } for element in blok.components
+                ]
+            }
+            
+            blok_list['blocks_choice'][i] = iteration.probability
+            
+    blok_list['system_mode'] = result_calc.simulated_results.details[0].connection
+    blok_list['system_probability'] = result_calc.simulated_results.probability
+    blok_list['success_count'] = result_calc.simulated_results.success_count
+    blok_list['num_trials'] = result_calc.simulated_results.num_trials
+
+    blok_list['analytical'] = result_calc.analytical_results
+    blok_list['analytical_probability'] = float(result_calc.analytical_results.split('=')[1].replace(' ', ''))
+    blok_list['dif'] = round(abs(blok_list['system_probability'] - blok_list['analytical_probability']), 4)
+    json_result = json.dumps(blok_list, default=custom_serializer, indent=4)
+
+    return json_result
+
+from fastapi.responses import StreamingResponse
+import pdfkit
+from io import BytesIO
+
+config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
+
+@main_point.post("/calculate/system_reliability/generate-pdf")
+async def generate_pdf(request: Request):
+    data = await request.json()
+    html = data.get("html")
+
+    if not html:
+        return JSONResponse(content={"error": "No HTML content provided"}, status_code=400)
+
+    # Добавление стиля для поддержки кириллицы
+    styled_html = f"""
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <style>
+            body {{
+                font-family: DejaVu Sans, sans-serif;
+            }}
+            table {{
+                width: 100%;
+                border-collapse: collapse;
+            }}
+            th, td {{
+                border: 1px solid black;
+                padding: 8px;
+                text-align: left;
+            }}
+        </style>
+    </head>
+    <body>
+        {html}
+    </body>
+    </html>
+    """
+
+    # Генерация PDF
+    try:
+        pdf = pdfkit.from_string(styled_html, False, configuration=config)
+        pdf_bytes = BytesIO(pdf)
+        pdf_bytes.seek(0)
+
+        return StreamingResponse(pdf_bytes, media_type="application/pdf", headers={
+            "Content-Disposition": "attachment; filename=generated.pdf"
+        })
+    except Exception as e:
+        return JSONResponse(content={"error": str(e)}, status_code=500)
