@@ -63,20 +63,56 @@ def cfr_unlimited(request: Request):
     )
 
 
+from pydantic import BaseModel
+
 class InputParameter(BaseModel):
+    """
+    Модель данных для представления отдельного числового параметра.
+
+    Атрибуты:
+        value (float): Значение параметра.
+    """
     value: float
 
 class SimulationInput(BaseModel):
+    """
+    Модель данных для представления входных параметров симуляции.
+
+    Атрибуты:
+        T (float): Продолжительность симуляции.
+        num_channels (int): Количество каналов обслуживания.
+        service_time (float): Время обслуживания.
+        num_iterations (int): Количество итераций симуляции.
+        alfa (int): Интенсивность потока заявок.
+    """
     T: float
     num_channels: int
     service_time: float
     num_iterations: int
     alfa: int
 
+from fastapi import FastAPI, Request
+
+# Определение точки входа (роута) для запуска симуляции
 @main_point.post('/cfr-refusal')
 async def run_simulation_handler(request: Request, response_format: str = 'json'):
+    """
+    Обработчик HTTP POST-запросов для запуска симуляции.
+
+    Параметры:
+        request (Request): Объект запроса FastAPI.
+        response_format (str): Формат ответа (по умолчанию 'json').
+
+    Возвращает:
+        Результаты симуляции в указанном формате.
+    """
+    # Получение данных из тела запроса
     data = await request.json()
+    
+    # Создание экземпляра модели SimulationInput из полученных данных
     params = SimulationInput(**data)
+    
+    # Вызов функции run_simulation с входными параметрами из модели
     results = run_simulation(
         T=params.T,
         num_channels=params.num_channels,
@@ -85,5 +121,5 @@ async def run_simulation_handler(request: Request, response_format: str = 'json'
         alfa=params.alfa,
     )
     
+    # Возвращение результатов симуляции
     return results
-

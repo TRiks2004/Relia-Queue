@@ -16,30 +16,36 @@ const goToResult = () => {
 
 
 async function refusalSolve() {
+    // Получаем значения из input-элементов на странице
     const intensityInput = document.getElementById('intensityInput').value;
     const serviceTimeInput = document.getElementById('serviceTimeInput').value;
     const simulationDurationInput = document.getElementById('simulationDurationInput').value;
     const channelCountInput = document.getElementById('channelCountInput').value;
     const simulationCountInput = document.getElementById('simulationCountInput').value;
 
+    // Преобразуем значения channelCountInput и simulationCountInput в целые числа
     const channelCount = parseInt(channelCountInput);
     const simulationCount = parseInt(simulationCountInput);
 
+    // Проверяем, что количество симуляций - целое число больше 0
     if (isNaN(simulationCount) || simulationCount <= 0) {
         alert("Ошибка: Количество симуляций не может быть символом или числом меньше 0");
         return;
     }
 
+    // Проверяем, что количество каналов - целое число больше 0
     if (isNaN(channelCount) || channelCount <= 0) {
         alert("Ошибка: Количество каналов не может быть символом или числом меньше 0");
         return;
     }
 
+    // Проверяем, что количество каналов не превышает 5
     if (channelCount > 5) {
         alert("Ошибка: число серверов (каналов) ограничено до 5.");
         return;
     }
 
+    // Создаем объект formData с параметрами для симуляции
     const formData = {
         T: parseFloat(simulationDurationInput),
         num_channels: channelCount,
@@ -49,6 +55,7 @@ async function refusalSolve() {
     };
 
     try {
+        // Отправляем POST-запрос на сервер для запуска симуляции
         const response = await fetch('/cfr-refusal', {
             method: 'POST',
             headers: {
@@ -58,29 +65,34 @@ async function refusalSolve() {
         });
 
         if (response.ok) {
-            const responseData = await response.json(); // парсим JSON
+            // Если запрос успешен, парсим JSON-ответ от сервера
+            const responseData = await response.json();
             console.log(responseData);
             console.log(typeof(responseData));
 
+            // Создаем массив заголовков столбцов таблиц
             const list = ["Индекс", "Случайное число", "МЕЖ", "Время программы", "Обслужено", "Отказов"];
-            generateTables(list, simulationCount, responseData); // передаем responseData
-            goToResult();
-            // Обработчик нажатия на кнопку "Сохранить решение в Excel"
-    document.getElementById('saveExcelButton').addEventListener('click', function() {
-        downloadExcel(responseData);
-    });
 
-    // Обработчик нажатия на кнопку "Сохранить решение в TXT"
-    document.getElementById('saveTxtButton').addEventListener('click', function() {
-        downloadTextFile(responseData);
-    });
+            // Генерируем таблицы и заполняем их данными из responseData
+            generateTables(list, simulationCount, responseData);
+            goToResult(); // Переходим к результатам
+
+            // Добавляем обработчики событий для кнопок сохранения в Excel и TXT
+            document.getElementById('saveExcelButton').addEventListener('click', function() {
+                downloadExcel(responseData);
+            });
+            document.getElementById('saveTxtButton').addEventListener('click', function() {
+                downloadTextFile(responseData);
+            });
 
         } else {
             console.error('Failed to run simulation', response.status, response.statusText);
         }
     } catch (error) {
         console.error('Error:', error);
-    }}
+    }
+}
+
     
     function generateTables(list, sim_count, responseData) {
         console.log('Starting generateTables');
@@ -265,18 +277,31 @@ function generateTextContent(list, responseData, channelCount) {
 }
 
 function downloadTextFile(responseData) {
+    // Массив заголовков столбцов
     const list = ["Индекс", "Случайное число", "МЕЖ", "Время программы", "Обслужено", "Отказов"];
+
+    // Получаем количество каналов из input-элемента
     const channelCount = parseInt(document.getElementById('channelCountInput').value);
+
+    // Генерируем содержимое текстового файла
     const textContent = generateTextContent(list, responseData, channelCount);
 
+    // Создаем Blob из сгенерированного текстового содержимого
     const blob = new Blob([textContent], { type: 'text/plain' });
+
+    // Создаем временный URL для Blob
     const url = URL.createObjectURL(blob);
 
+    // Создаем ссылку для скачивания файла
     const a = document.createElement('a');
     a.href = url;
     a.download = 'simulation_results.txt';
+
+    // Добавляем ссылку на страницу, чтобы можно было кликнуть по ней
     document.body.appendChild(a);
-    a.click();
+    a.click(); // Симулируем клик по ссылке для начала скачивания
+
+    // Удаляем ссылку со страницы и освобождаем временный URL
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
 }
