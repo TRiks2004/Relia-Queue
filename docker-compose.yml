@@ -9,6 +9,4 @@ services:
     ports:
       - "8200:8200"
     volumes:
-      - .:/code:rw
-
-
+      - .:/code

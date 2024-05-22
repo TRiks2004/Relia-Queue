@@ -25,12 +25,15 @@ RUN apt-get update && apt-get install -y \
 RUN pip install --upgrade pip
 RUN pip install poetry
 
-# Add pyproject.toml and install dependencies
+# Add pyproject.toml and poetry.lock, then install dependencies
 COPY pyproject.toml poetry.lock* ./
 RUN poetry config virtualenvs.create false && poetry install --no-root --no-interaction --no-ansi
 
 # Copy the rest of the application code
 COPY . .
+
+# Copy static files separately to ensure they are updated
+COPY ./static /code/static
 
 # Expose port 8200
 EXPOSE 8200
