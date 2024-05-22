@@ -1,13 +1,22 @@
 from typing import Annotated
 from fastapi import APIRouter, Depends, Request
 from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi import APIRouter, Request
+from fastapi.responses import HTMLResponse
+from fastapi.responses import FileResponse
 from fastapi.templating import Jinja2Templates
+from fastapi.responses import Response
 
 from pydantic_settings import BaseSettings
 import system_reliability.components.block
 import system_reliability.components.element
 
+from fastapi import FastAPI, Form
 from surroundings import config_fast_api
+from dataclasses import asdict
+from pydantic import BaseModel
+import json
+from smo_rejection import run_simulation, SimulationParameters, export_to_pdf
 
 import system_reliability 
 from system_reliability import enums as enums_system_reliability
@@ -24,8 +33,6 @@ def plus_html(view_name: str) -> str:
     return f"{view_name}.j2"
 
 class ViewList(BaseSettings):
-
-    # layout.html main_page.html qs_theory_page.html block_system_page.html cfr_refusal_page.html cfr_unlimited_page.html about.html                                                               ─╯
     layout: str = plus_html('layout')
     main_page: str = plus_html('index')
     about_page: str = plus_html('about')
@@ -211,6 +218,63 @@ async def generate_pdf(request: Request):
     except Exception as e:
         return JSONResponse(content={"error": str(e)}, status_code=500)
 
+from pydantic import BaseModel
 
+class InputParameter(BaseModel):
+    """
+    Модель данных для представления отдельного числового параметра.
 
+    Атрибуты:
+        value (float): Значение параметра.
+    """
+    value: float
 
+class SimulationInput(BaseModel):
+    """
+    Модель данных для представления входных параметров симуляции.
+
+    Атрибуты:
+        T (float): Продолжительность симуляции.
+        num_channels (int): Количество каналов обслуживания.
+        service_time (float): Время обслуживания.
+        num_iterations (int): Количество итераций симуляции.
+        alfa (int): Интенсивность потока заявок.
+    """
+    T: float
+    num_channels: int
+    service_time: float
+    num_iterations: int
+    alfa: int
+
+from fastapi import FastAPI, Request
+
+# Определение точки входа (роута) для запуска симуляции
+@main_point.post('/cfr-refusal')
+async def run_simulation_handler(request: Request, response_format: str = 'json'):
+    """
+    Обработчик HTTP POST-запросов для запуска симуляции.
+
+    Параметры:
+        request (Request): Объект запроса FastAPI.
+        response_format (str): Формат ответа (по умолчанию 'json').
+
+    Возвращает:
+        Результаты симуляции в указанном формате.
+    """
+    # Получение данных из тела запроса
+    data = await request.json()
+    
+    # Создание экземпляра модели SimulationInput из полученных данных
+    params = SimulationInput(**data)
+    
+    # Вызов функции run_simulation с входными параметрами из модели
+    results = run_simulation(
+        T=params.T,
+        num_channels=params.num_channels,
+        service_time=params.service_time,
+        num_iterations=params.num_iterations,
+        alfa=params.alfa,
+    )
+    
+    # Возвращение результатов симуляции
+    return results

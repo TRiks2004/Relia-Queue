@@ -1,3 +1,4 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 <div class="calc-area">
     <div class="skip-parts">
             <button class="skip-button" id="theoryBtn" onclick="goToTheory()">
@@ -93,14 +94,15 @@
                 <p class="form-text">Количество запусков симуляции</p>
                 <input class="form-input" type="text" id="simulationCountInput" placeholder="Введите значение">
             </div>
-            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; align-self: center;">
                 <button class="solve-button" onclick="refusalSolve()">РЕШИТЬ</button>
             </div>
         </div>
         <p class="theme-title" id="resultTitle">Решение</p>
         <div id="saveContainer">
-            <button class="header-button">Сохранить решение в PDF</button>
-            <button class="header-button">Сохранить решение в Excel</button>
+            <button id="saveTxtButton" class="header-button">Сохранить решение в TXT</button>
+            <button id="saveExcelButton" class="header-button">Сохранить решение в Excel</button>
         </div>
+        <div id="resultTableContainer"></div>
     </div>
 </div>

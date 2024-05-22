@@ -26,3 +26,5 @@ def api_factory() -> FastAPI:
     app.include_router(main_point)
     
     return app
+
+
