@@ -285,7 +285,7 @@ body{
 
 
 .theory{
-    border-color: solid #03172C;
+    border-color:#03172C;
     display: flex;
     flex-direction: column;
     gap: 10px;
