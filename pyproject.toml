@@ -1,12 +1,24 @@
 [tool.poetry]
-name = "reliaqueue"
+name = "Relia-Queue"
 version = "0.1.0"
 description = "Имитационное моделирование. Системы массового обслуживания."
 authors = ["triks <trik0001000@gmail.com>"]
 readme = "README.md"
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.12"
+uvicorn = "^0.29.0"
+fastapi = {extras = ["all"], version = "^0.111.0"}
+django-environ = "^0.11.2"
+jinja2 = "^3.1.4"
+pydantic = {extras = ["dotenv"], version = "^2.7.1"}
+pdfkit = "^1.0.0"
+reportlab = "^4.2.0"
+openpyxl = "^3.1.2"
+smo-rejection = "^0.5.6"
+system-reliability = "^0.4.0"
+smo-over-queue = "^0.1.1"
 
 
 [build-system]

@@ -1,0 +1,23 @@
+
+<div class="header">
+    <div class="app-name">
+        <img src="static/assets/logo.svg" alt="Company Logo">
+        <a class="theme-subtitle" href="/">Relia-Queue</a>
+    </div>
+    <div class="button-container">
+        <div class="header-button">
+            <p>ЗАДАЧИ</p>
+            <div class="dropdown">
+                <div class="header-button" onclick="redirectTo('/cfr-unlimited')">СМО с неограниченной очередью</div>
+                <div class="header-button" onclick="redirectTo('/cfr-refusal')">СМО с отказами</div>
+                <div class="header-button" onclick="redirectTo('/block-system')">Оценка надежности системы</div>
+            </div>
+        </div>
+        <div class="header-button" onclick="redirectTo('/about')">О НАС</div>
+    </div>
+    <script>
+        function redirectTo(path){
+            window.location.href = path
+        }
+    </script>
+</div>
