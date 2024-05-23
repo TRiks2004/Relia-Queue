@@ -13,7 +13,7 @@ driver.get('https://neo.xn--n1afb.site')
 actions = ActionChains(driver)
 
 # Добавляем задержку в 3 секунды
-time.sleep(3)
+time.sleep(2)
 
 # Находим все элементы с атрибутом class name='choice-button'
 buttons = driver.find_elements(by='class name', value = 'choice-button')
@@ -30,7 +30,7 @@ time.sleep(2)
 # Нажимаем кнопку
 unlimited_button.click()
 print('\n' + '-' * 20 + '\n' + 'Нажата кнопка "Многоканальные СМО с неограниченной очередью"' + '\n' + '-' * 20 + '\n')
-time.sleep(2)
+time.sleep(1)
 
 # Вывод того, что мы перешли на страницу "СМО с неограниченными очередями"
 print('\n' + '-' * 20 + '\n' + 'Переход на страницу "СМО с неограниченными очередями"' + '\n' + '-' * 20 + '\n')
@@ -74,23 +74,30 @@ print('\n' + '-' * 20 + '\n' + 'Нажата кнопка "Решить"' + '\n'
 print('\n' + '-' * 20 + '\n' + 'Вывод результатов' + '\n' + '-' * 20 + '\n')
 time.sleep(7)
 
+# Находим заголовок "Результат"
+result_title = driver.find_element(by='id', value='resultTitle')
+
+# Считаем Y координату
+y = result_title.location['y']
+scroll_y = y - 200
+
 # Скроллим вниз
 print('\n' + '-' * 20 + '\n' + 'Скроллим вниз' + '\n' + '-' * 20 + '\n')
 # Функция для плавного скролла
 def smooth_scroll():
     SCROLL_PAUSE_TIME = 0.05
     last_height = driver.execute_script("return document.body.scrollHeight")
-    scroll_step = 50  # Изменение координаты Y после каждой паузы
+    scroll_step = 80  # Изменение координаты Y после каждой паузы
 
     while True:
-        for i in range(2400, last_height, scroll_step):
+        for i in range(scroll_y, last_height, scroll_step):
             driver.execute_script(f"window.scrollTo(0, {i});")
             time.sleep(SCROLL_PAUSE_TIME)
         
         # Скроллим вверх
         print('\n' + '-' * 20 + '\n' + 'Скроллим вверх' + '\n' + '-' * 20 + '\n')
 
-        for i in range(last_height, 2400, -scroll_step):
+        for i in range(last_height, scroll_y, -scroll_step):
             driver.execute_script(f"window.scrollTo(0, {i});")
             time.sleep(SCROLL_PAUSE_TIME)
 
@@ -111,6 +118,7 @@ pdf_button = driver.find_element(by='id', value = 'pdfButton')
 # Нажимаем кнопку
 pdf_button.click()
 print('\n' + '-' * 20 + '\n' + 'Нажата кнопка "Сохранить решение в PDF"' + '\n' + '-' * 20 + '\n')
+time.sleep(2)
 
 # Переходим на страницу с загрузками
 driver.get('chrome://downloads/')
@@ -124,9 +132,6 @@ print('\n' + '-' * 20 + '\n' + 'Сценарий окончен' + '\n' + '-' * 
 
 # Ждем некоторое время, чтобы страница загрузок полностью загрузилась
 time.sleep(2)
-
-print('\n' + '-' * 20 + '\n' + 'Загрузка завершена' + '\n' + '-' * 20 + '\n')
-
 
 # Добавляем задержку в 5 секунд перед закрытием браузера
 time.sleep(5)
