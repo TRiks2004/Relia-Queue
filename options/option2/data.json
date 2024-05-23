@@ -1,0 +1,9 @@
+{
+    "parameters": {
+        "intensity": 1,
+        "serviceTime": 5,
+        "simulationDuration": 10,
+        "channelCount": 3,
+        "simulationCount": 3
+    }
+}
