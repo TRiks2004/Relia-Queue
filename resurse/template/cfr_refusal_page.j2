@@ -1,109 +1,155 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 <div class="calc-area">
-    <div class="skip-parts">
-            <button class="skip-button" id="theoryBtn" onclick="goToTheory()">
-                <span class="theme-title">ТЕОРИЯ</span>
-            </button>
-            <button class="skip-button" id="formBtn" onclick="goToForm()">
-                <span class="theme-title">ВВОД ПАРАМЕТРОВ</span>
-            </button>
-            <button class="skip-button" id="resultBtn" onclick="goToResult()">
-                <span class="theme-title">РЕШЕНИЕ</span>
-            </button>
-        </div>
+    {% include 'skip_panel.j2' %}
     <div class="work-area">
         <p class="theme-subtitle">СМО с отказами</p>
         <p class="theme-title" id="theoryTitle">Теория</p>
         <div class="theory">
-            <span class="theme-text">Рассмотрим классическую задачу Эрланга.</span>
+            <span class="theme-text">Рассмотрим классическую задачу
+                Эрланга.</span>
             <span class="theme-text">
-                Имеется n каналов, на которые поступает поток заявок с интенсивностью λ. Поток обслуживаний имеет интенсивность μ. Найти предельные вероятности состояний системы и показатели ее эффективности.
-                Система S (СМО) имеет следующие состояния (нумеруем их по числу заявок, находящихся в системе): S0, S1, S2, …, Sk, …, Sn, где Sk — состояние системы, когда в ней находится k заявок, т.е. занято k каналов.
+                Имеется n каналов, на которые поступает поток заявок с
+                интенсивностью λ. Поток обслуживаний имеет интенсивность μ.
+                Найти предельные вероятности состояний системы и показатели ее
+                эффективности.
+                Система S (СМО) имеет следующие состояния (нумеруем их по числу
+                заявок, находящихся в системе): S0, S1, S2, …, Sk, …, Sn, где Sk
+                — состояние системы, когда в ней находится k заявок, т.е. занято
+                k каналов.
             </span>
-            <span class="theme-text">Граф состояний СМОсоответствует процессу гибели и размножения и показан на рисунке ниже</span>
-            <img src="https://math.semestr.ru/cmo/images/c1_image041.jpg">
+            <span class="theme-text">Граф состояний СМОсоответствует процессу
+                гибели и размножения и показан на рисунке ниже</span>
+            <img src="https://math.semestr.ru/cmo/images/c1_image041.jpg"
+                alt="Formula">
             <span class="theme-text">
-                Поток заявок последовательно переводит систему из любого левого состояния в соседнее правое с одной и той же интенсивностью λ. Интенсивность же потока обслуживаний, переводящих систему из любого правого состояния в соседнее левое состояние, постоянно меняется в зависимости от состояния. Действительно, если СМО находится в состоянии S2 (два канала заняты), то она может перейти в состояние. S1 (один канал занят), когда закончит обслуживание либо первый, либо второй канал, т.е. суммарная интенсивность их потоков обслуживании будет 2μ.
+                Поток заявок последовательно переводит систему из любого левого
+                состояния в соседнее правое с одной и той же интенсивностью λ.
+                Интенсивность же потока обслуживаний, переводящих систему из
+                любого правого состояния в соседнее левое состояние, постоянно
+                меняется в зависимости от состояния. Действительно, если СМО
+                находится в состоянии S2 (два канала заняты), то она может
+                перейти в состояние. S1 (один канал занят), когда закончит
+                обслуживание либо первый, либо второй канал, т.е. суммарная
+                интенсивность их потоков обслуживании будет 2μ.
             </span>
             <span class="theme-text">
-                Аналогично суммарный поток обслуживаний, переводящий СМО из состояния S3 (три канала заняты) в S2. будет иметь интенсивность Зμ, т.е. может освободиться любой из трех каналов и т.д.
+                Аналогично суммарный поток обслуживаний, переводящий СМО из
+                состояния S3 (три канала заняты) в S2. будет иметь интенсивность
+                Зμ, т.е. может освободиться любой из трех каналов и т.д.
             </span>
             <span class="theme-text">
-                В формуле для схемы гибели и размножения получим для предельной вероятности состояния
+                В формуле для схемы гибели и размножения получим для предельной
+                вероятности состояния
             </span>
-            <p class="theme-text"><p class="math display">$$p_o=(1+{\frac{\alpha}{\upsilon}}+{\frac{\alpha^2}{2!\upsilon^2}}+...+{\frac{\alpha^k}{k!\upsilon^k}}+...{\frac{\alpha^n}{n!\upsilon^n}})^{-1}$$</span></p>
+            <p class="theme-text">
+                <span
+                    class="math display">$$p_o=(1+{\frac{\alpha}{\upsilon}}+{\frac{\alpha^2}{2!\upsilon^2}}+...+{\frac{\alpha^k}{k!\upsilon^k}}+...{\frac{\alpha^n}{n!\upsilon^n}})^{-1}$$</span>
+            </p>
             <span class="theme-text">где члены разложения</span>
-            <p class="theme-text"><p class="math display">$${\frac{\alpha}{\upsilon}},{\frac{\alpha^2}{2!\upsilon^2}},...,{\frac{\alpha^n}{n!\upsilon^n}}$$</span></p>
+            <p class="theme-text"><span
+                    class="math display">$${\frac{\alpha}{\upsilon}},{\frac{\alpha^2}{2!\upsilon^2}},...,{\frac{\alpha^n}{n!\upsilon^n}}$$</span></p>
             <span class="theme-text">
-                будут представлять собой коэффициенты приp0 в выражениях для предельных вероятностей p1, p2, …, pk, …, pn.
+                будут представлять собой коэффициенты приp0 в выражениях для
+                предельных вероятностей p1, p2, …, pk, …, pn.
             </span>
             <span class="theme-text">Величина</span>
-            <p class="theme-text"><p class="math display">$$p={\frac{\alpha}{\upsilon}}$$</span></p>
+            <p class="theme-text"><span
+                    class="math display">$$p={\frac{\alpha}{\upsilon}}$$</span></p>
             <span class="theme-text">
-                называется приведенной интенсивностью потока заявок или интенсивностью нагрузки канала.Она выражает среднее число заявок, приходящее за среднее время обслуживания одной заявки. Теперь p1=ρ·p0
+                называется приведенной интенсивностью потока заявок или
+                интенсивностью нагрузки канала.Она выражает среднее число
+                заявок, приходящее за среднее время обслуживания одной заявки.
+                Теперь p1=ρ·p0
             </span>
-            <p class="theme-text"><p class="math display">$$p_2={\frac{p^2}{2!}}p_0,...,p_k={\frac{p^k}{k!}}p_0,...,p_n={\frac{p^n}{n!}}p_0$$</span></p>
+            <p class="theme-text"><span
+                    class="math display">$$p_2={\frac{p^2}{2!}}p_0,...,p_k={\frac{p^k}{k!}}p_0,...,p_n={\frac{p^n}{n!}}p_0$$</span></p>
             <span class="theme-text">
-                Формулы и для предельных вероятностей получили названия формул Эрланга в честь основателя теории массового обслуживания.
-            </span>
-            <span class="theme-text">
-                Вероятность отказа СМО есть предельная вероятность того, что все n каналов системы будут заняты, т.е.
-            </span>
-            <p class="theme-text"><p class="math display">$$P_{отк}={\frac{p^n}{n!}}p_0$$</span></p>
-            <span class="theme-text">
-                Относительная пропускная способность — вероятность того, что заявка будет обслужена:
-            </span>
-            <p class="theme-text"><p class="math display">$$Q=1-P_{отк}= {\frac{p^n}{n!}}p_0$$</span></p>        
-            <span class="theme-text">
-            Абсолютная пропускная способность:
-            </span>
-            <p class="theme-text"><p class="math display">$$A=\alpha Q=\alpha(1-{\frac{p^n}{n!}}p_0)$$</span></p>        
-            <span class="theme-text">
-                Среднее число занятых каналов k есть математическое ожидание числа занятых каналов:
-            </span>
-            <p class="theme-text"><p class="math display">$$\overline{k}=\sum_{k=0}^{n}kp_k$$</span></p>        
-            <span class="theme-text">
-            где pk — предельные вероятности состояний, определяемых по формулам.
+                Формулы и для предельных вероятностей получили названия формул
+                Эрланга в честь основателя теории массового обслуживания.
             </span>
             <span class="theme-text">
-            Однако среднее число занятых каналов можно найти проще, если учесть, что абсолютная пропускная способность системы А есть не что иное, как интенсивность потока обслуженных системой заявок (в единицу времени). Так как каждый занятый канал обслуживает в среднем μ заявок (в единицу времени), то среднее число занятых каналов
+                Вероятность отказа СМО есть предельная вероятность того, что все
+                n каналов системы будут заняты, т.е.
             </span>
-            <p class="theme-text"><p class="math display">$$\overline{k}= {\frac{A}{\upsilon}}$$</span></p>         
+            <p class="theme-text"><span
+                    class="math display">$$P_{отк}={\frac{p^n}{n!}}p_0$$</span></p>
+            <span class="theme-text">
+                Относительная пропускная способность — вероятность того, что
+                заявка будет обслужена:
+            </span>
+            <p class="theme-text"><span class="math display">$$Q=1-P_{отк}=
+                    {\frac{p^n}{n!}}p_0$$</span></p>
+            <span class="theme-text">
+                Абсолютная пропускная способность:
+            </span>
+            <p class="theme-text"><span class="math display">$$A=\alpha
+                    Q=\alpha(1-{\frac{p^n}{n!}}p_0)$$</span></p>
+            <span class="theme-text">
+                Среднее число занятых каналов k есть математическое ожидание
+                числа занятых каналов:
+            </span>
+            <p class="theme-text"><span
+                    class="math display">$$\overline{k}=\sum_{k=0}^{n}kp_k$$</span></p>
+            <span class="theme-text">
+                где pk — предельные вероятности состояний, определяемых по
+                формулам.
+            </span>
+            <span class="theme-text">
+                Однако среднее число занятых каналов можно найти проще, если
+                учесть, что абсолютная пропускная способность системы А есть не
+                что иное, как интенсивность потока обслуженных системой заявок
+                (в единицу времени). Так как каждый занятый канал обслуживает в
+                среднем μ заявок (в единицу времени), то среднее число занятых
+                каналов
+            </span>
+            <p class="theme-text"><span class="math display">$$\overline{k}=
+                    {\frac{A}{\upsilon}}$$</span></p>
             <span class="theme-text">или, учитывая,</span>
-            <p class="theme-text"><p class="math display">$$\overline{k}= p(1-\frac{p^n}{n!}p_0)$$</span></p>         
+            <p class="theme-text"><span class="math display">$$\overline{k}=
+                    p(1-\frac{p^n}{n!}p_0)$$</span></p>
         </div>
         <p class="theme-title" id="formTitle">Ввод параметров</p>
         <div class="input-form">
             <div class="input-column">
                 <p class="form-text">Интенсивность пуассоновского потока</p>
-                <input class="form-input" type="text" id="intensityInput" placeholder="Введите значение">
+                <input class="form-input" type="text" id="intensityInput"
+                    placeholder="Введите значение">
             </div>
             <div class="input-column">
                 <p class="form-text">Время обслуживания</p>
-                <input class="form-input" type="text" id="serviceTimeInput" placeholder="Введите значение">
+                <input class="form-input" type="text" id="serviceTimeInput"
+                    placeholder="Введите значение">
             </div>
             <div class="input-column">
                 <p class="form-text">Продолжительность симуляции</p>
-                <input class="form-input" type="text" id="simulationDurationInput" placeholder="Введите значение">
+                <input class="form-input" type="text"
+                    id="simulationDurationInput" placeholder="Введите значение">
             </div>
             <div class="input-column">
                 <p class="form-text">Количество каналов обслуживания</p>
-                <input class="form-input" type="text" id="channelCountInput" placeholder="Введите значение">
+                <input class="form-input" type="text" id="channelCountInput"
+                    placeholder="Введите значение">
             </div>
             <div class="input-column">
                 <p class="form-text">Количество запусков симуляции</p>
-                <input class="form-input" type="text" id="simulationCountInput" placeholder="Введите значение">
+                <input class="form-input" type="text" id="simulationCountInput"
+                    placeholder="Введите значение">
             </div>
 
-            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; align-self: center;">
-                <button class="solve-button" onclick="refusalSolve()">РЕШИТЬ</button>
+            <div
+                style="display: flex; flex-direction: column; justify-content: center; align-items: center; align-self: center;">
+                <button class="solve-button"
+                    onclick="refusalSolve()">РЕШИТЬ</button>
             </div>
-            
+
         </div>
         <p class="theme-title" id="resultTitle">Решение</p>
         <div id="saveContainer">
-            <button id="saveTxtButton" class="header-button">Сохранить решение в TXT</button>
-            <button id="saveExcelButton" class="header-button">Сохранить решение в Excel</button>
+            <button id="saveTxtButton" class="header-button">Сохранить решение в
+                TXT</button>
+            <button id="saveExcelButton" class="header-button">Сохранить решение
+                в Excel</button>
         </div>
         <div id="resultTableContainer"></div>
     </div>
