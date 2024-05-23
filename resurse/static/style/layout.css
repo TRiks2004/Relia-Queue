@@ -285,7 +285,7 @@ body{
 
 
 .theory{
-    border-color: #03172C 3px solid;
+    border-color:#03172C;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -382,6 +382,8 @@ th, td {
     box-sizing: border-box;
     margin: 0 auto;
   }
+
+
 
   .block {
     display: flex;
