@@ -56,7 +56,7 @@ for key, value in data['reliabilities'].items():
     print('\n' + '-' * 20 + '\n' + 'Нажата кнопка "Добавить блок"' + '\n' + '-' * 20 + '\n')
     
     # Делаем скролл чуть ниже
-    driver.execute_script('window.scrollTo(0, 2300)')
+    driver.execute_script('window.scrollTo(0, 2600)')
 
     block = driver.find_elements(by='css selector', value='div.block')[-1]  # Находим только что созданный блок
     element_index = 0
@@ -68,6 +68,7 @@ for key, value in data['reliabilities'].items():
 
         input_elements = block.find_elements(by='class name', value='input-field')
         if element_index < len(input_elements):
+            input_elements[element_index].clear()
             input_elements[element_index].send_keys(element)
             element_index += 1
             print('\n' + '-' * 20 + '\n' + 'Ввод элемента' + '\n' + '-' * 20 + '\n')
@@ -95,7 +96,7 @@ print('\n' + '-' * 20 + '\n' + 'Нажата кнопка "Решить"' + '\n'
 
 # Выводим сообщение после решения
 print('\n' + '-' * 20 + '\n' + 'Вывод результатов' + '\n' + '-' * 20 + '\n')
-time.sleep(7)
+time.sleep(4)
 
 # Находим заголовок "Результат"
 result_title = driver.find_element(by='id', value='resultTitle')
